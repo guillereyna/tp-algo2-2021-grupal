@@ -35,6 +35,7 @@
 \tadUsa{\tadNombre{mapa}, \tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
 
 \tadIgualdadObservacional{p}{p'}{partida}{jugador(p) \igobs jugador(p') $\land$ \\ mapa(p) \igobs mapa(p')}
+\tadAlinearFunciones{hayFantasmasCerca}{coordenadas,conj(coordenadas)}
 
 \tadObservadores
 \tadOperacion{jugador}{partida}{coordenadas}{}
@@ -90,7 +91,7 @@
 \tadUsa{\tadNombre{mapa}, \tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
 
 \tadIgualdadObservacional{p}{p'}{partida}{jugador(p) \igobs jugador(p') $\land$ \\ mapa(p) \igobs mapa(p') $\land$ \\ chocolates(p) \igobs chocolates(p') $\land$ \\ movimientosConInmunidad(p) \igobs movimientosConInmunidad(p') $\land$ \\ puntaje(p) \igobs puntaje(p')}
-
+\tadAlinearFunciones{movimientosConInmunidad}{mapa/$m$,conj(coordenadas)/$chocolates$}
 
 
 \tadObservadores
