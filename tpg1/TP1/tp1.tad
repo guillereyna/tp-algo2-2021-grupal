@@ -2,6 +2,12 @@ TAD Dimensión es Tupla(Nat, Nat)
 TAD Coordenadas es Tupla(Nat, Nat)
 
 // EXTENDER TUPLA CON IGUALDAD
+TAD Tupla(Nat, Nat) EXTIENDE Tupla(α₁,..., α\_n)
+Otras Operaciones:
+	• = • : tupla(nat, nat) × tupla(nat, nat) -> bool
+Axiomas: ∀a₁, a₂: tupla(nat, nat)
+	a₁ = a₂ ≡ π₁(a₁) = π₁(a₂) ∧ π₂(a₁) = π₂(a₂)
+Fin TAD
 
 TAD Partida
 	
