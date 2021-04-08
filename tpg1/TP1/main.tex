@@ -1,4 +1,4 @@
-\documentclass[spanish, a4paper]{article}
+\documentclass[10pt, a4paper]{article}
 \usepackage[paper=a4paper, left=1.5cm, right=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
@@ -21,8 +21,74 @@
 
 
 
-\section{Ejercicios - Primera Parte}
+\section{Ejercicios - Parte 1}
 
-\section{Ejercicios - Segunda Parte}
+\tad{\tadNombre{dimensión}}
+\tad{\tadNombre{coordenadas}}
+
+\begin{tad}{\tadNombre{Partida}}
+
+\tadGeneros{partida}
+
+\tadExporta{partida, generadores, observadores}
+
+\tadUsa{\tadNombre{mapa}, \tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
+
+\tadIgualdadObservacional{p}{p'}{partida}{jugador(p) \igobs jugador(p') $\land$ \\ mapa(p) \igobs mapa(p')}
+
+\tadObservadores
+\tadOperacion{jugador}{partida}{coordenadas}{}
+\tadOperacion{mapa}{partida}{mapa}{}
+
+\tadGeneradores{}
+\tadOperacion{iniciarPartida}{mapa}{partida}{}
+\tadOperacion{arriba}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))+1$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))+1$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{abajo}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))-1$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))-1$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{derecha}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p))+1,$\pi_2$(jugador(p))$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p))+1,$\pi_2$(jugador(p))$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{izquierda}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p))-1,$\pi_2$(jugador(p))$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p))-1,$\pi_2$(jugador(p))$\rangle$ $\in$ paredes(mapa(p)))}
+
+\tadOtrasOperaciones
+\tadOperacion{seAsustó?}{partida}{bool}{}
+\tadOperacion{ganó?}{partida}{bool}{}
+\tadOperacion{terminóElJuego?}{partida}{bool}{}
+\tadOperacion{hayFantasmasCerca}{coordenadas,conj(coordenadas)}{bool}{}
+
+\end{tad}
+
+\section{Ejercicios - Parte 2}
+
+\begin{tad}{\tadNombre{Partida}}
+
+\tadGeneros{partida}
+
+\tadExporta{partida, generadores, observadores}
+
+\tadUsa{\tadNombre{mapa}, \tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
+
+\tadIgualdadObservacional{p}{p'}{partida}{jugador(p) \igobs jugador(p') $\land$ \\ mapa(p) \igobs mapa(p') $\land$ \\ chocolates(p) \igobs chocolates(p') $\land$ \\ movimientosConInmunidad(p) \igobs movimientosConInmunidad(p') $\land$ \\ puntaje(p) \igobs puntaje(p')}
+
+
+
+\tadObservadores
+\tadOperacion{jugador}{partida}{coordenadas}{}
+\tadOperacion{mapa}{partida}{mapa}{}
+\tadOperacion{chocolates}{partida}{conj(coordenadas)}{}
+\tadOperacion{movimientosConInmunidad}{partida}{nat}{}
+\tadOperacion{puntaje}{partida}{nat}{}
+
+\tadGeneradores{}
+\tadOperacion{iniciarPartida}{mapa/m,conj(coordenadas)/chocolates}{partida}{$(\forall$c:coordenadas)(c$\in$chocolates$\implies$enRango?(c,dimensión(m))$\land_L$\\ $\neg$(c $\in$ {puntoDeSalida(m)} $\lor$ c $\in$ paredes(m)))}
+\tadOperacion{arriba}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))+1$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))+1$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{abajo}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))-1$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))-1$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{derecha}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p))+1,$\pi_2$(jugador(p))$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p))+1,$\pi_2$(jugador(p))$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{izquierda}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p))-1,$\pi_2$(jugador(p))$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p))-1,$\pi_2$(jugador(p))$\rangle$ $\in$ paredes(mapa(p)))}
+
+\tadOtrasOperaciones
+\tadOperacion{seAsustó?}{partida}{bool}{}
+\tadOperacion{ganó?}{partida}{bool}{}
+\tadOperacion{terminóElJuego?}{partida}{bool}{}
+\tadOperacion{hayFantasmasCerca}{coordenadas,conj(coordenadas)}{bool}{}
+
+\end{tad}
 
 \end{document}
