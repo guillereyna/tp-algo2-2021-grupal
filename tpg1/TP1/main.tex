@@ -53,6 +53,30 @@
 \tadOperacion{terminóElJuego?}{partida}{bool}{}
 \tadOperacion{hayFantasmasCerca}{coordenadas,conj(coordenadas)}{bool}{}
 
+\tadAxiomas[\paratodo{partida}{p}, \paratodo{mapa}{m}, \paratodo{coordenadas}{c}, \paratodo{conj(coordenadas)}{f}]
+\tadAlinearAxiomas{hayFantasmasCerca($\langle x, y\rangle, f$)}
+\tadAxioma{jugador(iniciarPartida($m$))}{puntoDeSalida($m$)}
+\tadAxioma{jugador(arriba($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ + 1\rangle$}
+\tadAxioma{jugador(abajo($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ - 1\rangle$}
+\tadAxioma{jugador(derecha($p$))}{$\langle\pi_1$(jugador($p$))$ + 1$, $\pi_2$(jugador($p$))$\rangle$}
+\tadAxioma{jugador(izquierda($p$))}{$\langle\pi_1$(jugador($p$))$ - 1$, $\pi_2$(jugador($p$))$\rangle$}
+\
+\tadAxioma{mapa(iniciarPartida($m$))}{$m$}
+\tadAxioma{mapa(arriba($p$))}{mapa($p$)}
+\tadAxioma{mapa(abajo($p$))}{mapa($p$)}
+\tadAxioma{mapa(izquierda($p$))}{mapa($p$)}
+\tadAxioma{mapa(derecha($p$))}{mapa($p$)}
+\
+\tadAxioma{seAsustó?($p$)}{hayFantasmasCerca(jugador($p$), fantasmas(mapa($p$)))}
+
+\tadAxioma{ganó?($p$)}{jugador($p$) = puntoDeLlegada(mapa($p$))}
+
+\tadAxioma{terminóElJuego?($p$)}{seAsustó($p$) $\lor$ ganó($p$)}
+
+\tadAxioma{hayFantasmasCerca($c, f$)}{\IF\ vacío?(f) THEN false
+                            ELSE ( $|\pi_1$($c$)$-\pi_1$(dameUno($f$))$|$ + $|\pi_2$($c$)$-\pi_2$(dameUno($f$))$|< 3$ ) 
+                            $\lor$ hayFantasmasCerca(sinUno($f$)) FI}
+
 \end{tad}
 
 \section{Ejercicios - Parte 2}
