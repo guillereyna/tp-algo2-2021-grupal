@@ -13,7 +13,7 @@
 
 % CAMBIAR INTEGRANTES
 \integrante{Reyna Maciel, Guillermo José}{393/20}{guille.j.reyna@gmail.com}
-\integrante{Bond, James}{007/007}{bond@mi6.co.uk}
+\integrante{Casado Farall, Joaquin}{072/20}{joakinfarall@gmail.com}
 \integrante{Capunta, Elsa}{003/17}{ecapunta@dc.uba.ar}
 \integrante{Sánchez, Warren}{004/15}{tienelasrespuestas@les.luthier.com}
 
@@ -77,6 +77,46 @@
 \tadAxioma{hayFantasmasCerca($c, f$)}{\IF\ vacío?(f) THEN false
                             ELSE ( $|\pi_1$($c$)$-\pi_1$(dameUno($f$))$|$ + $|\pi_2$($c$)$-\pi_2$(dameUno($f$))$|< 3$ ) 
                             $\lor$ hayFantasmasCerca(sinUno($f$)) FI}
+
+\end{tad}
+\ 
+\begin{tad}{\tadNombre{Mapa}}
+
+\tadGeneros{mapa}
+
+\tadExporta{mapa, generadores, observadores}
+
+\tadUsa{\tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
+
+\tadOtrasOperaciones
+\tadOperacion{esRango?}{coordenadas, dimensión}{bool}{}
+\tadOperacion{estaOcupado}{coordenadas/$c$, mapa/$m$}{bool}{enRango?($c$, dimension($m$))}
+
+\tadAxiomas
+\tadAlinearAxiomas{puntoDeLlegada(agregarFantasma($m$, $c$))}
+\tadAxioma{dimension(nuevoMapa($d$, $i$, $f$))}{$d$}
+\tadAxioma{dimension(agregarFantasma($m$, $c$))}{dimension($m$)}
+\tadAxioma{dimension(agregarPared($m$, $c$))}{dimension($m$)}
+\
+\tadAxioma{paredes(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{paredes(agregarFantasma($m$, $c$))}{paredes($m$)}
+\tadAxioma{paredes(agregarPared($m$, $c$))}{Ag($c$, paredes($m$))}
+\ 
+\tadAxioma{fantasmas(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{fantasmas(agregarFantasma($m$, $c$))}{Ag($c$, paredes($m$))}
+\tadAxioma{fantasmas(agregarPared($m$, $c$))}{paredes($m$)}
+\ 
+\tadAxioma{puntoDeSalida(nuevoMapa($d$, $i$, $f$))}{$i$}
+\tadAxioma{puntoDeSalida(agregarFantasma($m$, $c$))}{puntoDeSalida($m$)}
+\tadAxioma{puntoDeSalida(agregarPared($m$, $c$))}{puntoDeSalida($m$)}
+\ 
+\tadAxioma{puntoDeLlegada(nuevoMapa($d$, $i$, $f$))}{$f$}
+\tadAxioma{puntoDeLlegada(agregarFantasma($m$, $c$))}{puntoDeLlegada($m$)}
+\tadAxioma{puntoDeLlegada(agregarPared($m$, $c$))}{puntoDeLlegada($m$)}
+\ 
+\tadAxioma{esRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
+\ 
+\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in paredes($m$) \lor c \in fantasmas($m$) \lor c \in {puntoDeSalida($m$), puntoDeLlegada($m$)})$}
 
 \end{tad}
 
@@ -160,6 +200,46 @@
 \tadAxioma{hayFantasmasCerca($c, f$)}{\IF\ vacío?(f) THEN false
                             ELSE ( $|\pi_1$($c$)$-\pi_1$(dameUno($f$))$|$ + $|\pi_2$($c$)$-\pi_2$(dameUno($f$))$|< 3$ ) 
                             $\lor$ hayFantasmasCerca(sinUno($f$)) FI}
+
+\end{tad}
+
+\begin{tad}{\tadNombre{Mapa}}
+
+\tadGeneros{mapa}
+
+\tadExporta{mapa, generadores, observadores}
+
+\tadUsa{\tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
+
+\tadOtrasOperaciones
+\tadOperacion{esRango?}{coordenadas, dimensión}{bool}{}
+\tadOperacion{estaOcupado}{coordenadas/$c$, mapa/$m$}{bool}{enRango?($c$, dimension($m$))}
+
+\tadAxiomas
+\tadAlinearAxiomas{puntoDeLlegada(agregarFantasma($m$, $c$))}
+\tadAxioma{dimension(nuevoMapa($d$, $i$, $f$))}{$d$}
+\tadAxioma{dimension(agregarFantasma($m$, $c$))}{dimension($m$)}
+\tadAxioma{dimension(agregarPared($m$, $c$))}{dimension($m$)}
+\
+\tadAxioma{paredes(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{paredes(agregarFantasma($m$, $c$))}{paredes($m$)}
+\tadAxioma{paredes(agregarPared($m$, $c$))}{Ag($c$, paredes($m$))}
+\ 
+\tadAxioma{fantasmas(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{fantasmas(agregarFantasma($m$, $c$))}{Ag($c$, paredes($m$))}
+\tadAxioma{fantasmas(agregarPared($m$, $c$))}{paredes($m$)}
+\ 
+\tadAxioma{puntoDeSalida(nuevoMapa($d$, $i$, $f$))}{$i$}
+\tadAxioma{puntoDeSalida(agregarFantasma($m$, $c$))}{puntoDeSalida($m$)}
+\tadAxioma{puntoDeSalida(agregarPared($m$, $c$))}{puntoDeSalida($m$)}
+\ 
+\tadAxioma{puntoDeLlegada(nuevoMapa($d$, $i$, $f$))}{$f$}
+\tadAxioma{puntoDeLlegada(agregarFantasma($m$, $c$))}{puntoDeLlegada($m$)}
+\tadAxioma{puntoDeLlegada(agregarPared($m$, $c$))}{puntoDeLlegada($m$)}
+\ 
+\tadAxioma{esRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
+\ 
+\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in paredes($m$) \lor c \in fantasmas($m$) \lor c \in {puntoDeSalida($m$), puntoDeLlegada($m$)})$}
 
 \end{tad}
 
