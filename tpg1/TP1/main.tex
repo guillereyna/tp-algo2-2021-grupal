@@ -114,9 +114,9 @@
 \tadAxioma{puntoDeLlegada(agregarFantasma($m$, $c$))}{puntoDeLlegada($m$)}
 \tadAxioma{puntoDeLlegada(agregarPared($m$, $c$))}{puntoDeLlegada($m$)}
 \ 
-\tadAxioma{esRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
+\tadAxioma{enRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
 \ 
-\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in paredes($m$) \lor c \in fantasmas($m$) \lor c \in {puntoDeSalida($m$), puntoDeLlegada($m$)})$}
+\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in$ paredes($m$) $\lor$ $c$ $\in$ fantasmas($m$) $\lor$ $c$ $\in$ \{puntoDeSalida($m$), puntoDeLlegada($m$)\})}
 
 \end{tad}
 
@@ -237,9 +237,10 @@
 \tadAxioma{puntoDeLlegada(agregarFantasma($m$, $c$))}{puntoDeLlegada($m$)}
 \tadAxioma{puntoDeLlegada(agregarPared($m$, $c$))}{puntoDeLlegada($m$)}
 \ 
-\tadAxioma{esRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
+\tadAxioma{enRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
 \ 
-\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in paredes($m$) \lor c \in fantasmas($m$) \lor c \in {puntoDeSalida($m$), puntoDeLlegada($m$)})$}
+\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in$ paredes($m$) $\lor$ $c$ $\in$ fantasmas($m$) $\lor$ $c$ $\in$ \{puntoDeSalida($m$), puntoDeLlegada($m$)\})}
+
 
 \end{tad}
 
