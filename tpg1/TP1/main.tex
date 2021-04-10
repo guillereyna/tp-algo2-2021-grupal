@@ -1,0 +1,247 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[paper=a4paper, left=1.5cm, right=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{aed2-diseno, aed2-itef, aed2-tad, aed2-symb}
+\usepackage{caratula}
+
+\begin{document}
+
+\titulo{Trabajo Práctico 1: "Pacalgo2"}
+\materia{Algoritmos y Estructuras de Datos II}
+\grupo{Grupo: tomarAgua()}
+
+% CAMBIAR INTEGRANTES
+\integrante{Reyna Maciel, Guillermo José}{393/20}{guille.j.reyna@gmail.com}
+\integrante{Casado Farall, Joaquin}{072/20}{joakinfarall@gmail.com}
+\integrante{Fernández Spandau, Luciana}{368/20}{fernandezspandau@gmail.com}
+\integrante{Sánchez, Warren}{004/15}{tienelasrespuestas@les.luthier.com}
+
+\maketitle
+
+
+
+\section{Ejercicios - Parte 1}
+
+\tad{\tadNombre{dimensión}} es \tadNombre{tupla(nat,nat)}
+\tad{\tadNombre{coordenadas}} es \tadNombre{tupla(nat,nat)}
+
+\begin{tad}{\tadNombre{Partida}}
+
+\tadGeneros{partida}
+
+\tadExporta{partida, generadores, observadores}
+
+\tadUsa{\tadNombre{mapa}, \tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
+
+\tadIgualdadObservacional{p}{p'}{partida}{jugador(p) \igobs jugador(p') $\land$ \\ mapa(p) \igobs mapa(p')}
+\tadAlinearFunciones{hayFantasmasCerca}{coordenadas,conj(coordenadas)}
+
+\tadObservadores
+\tadOperacion{jugador}{partida}{coordenadas}{}
+\tadOperacion{mapa}{partida}{mapa}{}
+
+\tadGeneradores{}
+\tadOperacion{iniciarPartida}{mapa}{partida}{}
+\tadOperacion{arriba}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))+1$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))+1$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{abajo}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))-1$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))-1$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{derecha}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p))+1,$\pi_2$(jugador(p))$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p))+1,$\pi_2$(jugador(p))$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{izquierda}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p))-1,$\pi_2$(jugador(p))$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p))-1,$\pi_2$(jugador(p))$\rangle$ $\in$ paredes(mapa(p)))}
+
+\tadOtrasOperaciones
+\tadOperacion{seAsustó?}{partida}{bool}{}
+\tadOperacion{ganó?}{partida}{bool}{}
+\tadOperacion{terminóElJuego?}{partida}{bool}{}
+\tadOperacion{hayFantasmasCerca}{coordenadas,conj(coordenadas)}{bool}{}
+
+\tadAxiomas[\paratodo{partida}{p}, \paratodo{mapa}{m}, \paratodo{coordenadas}{c}, \paratodo{conj(coordenadas)}{f}]
+\tadAlinearAxiomas{hayFantasmasCerca($\langle x, y\rangle, f$)}
+\tadAxioma{jugador(iniciarPartida($m$))}{puntoDeSalida($m$)}
+\tadAxioma{jugador(arriba($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ + 1\rangle$}
+\tadAxioma{jugador(abajo($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ - 1\rangle$}
+\tadAxioma{jugador(derecha($p$))}{$\langle\pi_1$(jugador($p$))$ + 1$, $\pi_2$(jugador($p$))$\rangle$}
+\tadAxioma{jugador(izquierda($p$))}{$\langle\pi_1$(jugador($p$))$ - 1$, $\pi_2$(jugador($p$))$\rangle$}
+\
+\tadAxioma{mapa(iniciarPartida($m$))}{$m$}
+\tadAxioma{mapa(arriba($p$))}{mapa($p$)}
+\tadAxioma{mapa(abajo($p$))}{mapa($p$)}
+\tadAxioma{mapa(izquierda($p$))}{mapa($p$)}
+\tadAxioma{mapa(derecha($p$))}{mapa($p$)}
+\
+\tadAxioma{seAsustó?($p$)}{hayFantasmasCerca(jugador($p$), fantasmas(mapa($p$)))}
+
+\tadAxioma{ganó?($p$)}{jugador($p$) = puntoDeLlegada(mapa($p$))}
+
+\tadAxioma{terminóElJuego?($p$)}{seAsustó($p$) $\lor$ ganó($p$)}
+
+\tadAxioma{hayFantasmasCerca($c, f$)}{\IF\ vacío?(f) THEN false
+                            ELSE ( $|\pi_1$($c$)$-\pi_1$(dameUno($f$))$|$ + $|\pi_2$($c$)$-\pi_2$(dameUno($f$))$|< 3$ ) 
+                            $\lor$ hayFantasmasCerca(sinUno($f$)) FI}
+
+\end{tad}
+\ 
+\begin{tad}{\tadNombre{Mapa}}
+
+\tadGeneros{mapa}
+
+\tadExporta{mapa, generadores, observadores}
+
+\tadUsa{\tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
+
+\tadOtrasOperaciones
+\tadOperacion{esRango?}{coordenadas, dimensión}{bool}{}
+\tadOperacion{estaOcupado}{coordenadas/$c$, mapa/$m$}{bool}{enRango?($c$, dimension($m$))}
+
+\tadAxiomas
+\tadAlinearAxiomas{puntoDeLlegada(agregarFantasma($m$, $c$))}
+\tadAxioma{dimension(nuevoMapa($d$, $i$, $f$))}{$d$}
+\tadAxioma{dimension(agregarFantasma($m$, $c$))}{dimension($m$)}
+\tadAxioma{dimension(agregarPared($m$, $c$))}{dimension($m$)}
+\
+\tadAxioma{paredes(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{paredes(agregarFantasma($m$, $c$))}{paredes($m$)}
+\tadAxioma{paredes(agregarPared($m$, $c$))}{Ag($c$, paredes($m$))}
+\ 
+\tadAxioma{fantasmas(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{fantasmas(agregarFantasma($m$, $c$))}{Ag($c$, paredes($m$))}
+\tadAxioma{fantasmas(agregarPared($m$, $c$))}{paredes($m$)}
+\ 
+\tadAxioma{puntoDeSalida(nuevoMapa($d$, $i$, $f$))}{$i$}
+\tadAxioma{puntoDeSalida(agregarFantasma($m$, $c$))}{puntoDeSalida($m$)}
+\tadAxioma{puntoDeSalida(agregarPared($m$, $c$))}{puntoDeSalida($m$)}
+\ 
+\tadAxioma{puntoDeLlegada(nuevoMapa($d$, $i$, $f$))}{$f$}
+\tadAxioma{puntoDeLlegada(agregarFantasma($m$, $c$))}{puntoDeLlegada($m$)}
+\tadAxioma{puntoDeLlegada(agregarPared($m$, $c$))}{puntoDeLlegada($m$)}
+\ 
+\tadAxioma{enRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
+\ 
+\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in$ paredes($m$) $\lor$ $c$ $\in$ fantasmas($m$) $\lor$ $c$ $\in$ \{puntoDeSalida($m$), puntoDeLlegada($m$)\})}
+
+\end{tad}
+
+\section{Ejercicios - Parte 2}
+
+\begin{tad}{\tadNombre{Partida}}
+
+\tadGeneros{partida}
+
+\tadExporta{partida, generadores, observadores}
+
+\tadUsa{\tadNombre{mapa}, \tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
+
+\tadIgualdadObservacional{p}{p'}{partida}{jugador(p) \igobs jugador(p') $\land$ \\ mapa(p) \igobs mapa(p') $\land$ \\ chocolates(p) \igobs chocolates(p') $\land$ \\ movimientosConInmunidad(p) \igobs movimientosConInmunidad(p') $\land$ \\ puntaje(p) \igobs puntaje(p')}
+\tadAlinearFunciones{movimientosConInmunidad}{mapa/$m$,conj(coordenadas)/$chocolates$}
+
+
+\tadObservadores
+\tadOperacion{jugador}{partida}{coordenadas}{}
+\tadOperacion{mapa}{partida}{mapa}{}
+\tadOperacion{chocolates}{partida}{conj(coordenadas)}{}
+\tadOperacion{movimientosConInmunidad}{partida}{nat}{}
+\tadOperacion{puntaje}{partida}{nat}{}
+
+\tadGeneradores{}
+\tadOperacion{iniciarPartida}{mapa/m,conj(coordenadas)/chocolates}{partida}{$(\forall$c:coordenadas)(c$\in$chocolates$\implies$enRango?(c,dimensión(m))$\land_L$\\ $\neg$(c $\in$ {puntoDeSalida(m)} $\lor$ c $\in$ paredes(m)))}
+\tadOperacion{arriba}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))+1$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))+1$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{abajo}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))-1$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p)),$\pi_2$(jugador(p))-1$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{derecha}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p))+1,$\pi_2$(jugador(p))$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p))+1,$\pi_2$(jugador(p))$\rangle$ $\in$ paredes(mapa(p)))}
+\tadOperacion{izquierda}{partida/p}{partida}{$\neg$terminóElJuego(p) $\land$ enRango?($\langle$ $\pi_1$(jugador(p))-1,$\pi_2$(jugador(p))$\rangle$, dimensión(mapa(p))) $\land$ $\neg$($\langle$ $\pi_1$(jugador(p))-1,$\pi_2$(jugador(p))$\rangle$ $\in$ paredes(mapa(p)))}
+
+\tadOtrasOperaciones
+\tadOperacion{seAsustó?}{partida}{bool}{}
+\tadOperacion{ganó?}{partida}{bool}{}
+\tadOperacion{terminóElJuego?}{partida}{bool}{}
+\tadOperacion{hayFantasmasCerca}{coordenadas,conj(coordenadas)}{bool}{}
+
+\tadAxiomas[\paratodo{partida}{p}, \paratodo{mapa}{m}, \paratodo{coordenadas}{c}, \paratodo{conj(coordenadas)}{f, c}]
+\
+\tadAlinearAxiomas{movimientosConInmunidad(iniciarPartida($m, c$))}
+\tadAxioma{jugador(iniciarPartida($m$))}{puntoDeSalida($m$)}
+\tadAxioma{jugador(arriba($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ + 1\rangle$}
+\tadAxioma{jugador(abajo($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ - 1\rangle$}
+\tadAxioma{jugador(derecha($p$))}{$\langle\pi_1$(jugador($p$))$ + 1$, $\pi_2$(jugador($p$))$\rangle$}
+\tadAxioma{jugador(izquierda($p$))}{$\langle\pi_1$(jugador($p$))$ - 1$, $\pi_2$(jugador($p$))$\rangle$}
+\
+\tadAxioma{mapa(iniciarPartida($m$))}{$m$}
+\tadAxioma{mapa(arriba($p$))}{mapa($p$)}
+\tadAxioma{mapa(abajo($p$))}{mapa($p$)}
+\tadAxioma{mapa(izquierda($p$))}{mapa($p$)}
+\tadAxioma{mapa(derecha($p$))}{mapa($p$)}
+\
+\tadAxioma{chocolates(iniciarPartida($m, c$))}{$c$}
+\tadAxioma{chocolates(arriba($p$))}{chocolates($p$) $-$ {jugador(arriba($p$))}}
+\tadAxioma{chocolates(abajo($p$))}{chocolates($p$) $-$ {jugador(abajo($p$))}}
+\tadAxioma{chocolates(izquierda($p$))}{chocolates($p$) $-$ {jugador(izquierda($p$))}}
+\tadAxioma{chocolates(abajo($p$))}{chocolates($p$) $-$ {jugador(derecha($p$))}}
+\
+\tadAxioma{movimientosConInmunidad(iniciarPartida($m, c$))}{0}
+\tadAxioma{movimientosConInmunidad(arriba($p$))}{\IF\ jugador(arriba($p$)) $\in$ chocolates($p$) THEN $10$
+                                                 ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
+\tadAxioma{movimientosConInmunidad(abajo($p$))}{\IF\ jugador(abajo($p$)) $\in$ chocolates($p$) THEN $10$
+                                                 ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
+\tadAxioma{movimientosConInmunidad(izquierda($p$))}{\IF\ jugador(izquierda($p$)) $\in$ chocolates($p$) THEN $10$
+                                                 ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
+\tadAxioma{movimientosConInmunidad(derecha($p$))}{\IF\ jugador(derecha($p$)) $\in$ chocolates($p$) THEN $10$
+                                                 ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
+\ 
+\tadAxioma{puntaje(iniciarPartida($m, c$))}{0}
+\tadAxioma{puntaje(arriba($p$))}{puntaje($p$)$+1$}
+\tadAxioma{puntaje(abajo($p$))}{puntaje($p$)$+1$}
+\tadAxioma{puntaje(izquierda($p$))}{puntaje($p$)$+1$}
+\tadAxioma{puntaje(derecha($p$))}{puntaje($p$)$+1$}
+\ 
+\tadAxioma{seAsustó?($p$)}{hayFantasmasCerca(jugador($p$), fantasmas(mapa($p$))) $\land$ movimientosConInmunidad($p$) $= 0$}
+
+\tadAxioma{ganó?($p$)}{jugador($p$) = puntoDeLlegada(mapa($p$))}
+
+\tadAxioma{terminóElJuego?($p$)}{seAsustó($p$) $\lor$ ganó($p$)}    
+
+\tadAxioma{hayFantasmasCerca($c, f$)}{\IF\ vacío?(f) THEN false
+                            ELSE ( $|\pi_1$($c$)$-\pi_1$(dameUno($f$))$|$ + $|\pi_2$($c$)$-\pi_2$(dameUno($f$))$|< 3$ ) 
+                            $\lor$ hayFantasmasCerca(sinUno($f$)) FI}
+
+\end{tad}
+
+\begin{tad}{\tadNombre{Mapa}}
+
+\tadGeneros{mapa}
+
+\tadExporta{mapa, generadores, observadores}
+
+\tadUsa{\tadNombre{coordenadas}, \tadNombre{bool}, \tadNombre{conjunto($\alpha$)}, \tadNombre{dimensión}}
+
+\tadOtrasOperaciones
+\tadOperacion{esRango?}{coordenadas, dimensión}{bool}{}
+\tadOperacion{estaOcupado}{coordenadas/$c$, mapa/$m$}{bool}{enRango?($c$, dimension($m$))}
+
+\tadAxiomas
+\tadAlinearAxiomas{puntoDeLlegada(agregarFantasma($m$, $c$))}
+\tadAxioma{dimension(nuevoMapa($d$, $i$, $f$))}{$d$}
+\tadAxioma{dimension(agregarFantasma($m$, $c$))}{dimension($m$)}
+\tadAxioma{dimension(agregarPared($m$, $c$))}{dimension($m$)}
+\
+\tadAxioma{paredes(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{paredes(agregarFantasma($m$, $c$))}{paredes($m$)}
+\tadAxioma{paredes(agregarPared($m$, $c$))}{Ag($c$, paredes($m$))}
+\ 
+\tadAxioma{fantasmas(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{fantasmas(agregarFantasma($m$, $c$))}{Ag($c$, paredes($m$))}
+\tadAxioma{fantasmas(agregarPared($m$, $c$))}{paredes($m$)}
+\ 
+\tadAxioma{puntoDeSalida(nuevoMapa($d$, $i$, $f$))}{$i$}
+\tadAxioma{puntoDeSalida(agregarFantasma($m$, $c$))}{puntoDeSalida($m$)}
+\tadAxioma{puntoDeSalida(agregarPared($m$, $c$))}{puntoDeSalida($m$)}
+\ 
+\tadAxioma{puntoDeLlegada(nuevoMapa($d$, $i$, $f$))}{$f$}
+\tadAxioma{puntoDeLlegada(agregarFantasma($m$, $c$))}{puntoDeLlegada($m$)}
+\tadAxioma{puntoDeLlegada(agregarPared($m$, $c$))}{puntoDeLlegada($m$)}
+\ 
+\tadAxioma{enRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
+\ 
+\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in$ paredes($m$) $\lor$ $c$ $\in$ fantasmas($m$) $\lor$ $c$ $\in$ \{puntoDeSalida($m$), puntoDeLlegada($m$)\})}
+
+
+\end{tad}
+
+\end{document}

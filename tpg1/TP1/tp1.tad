@@ -1,0 +1,282 @@
+TAD Dimensión es Tupla(Nat, Nat)
+TAD Coordenadas es Tupla(Nat, Nat)
+
+// EXTENDER TUPLA CON IGUALDAD
+TAD Tupla(Nat, Nat) EXTIENDE Tupla(α₁,..., α\_n)
+Otras Operaciones:
+	• = • : tupla(nat, nat) × tupla(nat, nat) -> bool
+Axiomas: ∀a₁, a₂: tupla(nat, nat)
+	a₁ = a₂ ≡ π₁(a₁) = π₁(a₂) ∧ π₂(a₁) = π₂(a₂)
+Fin TAD
+
+TAD Partida
+	
+	géneros:	partida
+	
+	usa: 		MAPA, COORDENADAS, BOOL, CONJUNTO(α), DIMENSION
+	
+	igualdad observacional:
+		(∀ p,p':partida)(p =obs p' ↔ jugador(p) =obs jugador(p') ∧
+								     mapa(p) =obs mapa(p'))
+	
+    observadores:
+        jugador  : partida -> coordenadas
+        mapa     : partida -> mapa
+
+    generadores:
+    iniciarPartida : mapa -> partida
+		arriba 		   : partida p -> partida		  {¬terminóElJuego(p) ∧ enRango?(⟨x,y+1⟩, dimensión(mapa(p))) ∧ ¬(⟨x,y+1⟩ ∈ paredes(mapa(p)))}
+		abajo 		   : partida p -> partida		  {¬terminóElJuego(p) ∧ enRango?(⟨x,y-1⟩, dimensión(mapa(p))) ∧ ¬(⟨x,y-1⟩ ∈ paredes(mapa(p)))}
+		derecha 	   : partida p -> partida	 	  {¬terminóElJuego(p) ∧ enRango?(⟨x+1,y⟩, dimensión(mapa(p))) ∧ ¬(⟨x+1,y⟩ ∈ paredes(mapa(p)))}
+		izquierda 	 : partida p -> partida	 	  {¬terminóElJuego(p) ∧ enRango?(⟨x-1,y⟩, dimensión(mapa(p))) ∧ ¬(⟨x-1,y⟩ ∈ paredes(mapa(p)))}
+													  // Llamo x: π₁(jugador(p)) e y: π₂(jugador(p))
+
+    otras operaciones:
+		seAsustó? 		: partida -> bool
+		ganó? 	  		: partida -> bool
+		terminóElJuego? : partida -> bool
+		hayFantasmasCerca : coordenadas × conj(coordenadas) -> bool
+	   
+	axiomas:
+		jugador(iniciarPartida(m)) ≡ puntoDeSalida(m)
+		jugador(arriba(p)) ≡ ⟨π₁(jugador(p)), π₂(jugador(p))+1⟩
+		jugador(abajo(p)) ≡ ⟨π₁(jugador(p)), π₂(jugador(p))-1⟩
+		jugador(derecha(p)) ≡ ⟨π₁(jugador(p))+1, π₂(jugador(p))⟩
+		jugador(izquierda(p)) ≡ ⟨π₁(jugador(p))-1, π₂(jugador(p))⟩
+		
+		mapa(iniciarPartida(m)) ≡ m
+		mapa(arriba(p)) ≡ mapa(p)
+		mapa(abajo(p)) ≡ mapa(p)
+		mapa(derecha(p)) ≡ mapa(p)
+		mapa(izquierda(p)) ≡ mapa(p)
+		
+		seAsustó?(p) ≡ hayFantasmasCerca(jugador(p), fantasmas(mapa(p)))
+		ganó?(p) ≡ jugador(p) ∈ {puntoDeLlegada(mapa(p))}
+		terminóElJuego?(p) ≡ seAsustó(p) ∨ ganó(p)
+		
+		hayFantasmasCerca(⟨x,y⟩,f) ≡ if vacío?(f) then false
+		 					         else |x-π₁(dameUno(f))| + |y-π₂(dameUno(f))| < 3
+								     ∨ hayFantasmasCerca(⟨x,y⟩, sinUno(f))
+
+Fin TAD
+
+TAD Mapa
+	
+	géneros:	mapa
+	
+	exporta:	observadores
+	
+	usa:		NAT, BOOL, COORDENADAS, DIMENSION, CONJUNTO(α)
+
+	igualdad observacional:
+		(∀ m,m':mapa)(m =obs m' ↔ dimensión(m) =obs dimensión(m') ∧
+								paredes(m) =obs paredes(m') ∧
+								fantasmas(m) =obs fantasmas(m') ∧
+								puntoDeSalida(m) =obs puntoDeSalida(m') ∧
+								puntoDeLlegada(m) =obs puntoDeLlegada(m'))
+	
+    observadores:
+        dimensión      : mapa -> dimensión
+        paredes        : mapa -> conj(coordenadas)
+        fantasmas      : mapa -> conj(coordenadas)
+        puntoDeSalida  : mapa -> coordenadas
+        puntoDeLlegada : mapa -> coordenadas
+
+    generadores:
+        nuevoMapa       : dimensión d × coordenadas inicio × coordenadas fin -> mapa 	{π₁(d) * π₂(d) ≥ 2
+																						 ∧ ¬(π₁(inicio) = π₁(fin) ∧ π₂(inicio) = π₂(fin))
+																						 ∧ enRango?(inicio, d)
+																						 ∧ enRango?(fin, d)}
+																						 
+        agregarFantasma : mapa m x coordenadas c -> mapa		{enRango?(c, dimension(m)) ∧ ¬estaOcupado?(c, m)}
+        agregarPared    : mapa m x coordenadas c -> mapa		{enRango?(c, dimension(m)) ∧ ¬estaOcupado?(c, m)}
+
+	otras operaciones:
+		enRango? : coordenadas × dimensión -> bool
+		estaOcupado? : coordenadas c × mapa m -> bool                    { enRango?(c, dimension(m)) }
+		
+	axiomas:
+		dimensión(nuevoMapa(d, i, f)) ≡ d
+		dimensión(agregarFantasma(m, c)) ≡ dimensión(m)
+		dimensión(agregarPared(m, c)) ≡ dimensión(m)
+		
+		paredes(nuevoMapa(d, i, f)) ≡ Ø
+		paredes(agregarFantasma(m, c)) ≡ paredes(m)
+		paredes(agregarPared(m, c)) ≡ Ag(c, paredes(m))
+		
+		fantasmas(nuevoMapa(d, i, f)) ≡ Ø
+		fantasmas(agregarFantasma(m, c)) ≡ Ag(c, fantasmas(m))
+		fantasmas(agregarPared(m, c)) ≡ fantasmas(m)
+		
+		puntoDeSalida(nuevoMapa(d, i, f)) ≡ i
+		puntoDeSalida(agregarFantasma(m, c)) ≡ puntoDeSalida(m)
+		puntoDeSalida(agregarPared(m, c)) ≡ puntoDeSalida(m)
+		
+		puntoDeLlegada(nuevoMapa(d, i, f)) ≡ f
+		puntoDeLlegada(agregarFantasma(m, c)) ≡ puntoDeLlegada(m)
+		puntoDeLlegada(agregarPared(m, c)) ≡ puntoDeLlegada(m)
+		
+		enRango?(c,d) ≡ π₁(c) < π₁(d) ∧ π₂(c) < π₂(d)
+		estaOcupado(c, m) ≡ ¬(c ∈ paredes(m) ∨ c ∈ fantasmas(m) ∨ c ∈ {puntoDeSalida(m)} ∨ c ∈ {puntoDeLlegada(m)})
+		
+Fin TAD
+
+-------PARTE 2-------
+
+TAD Dimensión es Tupla(Nat, Nat)
+TAD Coordenadas es Tupla(Nat, Nat)
+
+TAD Mapa
+	
+	géneros:	mapa
+	
+	exporta:	observadores
+	
+	usa:		NAT, BOOL, COORDENADAS, DIMENSION, CONJUNTO(α)
+
+	igualdad observacional:
+		(∀ m,m':mapa)(m =obs m' ↔ dimensión(m) =obs dimensión(m') ∧
+								paredes(m) =obs paredes(m') ∧
+								fantasmas(m) =obs fantasmas(m') ∧
+								puntoDeSalida(m) =obs puntoDeSalida(m') ∧
+								puntoDeLlegada(m) =obs puntoDeLlegada(m'))
+	
+    observadores:
+        dimensión      : mapa -> dimensión
+        paredes        : mapa -> conj(coordenadas)
+        fantasmas      : mapa -> conj(coordenadas)
+        puntoDeSalida  : mapa -> coordenadas
+        puntoDeLlegada : mapa -> coordenadas
+
+    generadores:
+        nuevoMapa       : dimensión d × coordenadas inicio × coordenadas fin -> mapa 	{π₁(d) * π₂(d) ≥ 2
+																						 ∧ ¬(π₁(inicio) = π₁(fin) ∧ π₂(inicio) = π₂(fin))
+																						 ∧ enRango?(inicio, d)
+																						 ∧ enRango?(fin, d)}
+        agregarPared    : mapa m x coordenadas c -> mapa		{enRango?(c, dimension(m)) ∧ ¬estaOcupado?(c, m)}																						 
+        agregarFantasma : mapa m x coordenadas c -> mapa		{enRango?(c, dimension(m)) ∧ ¬estaOcupado?(c, m)}
+
+
+	otras operaciones:
+		enRango? : coordenadas × dimensión -> bool
+		estaOcupado? : coordenadas c × mapa m -> bool                    { enRango?(c, dimension(m)) }
+		
+	axiomas:
+		dimensión(nuevoMapa(d, i, f)) ≡ d
+		dimensión(agregarFantasma(m, c)) ≡ dimensión(m)
+		dimensión(agregarPared(m, c)) ≡ dimensión(m)
+		
+		paredes(nuevoMapa(d, i, f)) ≡ Ø
+		paredes(agregarFantasma(m, c)) ≡ paredes(m)
+		paredes(agregarPared(m, c)) ≡ Ag(c, paredes(m))
+		
+		fantasmas(nuevoMapa(d, i, f)) ≡ Ø
+		fantasmas(agregarFantasma(m, c)) ≡ Ag(c, fantasmas(m))
+		fantasmas(agregarPared(m, c)) ≡ fantasmas(m)
+		
+		puntoDeSalida(nuevoMapa(d, i, f)) ≡ i
+		puntoDeSalida(agregarFantasma(m, c)) ≡ puntoDeSalida(m)
+		puntoDeSalida(agregarPared(m, c)) ≡ puntoDeSalida(m)
+		
+		puntoDeLlegada(nuevoMapa(d, i, f)) ≡ f
+		puntoDeLlegada(agregarFantasma(m, c)) ≡ puntoDeLlegada(m)
+		puntoDeLlegada(agregarPared(m, c)) ≡ puntoDeLlegada(m)
+		
+		enRango?(c,d) ≡ π₁(c) < π₁(d) ∧ π₂(c) < π₂(d)
+
+		estaOcupado(c, m) ≡ ¬(c ∈ paredes(m) ∨ c ∈ fantasmas(m) ∨ c ∈ {puntoDeLlegada(m)} ∨ c ∈ {puntoDeLlegada(m)})
+	
+Fin TAD
+
+
+TAD Partida
+	
+	géneros: partida
+	
+	usa: MAPA, COORDENADAS, BOOL, CONJUNTO(α), NAT, DIMENSION
+	
+	igualdad observacional:
+		(∀ p,p':partida)(p =obs p' ↔ jugador(p) =obs jugador(p') ∧
+								     mapa(p) =obs mapa(p') ∧
+									 chocolates(p) =obs chocolates(p') ∧
+									 movimientosConInmunidad(p) =obs movimientosConInmunidad(p') ∧
+									 puntaje(p) =obs puntaje(p'))
+	
+    observadores:
+		jugador                 : partida -> coordenadas
+		mapa                    : partida -> mapa
+		chocolates              : partida -> conj(coordenadas)
+		movimientosConInmunidad : partida -> nat
+		puntaje                 : partida -> nat
+
+    generadores:
+		iniciarPartida   : mapa m × conj(coordenadas) chocolates -> partida
+																								{(∀choco : coordenadas)(choco ∈ chocolates ⇒
+																									  	enRango?(choco, dimension(m)) ∧L ¬(choco ∈ {puntoDeSalida(m)} ∨ choco ∈ paredes(m)))}
+																											// AGREGAR RESTRICCION CAMINO FELIZ
+																												// Existe un subconjunto del conjunto de espacios vacios en los que no se asusta el jugador
+																												// y que sean contiguos y que contenga al punto de inicio y punto de llegada
+		arriba           : partida p -> partida		  {¬terminóElJuego(p) ∧ enRango?(x, y+1, dimensión(mapa(p))) ∧ ¬(⟨x,y+1⟩ ∈ paredes(mapa(p)))}
+		abajo            : partida p -> partida		  {¬terminóElJuego(p) ∧ enRango?(x, y-1, dimensión(mapa(p))) ∧ ¬(⟨x,y-1⟩ ∈ paredes(mapa(p)))}
+		derecha          : partida p -> partida	 	  {¬terminóElJuego(p) ∧ enRango?(x+1, y, dimensión(mapa(p))) ∧ ¬(⟨x+1,y⟩ ∈ paredes(mapa(p)))}
+		izquierda        : partida p -> partida	 	  {¬terminóElJuego(p) ∧ enRango?(x-1, y, dimensión(mapa(p))) ∧ ¬(⟨x-1,y⟩ ∈ paredes(mapa(p)))}
+													  // Llamo x: π₁(jugador(p)) e y: π₂(jugador(p))
+
+    otras operaciones:
+		seAsustó?       : partida -> bool
+		ganó?           : partida -> bool
+		terminóElJuego? : partida -> bool
+		hayFantasmasCerca : coordenadas × conj(coordenadas) -> bool
+	   
+	axiomas:
+  	jugador(iniciarPartida(m, c)) ≡ puntoDeSalida(m)
+	  jugador(arriba(p)) ≡ ⟨π₁(jugador(p)), π₂(jugador(p))+1⟩
+  	jugador(abajo(p)) ≡ ⟨π₁(jugador(p)), π₂(jugador(p))-1⟩
+  	jugador(derecha(p)) ≡ ⟨π₁(jugador(p))+1, π₂(jugador(p))⟩
+   	jugador(izquierda(p)) ≡ ⟨π₁(jugador(p))-1, π₂(jugador(p))⟩
+		
+		mapa(iniciarPartida(m, c)) ≡ m
+		mapa(arriba(p)) ≡ mapa(p)
+		mapa(abajo(p)) ≡ mapa(p)
+		mapa(derecha(p)) ≡ mapa(p)
+		mapa(izquierda(p)) ≡ mapa(p)
+
+		chocolates(iniciarPartida(m, c)) ≡ c
+		chocolates(arriba(p)) ≡ chocolates(p) - {jugador(arriba(p))} // se puede hacer con sinUno, pero no se si es correcto (sabemos cual desaparece)
+		chocolates(abajo(p)) ≡ chocolates(p) - {jugador(abajo(p))} // no necesariamente elimina chocolates
+		chocolates(izquierda(p)) ≡ chocolates(p) - {jugador(izquierda(p))} // si no hay chocolate, devuelve el mismo conjunto
+		chocolates(derecha(p)) ≡ chocolates(p) - {jugador(derecha(p))}
+
+		movimientosConInmunidad(iniciarPartida(m, c)) ≡ 0 // interpretamos que los movimientos no son acomulativos sino que se recargan
+		movimientosConInmunidad(arriba(p)) ≡ if jugador(arriba(p)) ∈ chocolates(p)
+											  then 10
+											  else max(0, movimientosConInmunidad(p) - 1) // ACLARAR SOBRE NUMEROS NEGATIVOS
+											fi
+		movimientosConInmunidad(abajo(p)) ≡ if jugador(abajo(p)) ∈ chocolates(p)
+											  then 10
+											  else max(0, movimientosConInmunidad(p) - 1)
+											fi
+		movimientosConInmunidad(izquierda(p)) ≡ if jugador(izquierda(p)) ∈ chocolates(p)
+											 	 then 10
+											 	 else max(0, movimientosConInmunidad(p) - 1)
+												fi
+		movimientosConInmunidad(derecha(p)) ≡ if jugador(derecha(p)) ∈ chocolates(p)
+											   then 10
+											   else max(0, movimientosConInmunidad(p) - 1)
+											  fi
+		
+		puntaje(iniciarPartida(m, c)) ≡ 0
+		puntaje(arriba(p)) ≡ puntaje(p) + 1
+		puntaje(abajo(p)) ≡ puntaje(p) + 1
+		puntaje(izquierda(p)) ≡ puntaje(p) + 1
+		puntaje(derecha(p)) ≡ puntaje(p) + 1
+
+		seAsustó?(p) ≡ hayFantasmasCerca(jugador(p), fantasmas(mapa(p))) ∧ movimientosConInmunidad(p) = 0
+		ganó?(p) ≡ jugador(p) ∈ {puntoDeLlegada(mapa(p))}
+		terminóElJuego?(p) ≡ seAsustó(p) ∨ ganó(p)
+		
+		hayFantasmasCerca(⟨x,y⟩,f) ≡ if vacío?(f) then false
+		 					         else |x-π₁(dameUno(f))| + |y-π₂(dameUno(f))| < 3
+								     ∨ hayFantasmasCerca(⟨x,y⟩, sinUno(f))
+
+Fin TAD
