@@ -15,7 +15,7 @@
 \integrante{Reyna Maciel, Guillermo José}{393/20}{guille.j.reyna@gmail.com}
 \integrante{Casado Farall, Joaquin}{072/20}{joakinfarall@gmail.com}
 \integrante{Fernández Spandau, Luciana}{368/20}{fernandezspandau@gmail.com}
-\integrante{Sánchez, Warren}{004/15}{tienelasrespuestas@les.luthier.com}
+\integrante{Chumacero, Carlos Nehemias}{492/20}{chumacero2013@gmail.com}
 
 \maketitle
 
@@ -98,9 +98,27 @@
 
 \tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{coordenadas}, \tadNombre{dimensión}}
 
+\tadIgualdadObservacional{m}{m'}{mapa}{dimensión($m$) \igobs dimensión($m'$) $\land$ \\ paredes($m$) \igobs paredes($m'$) $\land$ \\ fantasmas($m$) \igobs fantasmas($m'$) $\land$ \\ puntoDeSalida($m$) \igobs puntoDeSalida($m'$) $\land$ \\ puntoDeLlegada($m$) \igobs puntoDeLlegada($m'$)}
+\tadAlinearFunciones{agregarFantasma}{mapa/m,coordenadas/c}
+
+\tadObservadores
+\tadOperacion{dimensión}{mapa}{dimensión}{}
+\tadOperacion{paredes}{mapa}{conj(coordenadas)}{}
+\tadOperacion{fantasmas}{mapa}{conj(coordenadas)}{}
+\tadOperacion{puntoDeSalida}{mapa}{coordenadas}{}
+\tadOperacion{puntoDeLlegada}{mapa}{coordenadas}{}
+
+\tadGeneradores{}
+\tadOperacion{nuevoMapa}{dimensión/$d$, coordenadas/$inicio$, coordenadas/$fin$} {mapa}{$\pi_1$(d) * $\pi_2$(d) $\geq$ 2 $\land$ $\neg$ (inicio = fin)
+$\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
+\tadOperacion{agregarFantasma}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
+\tadOperacion{agregarPared}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
+
+
+
 \tadOtrasOperaciones
 \tadOperacion{esRango?}{coordenadas, dimensión}{bool}{}
-\tadOperacion{estaOcupado}{coordenadas/$c$, mapa/$m$}{bool}{enRango?($c$, dimension($m$))}
+\tadOperacion{estaOcupado?}{coordenadas/$c$, mapa/$m$}{bool}{enRango?($c$, dimension($m$))}
 
 \tadAxiomas[\paratodo{mapa}{m}, \paratodo{coordenadas}{i, f, c}, \paratodo{dimensión}{d}]
 \tadAlinearAxiomas{puntoDeLlegada(agregarFantasma($m$, $c$))}
@@ -233,6 +251,22 @@
 \tadExporta{mapa, generadores, observadores, enRango?, estaOcupado}
 
 \tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{coordenadas}, \tadNombre{dimensión}}
+\
+\tadIgualdadObservacional{m}{m'}{mapa}{dimensión($m$) \igobs dimensión($m'$) $\land$ \\ paredes($m$) \igobs paredes($m'$) $\land$ \\ fantasmas($m$) \igobs fantasmas($m'$) $\land$ \\ puntoDeSalida($m$) \igobs puntoDeSalida($m'$) $\land$ \\ puntoDeLlegada($m$) \igobs puntoDeLlegada($m'$)}
+\tadAlinearFunciones{esMovimientoValido}{coordenadas,conj(coordenadas)}
+
+\tadObservadores
+\tadOperacion{dimensión}{mapa}{dimensión}{}
+\tadOperacion{paredes}{mapa}{conj(coordenadas)}{}
+\tadOperacion{fantasmas}{mapa}{conj(coordenadas)}{}
+\tadOperacion{puntoDeSalida}{mapa}{coordenadas}{}
+\tadOperacion{puntoDeLlegada}{mapa}{coordenadas}{}
+
+\tadGeneradores{}
+\tadOperacion{nuevoMapa}{dimensión/$d$, coordenadas/$inicio$, coordenadas/$fin$} {mapa}{$\pi_1$(d) * $\pi_2$(d) $\geq$ 2 $\land$ $\neg$ (inicio = fin)
+$\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
+\tadOperacion{agregarFantasma}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
+\tadOperacion{agregarPared}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
 
 \tadOtrasOperaciones
 \tadOperacion{esRango?}{coordenadas, dimensión}{bool}{}
