@@ -25,10 +25,10 @@ TAD Partida
 
     generadores:
     iniciarPartida : mapa -> partida
-		arriba 		   : partida p -> partida		  {¬terminóElJuego(p) ∧ enRango?(⟨x,y+1⟩, dimensión(mapa(p))) ∧ ¬(⟨x,y+1⟩ ∈ paredes(mapa(p)))}
-		abajo 		   : partida p -> partida		  {¬terminóElJuego(p) ∧ enRango?(⟨x,y-1⟩, dimensión(mapa(p))) ∧ ¬(⟨x,y-1⟩ ∈ paredes(mapa(p)))}
-		derecha 	   : partida p -> partida	 	  {¬terminóElJuego(p) ∧ enRango?(⟨x+1,y⟩, dimensión(mapa(p))) ∧ ¬(⟨x+1,y⟩ ∈ paredes(mapa(p)))}
-		izquierda 	 : partida p -> partida	 	  {¬terminóElJuego(p) ∧ enRango?(⟨x-1,y⟩, dimensión(mapa(p))) ∧ ¬(⟨x-1,y⟩ ∈ paredes(mapa(p)))}
+		arriba           : partida p -> partida		  {esMovimientoValido(p, π₁(jugador(p)), π₂(jugador(p)) + 1)}
+		abajo            : partida p -> partida		  {esMovimientoValido(p, π₁(jugador(p)), π₂(jugador(p)) - 1)}
+		derecha          : partida p -> partida	 	  {esMovimientoValido(p, π₁(jugador(p)) + 1, π₂(jugador(p)))}
+		izquierda        : partida p -> partida	 	  {esMovimientoValido(p, π₁(jugador(p)) - 1, π₂(jugador(p)))}
 													  // Llamo x: π₁(jugador(p)) e y: π₂(jugador(p))
 
     otras operaciones:
@@ -36,6 +36,8 @@ TAD Partida
 		ganó? 	  		: partida -> bool
 		terminóElJuego? : partida -> bool
 		hayFantasmasCerca : coordenadas × conj(coordenadas) -> bool
+		esMovimientoValido: partida × nat × nat -> bool
+
 	   
 	axiomas:
 		jugador(iniciarPartida(m)) ≡ puntoDeSalida(m)
@@ -51,12 +53,15 @@ TAD Partida
 		mapa(izquierda(p)) ≡ mapa(p)
 		
 		seAsustó?(p) ≡ hayFantasmasCerca(jugador(p), fantasmas(mapa(p)))
-		ganó?(p) ≡ jugador(p) ∈ {puntoDeLlegada(mapa(p))}
+		ganó?(p) ≡ jugador(p) = puntoDeLlegada(mapa(p))
 		terminóElJuego?(p) ≡ seAsustó(p) ∨ ganó(p)
 		
-		hayFantasmasCerca(⟨x,y⟩,f) ≡ if vacío?(f) then false
-		 					         else |x-π₁(dameUno(f))| + |y-π₂(dameUno(f))| < 3
-								     ∨ hayFantasmasCerca(⟨x,y⟩, sinUno(f))
+		hayFantasmasCerca(c, f) ≡ if vacío?(f) then false
+		 					         else |π₁(c)-π₁(dameUno(f))| + |π₂(c)-π₂(dameUno(f))| < 3
+								     ∨ hayFantasmasCerca(⟨π₁(c),π₂(c)⟩, sinUno(f))
+
+	  esMovimientoValido(p, x, y) ≡ ¬terminóElJuego(p) ∧ enRango?(⟨x,y⟩, dimensión(mapa(p))) ∧ ¬(⟨x,y⟩ ∈ paredes(mapa(p)))
+
 
 Fin TAD
 
@@ -117,7 +122,7 @@ TAD Mapa
 		puntoDeLlegada(agregarPared(m, c)) ≡ puntoDeLlegada(m)
 		
 		enRango?(c,d) ≡ π₁(c) < π₁(d) ∧ π₂(c) < π₂(d)
-		estaOcupado(c, m) ≡ ¬(c ∈ paredes(m) ∨ c ∈ fantasmas(m) ∨ c ∈ {puntoDeSalida(m)} ∨ c ∈ {puntoDeLlegada(m)})
+		estaOcupado(c, m) ≡ ¬(c ∈ (paredes(m) ∪ fantasmas(m) ∪ {puntoDeSalida(m)} ∪ {puntoDeLlegada(m)}))
 		
 Fin TAD
 
@@ -184,8 +189,8 @@ TAD Mapa
 		
 		enRango?(c,d) ≡ π₁(c) < π₁(d) ∧ π₂(c) < π₂(d)
 
-		estaOcupado(c, m) ≡ ¬(c ∈ paredes(m) ∨ c ∈ fantasmas(m) ∨ c ∈ {puntoDeLlegada(m)} ∨ c ∈ {puntoDeLlegada(m)})
-	
+		estaOcupado(c, m) ≡ ¬(c ∈ (paredes(m) ∪ fantasmas(m) ∪ {puntoDeSalida(m)} ∪ {puntoDeLlegada(m)}))
+			
 Fin TAD
 
 
@@ -216,10 +221,10 @@ TAD Partida
 																											// AGREGAR RESTRICCION CAMINO FELIZ
 																												// Existe un subconjunto del conjunto de espacios vacios en los que no se asusta el jugador
 																												// y que sean contiguos y que contenga al punto de inicio y punto de llegada
-		arriba           : partida p -> partida		  {¬terminóElJuego(p) ∧ enRango?(x, y+1, dimensión(mapa(p))) ∧ ¬(⟨x,y+1⟩ ∈ paredes(mapa(p)))}
-		abajo            : partida p -> partida		  {¬terminóElJuego(p) ∧ enRango?(x, y-1, dimensión(mapa(p))) ∧ ¬(⟨x,y-1⟩ ∈ paredes(mapa(p)))}
-		derecha          : partida p -> partida	 	  {¬terminóElJuego(p) ∧ enRango?(x+1, y, dimensión(mapa(p))) ∧ ¬(⟨x+1,y⟩ ∈ paredes(mapa(p)))}
-		izquierda        : partida p -> partida	 	  {¬terminóElJuego(p) ∧ enRango?(x-1, y, dimensión(mapa(p))) ∧ ¬(⟨x-1,y⟩ ∈ paredes(mapa(p)))}
+		arriba           : partida p -> partida		  {esMovimientoValido(p, π₁(jugador(p)), π₂(jugador(p)) + 1)}
+		abajo            : partida p -> partida		  {esMovimientoValido(p, π₁(jugador(p)), π₂(jugador(p)) - 1)}
+		derecha          : partida p -> partida	 	  {esMovimientoValido(p, π₁(jugador(p)) + 1, π₂(jugador(p)))}
+		izquierda        : partida p -> partida	 	  {esMovimientoValido(p, π₁(jugador(p)) - 1, π₂(jugador(p)))}
 													  // Llamo x: π₁(jugador(p)) e y: π₂(jugador(p))
 
     otras operaciones:
@@ -227,7 +232,9 @@ TAD Partida
 		ganó?           : partida -> bool
 		terminóElJuego? : partida -> bool
 		hayFantasmasCerca : coordenadas × conj(coordenadas) -> bool
-	   
+		esMovimientoValido: partida × nat × nat -> bool
+		inmunidadAlMover: partida ×	coordenadas -> nat
+		 
 	axiomas:
   	jugador(iniciarPartida(m, c)) ≡ puntoDeSalida(m)
 	  jugador(arriba(p)) ≡ ⟨π₁(jugador(p)), π₂(jugador(p))+1⟩
@@ -248,22 +255,10 @@ TAD Partida
 		chocolates(derecha(p)) ≡ chocolates(p) - {jugador(derecha(p))}
 
 		movimientosConInmunidad(iniciarPartida(m, c)) ≡ 0 // interpretamos que los movimientos no son acomulativos sino que se recargan
-		movimientosConInmunidad(arriba(p)) ≡ if jugador(arriba(p)) ∈ chocolates(p)
-											  then 10
-											  else max(0, movimientosConInmunidad(p) - 1) // ACLARAR SOBRE NUMEROS NEGATIVOS
-											fi
-		movimientosConInmunidad(abajo(p)) ≡ if jugador(abajo(p)) ∈ chocolates(p)
-											  then 10
-											  else max(0, movimientosConInmunidad(p) - 1)
-											fi
-		movimientosConInmunidad(izquierda(p)) ≡ if jugador(izquierda(p)) ∈ chocolates(p)
-											 	 then 10
-											 	 else max(0, movimientosConInmunidad(p) - 1)
-												fi
-		movimientosConInmunidad(derecha(p)) ≡ if jugador(derecha(p)) ∈ chocolates(p)
-											   then 10
-											   else max(0, movimientosConInmunidad(p) - 1)
-											  fi
+		movimientosConInmunidad(arriba(p)) ≡ inmunidadAlMover(p, jugador(arriba(p)))
+		movimientosConInmunidad(abajo(p)) ≡ inmunidadAlMover(p, jugador(abajo(p)))
+		movimientosConInmunidad(derecha(p)) ≡ inmunidadAlMover(p, jugador(derecha(p)))
+		movimientosConInmunidad(izquierda(p)) ≡ inmunidadAlMover(p, jugador(izquierda(p)))
 		
 		puntaje(iniciarPartida(m, c)) ≡ 0
 		puntaje(arriba(p)) ≡ puntaje(p) + 1
@@ -272,11 +267,18 @@ TAD Partida
 		puntaje(derecha(p)) ≡ puntaje(p) + 1
 
 		seAsustó?(p) ≡ hayFantasmasCerca(jugador(p), fantasmas(mapa(p))) ∧ movimientosConInmunidad(p) = 0
-		ganó?(p) ≡ jugador(p) ∈ {puntoDeLlegada(mapa(p))}
+		ganó?(p) ≡ jugador(p) = puntoDeLlegada(mapa(p))
 		terminóElJuego?(p) ≡ seAsustó(p) ∨ ganó(p)
 		
-		hayFantasmasCerca(⟨x,y⟩,f) ≡ if vacío?(f) then false
-		 					         else |x-π₁(dameUno(f))| + |y-π₂(dameUno(f))| < 3
-								     ∨ hayFantasmasCerca(⟨x,y⟩, sinUno(f))
+		hayFantasmasCerca(c, f) ≡ if vacío?(f) then false
+		 					         else |π₁(c)-π₁(dameUno(f))| + |π₂(c)-π₂(dameUno(f))| < 3
+								     ∨ hayFantasmasCerca(⟨π₁(c),π₂(c)⟩, sinUno(f))
+										 
+  	esMovimientoValido(p, x, y) ≡ ¬terminóElJuego(p) ∧ enRango?(⟨x,y⟩, dimensión(mapa(p))) ∧ ¬(⟨x,y⟩ ∈ paredes(mapa(p)))
+
+		inmunidadAlMover(p, c) ≡ if c ∈ chocolates(p)
+												 then 10
+												 else max(0, movimientosConInmunidad(p) - 1)
+												fi
 
 Fin TAD
