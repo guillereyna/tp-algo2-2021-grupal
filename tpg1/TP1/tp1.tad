@@ -89,7 +89,7 @@ TAD Mapa
 
     generadores:
         nuevoMapa       : dimensión d × coordenadas inicio × coordenadas fin -> mapa 	{π₁(d) * π₂(d) ≥ 2
-																						 ∧ ¬(π₁(inicio) = π₁(fin) ∧ π₂(inicio) = π₂(fin))
+																						 ∧ ¬(inicio = fin)
 																						 ∧ enRango?(inicio, d)
 																						 ∧ enRango?(fin, d)}
 																						 
@@ -155,7 +155,7 @@ TAD Mapa
 
     generadores:
         nuevoMapa       : dimensión d × coordenadas inicio × coordenadas fin -> mapa 	{π₁(d) * π₂(d) ≥ 2
-																						 ∧ ¬(π₁(inicio) = π₁(fin) ∧ π₂(inicio) = π₂(fin))
+																						 ∧ ¬(inicio = fin)
 																						 ∧ enRango?(inicio, d)
 																						 ∧ enRango?(fin, d)}
         agregarPared    : mapa m x coordenadas c -> mapa		{enRango?(c, dimension(m)) ∧ ¬estaOcupado?(c, m)}																						 
@@ -217,7 +217,7 @@ TAD Partida
     generadores:
 		iniciarPartida   : mapa m × conj(coordenadas) chocolates -> partida
 																								{(∀choco : coordenadas)(choco ∈ chocolates ⇒
-																									  	enRango?(choco, dimension(m)) ∧L ¬(choco ∈ {puntoDeSalida(m)} ∨ choco ∈ paredes(m)))}
+																									  	enRango?(choco, dimension(m)) ∧L ¬(choco = puntoDeSalida(m) ∨ choco ∈ paredes(m)))}
 																											// AGREGAR RESTRICCION CAMINO FELIZ
 																												// Existe un subconjunto del conjunto de espacios vacios en los que no se asusta el jugador
 																												// y que sean contiguos y que contenga al punto de inicio y punto de llegada
