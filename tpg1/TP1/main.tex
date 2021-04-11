@@ -54,6 +54,7 @@
 \tadOperacion{abajo}{partida/p}{partida}{esMovimientoValido($p$, $\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ - 1$)}
 \tadOperacion{derecha}{partida/p}{partida}{esMovimientoValido($p$, $\pi_1$(jugador($p$))$ + 1$, $\pi_2$(jugador($p$)))}
 \tadOperacion{izquierda}{partida/p}{partida}{esMovimientoValido($p$, $\pi_1$(jugador($p$))$ - 1$, $\pi_2$(jugador($p$)))}
+%consideremos cambiar el sistema de coordenadas en el futuro%
 
 \tadOtrasOperaciones
 \tadOperacion{seAsustó?}{partida}{bool}{}
@@ -69,6 +70,7 @@
 \tadAxioma{jugador(abajo($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ - 1\rangle$}
 \tadAxioma{jugador(derecha($p$))}{$\langle\pi_1$(jugador($p$))$ + 1$, $\pi_2$(jugador($p$))$\rangle$}
 \tadAxioma{jugador(izquierda($p$))}{$\langle\pi_1$(jugador($p$))$ - 1$, $\pi_2$(jugador($p$))$\rangle$}
+%consideremos cambiar el sistema de coordenadas en el futuro%
 \
 \tadAxioma{mapa(iniciarPartida($m$))}{$m$}
 \tadAxioma{mapa(arriba($p$))}{mapa($p$)}
@@ -94,12 +96,12 @@
 
 \tadGeneros{mapa}
 
-\tadExporta{mapa, generadores, observadores, enRango?, estaOcupado}
+\tadExporta{mapa, generadores, observadores, enRango?, estaOcupado?}
 
 \tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{coordenadas}, \tadNombre{dimensión}}
 
 \tadIgualdadObservacional{m}{m'}{mapa}{dimensión($m$) \igobs dimensión($m'$) $\land$ \\ paredes($m$) \igobs paredes($m'$) $\land$ \\ fantasmas($m$) \igobs fantasmas($m'$) $\land$ \\ puntoDeSalida($m$) \igobs puntoDeSalida($m'$) $\land$ \\ puntoDeLlegada($m$) \igobs puntoDeLlegada($m'$)}
-\tadAlinearFunciones{agregarFantasma}{mapa/m,coordenadas/c}
+\tadAlinearFunciones{agregarFantasma}{dimension/d,coordenadas/inicio}
 
 \tadObservadores
 \tadOperacion{dimensión}{mapa}{dimensión}{}
@@ -109,7 +111,7 @@
 \tadOperacion{puntoDeLlegada}{mapa}{coordenadas}{}
 
 \tadGeneradores{}
-\tadOperacion{nuevoMapa}{dimensión/$d$, coordenadas/$inicio$, coordenadas/$fin$} {mapa}{$\pi_1$(d) * $\pi_2$(d) $\geq$ 2 $\land$ $\neg$ (inicio = fin)
+\tadOperacion{nuevoMapa}{dimensión/d, coordenadas/inicio, coordenadas/fin} {mapa}{$\pi_1$(d) * $\pi_2$(d) $\geq$ 2 $\land$ $\neg$ (inicio = fin)
 $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 \tadOperacion{agregarFantasma}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
 \tadOperacion{agregarPared}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
@@ -118,7 +120,7 @@ $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 
 \tadOtrasOperaciones
 \tadOperacion{esRango?}{coordenadas, dimensión}{bool}{}
-\tadOperacion{estaOcupado?}{coordenadas/$c$, mapa/$m$}{bool}{enRango?($c$, dimension($m$))}
+\tadOperacion{estaOcupado?}{coordenadas/c, mapa/m}{bool}{enRango?($c$, dimension($m$))}
 
 \tadAxiomas[\paratodo{mapa}{m}, \paratodo{coordenadas}{i, f, c}, \paratodo{dimensión}{d}]
 \tadAlinearAxiomas{puntoDeLlegada(agregarFantasma($m$, $c$))}
@@ -144,7 +146,7 @@ $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 \ 
 \tadAxioma{enRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
 \ 
-\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in$ (paredes($m$) $\cup$ fantasmas($m$) $\cup$ \{puntoDeSalida($m$), puntoDeLlegada($m$)\})}
+\tadAxioma{estaOcupado?($c$, $m$)}{$\lnot(c \in$ (paredes($m$) $\cup$ fantasmas($m$) $\cup$ \{puntoDeSalida($m$), puntoDeLlegada($m$)\})}
 
 \end{tad}
 
@@ -168,7 +170,9 @@ $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 
 \tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{mapa}, \tadNombre{coordenadas}, \tadNombre{dimensión}}
 
-\tadIgualdadObservacional{p}{p'}{partida}{jugador($p$) \igobs jugador($p'$) $\land$ \\ mapa($p$) \igobs mapa($p'$)}
+\tadIgualdadObservacional{p}{p'}{partida}{jugador($p$) \igobs jugador($p'$) $\land$ \\ mapa($p$) \igobs mapa($p'$) $\land$
+\\ chocolates($p$) \igobs chocolates($p'$) $\land$ \\ movimientosConInmunidad($p$) \\ \igobs movimientosConInmunidad($p'$) $\land$ \\
+puntaje($p$) \igobs puntaje($p'$)}
 \tadAlinearFunciones{movimientosConInmunidad}{mapa/$m$,conj(coordenadas)/$chocolates$}
 
 
@@ -210,10 +214,10 @@ $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 \tadAxioma{mapa(derecha($p$))}{mapa($p$)}
 \
 \tadAxioma{chocolates(iniciarPartida($m, c$))}{$c$}
-\tadAxioma{chocolates(arriba($p$))}{chocolates($p$) $-$ {jugador(arriba($p$))}}
-\tadAxioma{chocolates(abajo($p$))}{chocolates($p$) $-$ {jugador(abajo($p$))}}
-\tadAxioma{chocolates(izquierda($p$))}{chocolates($p$) $-$ {jugador(izquierda($p$))}}
-\tadAxioma{chocolates(abajo($p$))}{chocolates($p$) $-$ {jugador(derecha($p$))}}
+\tadAxioma{chocolates(arriba($p$))}{chocolates($p$) $-$ \{jugador(arriba($p$))\}}
+\tadAxioma{chocolates(abajo($p$))}{chocolates($p$) $-$ \{jugador(abajo($p$))\}}
+\tadAxioma{chocolates(izquierda($p$))}{chocolates($p$) $-$ \{jugador(izquierda($p$))\}}
+\tadAxioma{chocolates(abajo($p$))}{chocolates($p$) $-$ \{jugador(derecha($p$))\}}
 \
 \tadAxioma{movimientosConInmunidad(iniciarPartida($m, c$))}{0}
 \tadAxioma{movimientosConInmunidad(arriba($p$))}{inmunidadAlMover($p$, jugador(arriba($p$)))}
@@ -248,7 +252,7 @@ $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 
 \tadGeneros{mapa}
 
-\tadExporta{mapa, generadores, observadores, enRango?, estaOcupado}
+\tadExporta{mapa, generadores, observadores, enRango?, estaOcupado?}
 
 \tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{coordenadas}, \tadNombre{dimensión}}
 \
@@ -263,14 +267,14 @@ $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 \tadOperacion{puntoDeLlegada}{mapa}{coordenadas}{}
 
 \tadGeneradores{}
-\tadOperacion{nuevoMapa}{dimensión/$d$, coordenadas/$inicio$, coordenadas/$fin$} {mapa}{$\pi_1$(d) * $\pi_2$(d) $\geq$ 2 $\land$ $\neg$ (inicio = fin)
+\tadOperacion{nuevoMapa}{dimensión/d, coordenadas/inicio, coordenadas/fin} {mapa}{$\pi_1$(d) * $\pi_2$(d) $\geq$ 2 $\land$ $\neg$ (inicio = fin)
 $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 \tadOperacion{agregarFantasma}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
 \tadOperacion{agregarPared}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
 
 \tadOtrasOperaciones
 \tadOperacion{esRango?}{coordenadas, dimensión}{bool}{}
-\tadOperacion{estaOcupado}{coordenadas/$c$, mapa/$m$}{bool}{enRango?($c$, dimension($m$))}
+\tadOperacion{estaOcupado?}{coordenadas/c, mapa/m}{bool}{enRango?($c$, dimension($m$))}
 
 \tadAxiomas[\paratodo{mapa}{m}, \paratodo{coordenadas}{i, f, c}, \paratodo{dimensión}{d}]
 \tadAlinearAxiomas{puntoDeLlegada(agregarFantasma($m$, $c$))}
@@ -296,9 +300,37 @@ $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 \ 
 \tadAxioma{enRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
 \ 
-\tadAxioma{estaOcupado($c$, $m$)}{$\lnot(c \in$ (paredes($m$) $\cup$ fantasmas($m$) $\cup$ \{puntoDeSalida($m$), puntoDeLlegada($m$)\})}
+\tadAxioma{estaOcupado?($c$, $m$)}{$\lnot(c \in$ (paredes($m$) $\cup$ fantasmas($m$) $\cup$ \{puntoDeSalida($m$), puntoDeLlegada($m$)\})}
 
 
 \end{tad}
+
+\pagebreak
+
+\section{Aclaraciones}
+\begin{itemize}
+
+\item Estamos utilizando un sistema de coordenadas al estilo cartesiano, donde la primera coordenada representa el eje horizontal y aumenta hacia la derecha
+    y la segunda coordenada representa el eje vertical y aumenta hacia arriba.
+\item Por conveniencia, interpretamos que los chocolates no pueden solaparse con el punto de salida (porque para comer un
+chocolate el jugador debe moverse a la coordenada en donde se encuentra el chocolate) ni con paredes. Interpretamos que sí
+pueden solaparse con fantasmas y con el punto de llegada.
+\item En la axiomatización del observador chocolates de partida, para simplificar la escritura
+utilizamos la propiedad de que $c - \{a\} = c$ cuando $a \notin c$, pues
+si la intersección de dos conjuntos es vacía, la resta no los modifica.
+\item Interpretamos que los movimientos con inmunidad no son acomulativos, sino que se recargan. Es decir, comer un chocolate
+mientras el jugador ya tiene inmunidad de otro chocolate no le suma 10 movimientos más de inmunidad, sino que le recarga los
+movimientos con inmunidad a un máximo de 10 (similar a la funcionalidad de la inmunidad en el Pac-Man original).
+\item Si bien esta especificación permite partidas inganables o imperdibles (e.g. el punto de llegada esté rodeado de paredes, o que haya
+un fantasma al lado del punto de salida), consideramos que restringir estas posibilidades sería sobreespecificar, puesto
+que el enunciado no las menciona.
+\item Interpretamos que el punto de salida y el punto de llegada no pueden estar en el mismo espacio y que estos
+no se pueden solapar con fantasmas o paredes, puesto que el enunciado dice que se asignan dos casilleros especiales para ellos.
+\item En la axiomatización de inmunidadAlMover, la función máx se asume como la del TAD Natural, pero el parámetro
+movimientosConInmunidad($p) - 1$ puede ser $-1$ cuando movimientosConInmunidad($p) = 0$. Asumimos que la función máximo se extiende con los enteros.
+\item El enunciado dice que el puntaje se debe poder calcular al final de la partida. En nuestra especificación el puntaje
+se puede calcular en cualquier punto de la partida, y en particular cuando la partida finalizó y el jugador ganó.
+
+\end{itemize}
 
 \end{document}
