@@ -1,0 +1,138 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[paper=a4paper, left=1.5cm, right=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{aed2-symb,aed2-itef,aed2-tad,aed2-diseno}
+
+
+\author{Algoritmos y Estructuras de Datos II, DC, UBA.}
+\date{}
+\title{Super TP AED2}
+
+\begin{document}
+
+\maketitle
+
+\section{Parte 1}
+
+\subsection{TAD \tadNombre{Partida}}
+
+\begin{tad}{\tadNombre{Partida}}
+\tadGeneros{}
+\tadExporta{}
+\tadUsa{\tadNombre{}}
+
+\tadIgualdadObservacional{p}{p'}{partida}{}
+\tadAlinearFunciones{}{}
+\tadObservadores
+
+\tadOperacion{}{}{}{}
+
+\tadGeneradores
+
+\tadOperacion{}{}{}{}
+
+\tadOtrasOperaciones
+
+\tadOperacion{}{}{}{}
+
+\tadAxiomas[\paratodo{partida}{p}, \paratodo{mapa}{m}, \paratodo{coordenadas}{c}, \paratodo{conj(coordenadas)}{f}]
+\
+\tadAlinearAxiomas{hayFantasmasCerca($\langle x, y\rangle, f$)}
+\tadAxioma{jugador(iniciarPartida($m$))}{puntoDeSalida($m$)}
+\tadAxioma{jugador(arriba($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ + 1\rangle$}
+\tadAxioma{jugador(abajo($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ - 1\rangle$}
+\tadAxioma{jugador(derecha($p$))}{$\langle\pi_1$(jugador($p$))$ + 1$, $\pi_2$(jugador($p$))$\rangle$}
+\tadAxioma{jugador(izquierda($p$))}{$\langle\pi_1$(jugador($p$))$ - 1$, $\pi_2$(jugador($p$))$\rangle$}
+\
+\tadAxioma{mapa(iniciarPartida($m$))}{$m$}
+\tadAxioma{mapa(arriba($p$))}{mapa($p$)}
+\tadAxioma{mapa(abajo($p$))}{mapa($p$)}
+\tadAxioma{mapa(izquierda($p$))}{mapa($p$)}
+\tadAxioma{mapa(derecha($p$))}{mapa($p$)}
+\
+\tadAxioma{seAsustó?($p$)}{hayFantasmasCerca(jugador($p$), fantasmas(mapa($p$)))}
+
+\tadAxioma{ganó?($p$)}{jugador($p$) = puntoDeLlegada(mapa($p$))}
+
+\tadAxioma{terminóElJuego?($p$)}{seAsustó($p$) $\lor$ ganó($p$)}
+
+\tadAxioma{hayFantasmasCerca($c, f$)}{\IF\ vacío?(f) THEN false
+                            ELSE ( $|\pi_1$($c$)$-\pi_1$(dameUno($f$))$|$ + $|\pi_2$($c$)$-\pi_2$(dameUno($f$))$|< 3$ ) 
+                            $\lor$ hayFantasmasCerca(sinUno($f$)) FI}
+
+\end{tad}
+
+\section{Parte 2}
+
+\subsection{TAD \tadNombre{Partida}}
+
+\begin{tad}{\tadNombre{Partida}}
+\tadGeneros{}
+\tadExporta{}
+\tadUsa{\tadNombre{}}
+
+\tadIgualdadObservacional{p}{p'}{partida}{}
+\tadAlinearFunciones{}{}
+\tadObservadores
+
+\tadOperacion{}{}{}{}
+
+\tadGeneradores
+
+\tadOperacion{}{}{}{}
+
+\tadOtrasOperaciones
+
+\tadOperacion{}{}{}{}
+
+\tadAxiomas[\paratodo{partida}{p}, \paratodo{mapa}{m}, \paratodo{coordenadas}{c}, \paratodo{conj(coordenadas)}{f, c}]
+\
+\tadAlinearAxiomas{movimientosConInmunidad(iniciarPartida($m, c$))}
+\tadAxioma{jugador(iniciarPartida($m$))}{puntoDeSalida($m$)}
+\tadAxioma{jugador(arriba($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ + 1\rangle$}
+\tadAxioma{jugador(abajo($p$))}{$\langle\pi_1$(jugador($p$)), $\pi_2$(jugador($p$))$ - 1\rangle$}
+\tadAxioma{jugador(derecha($p$))}{$\langle\pi_1$(jugador($p$))$ + 1$, $\pi_2$(jugador($p$))$\rangle$}
+\tadAxioma{jugador(izquierda($p$))}{$\langle\pi_1$(jugador($p$))$ - 1$, $\pi_2$(jugador($p$))$\rangle$}
+\
+\tadAxioma{mapa(iniciarPartida($m$))}{$m$}
+\tadAxioma{mapa(arriba($p$))}{mapa($p$)}
+\tadAxioma{mapa(abajo($p$))}{mapa($p$)}
+\tadAxioma{mapa(izquierda($p$))}{mapa($p$)}
+\tadAxioma{mapa(derecha($p$))}{mapa($p$)}
+\
+\tadAxioma{chocolates(iniciarPartida($m, c$))}{$c$}
+\tadAxioma{chocolates(arriba($p$))}{chocolates($p$) $-$ {jugador(arriba($p$))}}
+\tadAxioma{chocolates(abajo($p$))}{chocolates($p$) $-$ {jugador(abajo($p$))}}
+\tadAxioma{chocolates(izquierda($p$))}{chocolates($p$) $-$ {jugador(izquierda($p$))}}
+\tadAxioma{chocolates(abajo($p$))}{chocolates($p$) $-$ {jugador(derecha($p$))}}
+\
+\tadAxioma{movimientosConInmunidad(iniciarPartida($m, c$))}{0}
+\tadAxioma{movimientosConInmunidad(arriba($p$))}{\IF\ jugador(arriba($p$)) $\in$ chocolates($p$) THEN $10$
+                                                 ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
+\tadAxioma{movimientosConInmunidad(abajo($p$))}{\IF\ jugador(abajo($p$)) $\in$ chocolates($p$) THEN $10$
+                                                 ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
+\tadAxioma{movimientosConInmunidad(izquierda($p$))}{\IF\ jugador(izquierda($p$)) $\in$ chocolates($p$) THEN $10$
+                                                 ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
+\tadAxioma{movimientosConInmunidad(derecha($p$))}{\IF\ jugador(derecha($p$)) $\in$ chocolates($p$) THEN $10$
+                                                 ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
+\ 
+\tadAxioma{puntaje(iniciarPartida($m, c$))}{0}
+\tadAxioma{puntaje(arriba($p$))}{puntaje($p$)$+1$}
+\tadAxioma{puntaje(abajo($p$))}{puntaje($p$)$+1$}
+\tadAxioma{puntaje(izquierda($p$))}{puntaje($p$)$+1$}
+\tadAxioma{puntaje(derecha($p$))}{puntaje($p$)$+1$}
+\ 
+\tadAxioma{seAsustó?($p$)}{hayFantasmasCerca(jugador($p$), fantasmas(mapa($p$))) $\land$ movimientosConInmunidad($p$) $= 0$}
+
+\tadAxioma{ganó?($p$)}{jugador($p$) = puntoDeLlegada(mapa($p$))}
+
+\tadAxioma{terminóElJuego?($p$)}{seAsustó($p$) $\lor$ ganó($p$)}    
+
+\tadAxioma{hayFantasmasCerca($c, f$)}{\IF\ vacío?(f) THEN false
+                            ELSE ( $|\pi_1$($c$)$-\pi_1$(dameUno($f$))$|$ + $|\pi_2$($c$)$-\pi_2$(dameUno($f$))$|< 3$ ) 
+                            $\lor$ hayFantasmasCerca(sinUno($f$)) FI}
+
+\end{tad}
+
+\end{document}

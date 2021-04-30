@@ -1,0 +1,127 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[paper=a4paper, left=1.5cm, right=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{aed2-diseno, aed2-itef, aed2-tad, aed2-symb}
+\usepackage{caratula}
+
+\begin{document}
+
+\titulo{Trabajo Práctico 2: "Fichin Pacalgo2"}
+\materia{Algoritmos y Estructuras de Datos II}
+\grupo{Grupo: tomarAgua()}
+
+% CAMBIAR INTEGRANTES
+\integrante{Reyna Maciel, Guillermo José}{393/20}{guille.j.reyna@gmail.com}
+\integrante{Casado Farall, Joaquin}{072/20}{joakinfarall@gmail.com}
+\integrante{Fernández Spandau, Luciana}{368/20}{fernandezspandau@gmail.com}
+\integrante{Chumacero, Carlos Nehemias}{492/20}{chumacero2013@gmail.com}
+
+\maketitle
+
+
+
+\section{Ejercicios}
+
+\tad{\tadNombre{direccion} es \tadNombre{string}}
+\
+
+\begin{tad}{\tadNombre{dimensión, coordenadas} \tadExtiende{\tadNombre{tupla(nat, nat)}}}
+
+\tadOtrasOperaciones
+\tadOperacion{\argumento = \argumento}{tupla(nat, nat), tupla(nat, nat)}{bool}{}
+\tadOperacion{mover}{tupla(nat,nat)/$t$, direccion/$d$}{tupla(nat,nat)}{d \in \{ "arr", "abj", "der", "izq" \}}
+
+\tadAxiomas[\paratodo{tupla(nat, nat)}{a_1, a_2}]
+\tadAlinearAxiomas{mover($a$, $d$)}
+\tadAxioma{$a_1$ = $a_2$}{$\pi_1(a_1) = \pi_1(a_2) \land \pi_2(a_1) = \pi_2(a_2)$}
+\tadAxioma{mover($a$, $d$)}{{\IF\ $d$ = $"arr"$ THEN $<\pi_1(a_1)$, $\pi_1(a_2) + 1>$ ELSE {\IF\ $d$ = $"abj"$ THEN $<\pi_1(a_1)$, $\pi_1(a_2) - 1>$ ELSE  {\IF\ $d$ = $"izq" $ THEN $<\pi_1(a_1)$ - 1, $\pi_1(a_2)>$ ELSE $<\pi_1(a_1)$ + 1, $\pi_1(a_2)>$ FI} FI} FI}}
+\end{tad}
+\
+
+\begin{tad}{\tadNombre{Mapa}}
+
+\tadGeneros{mapa}
+
+\tadExporta{mapa, generadores, observadores, enRango?, estaOcupado?}
+
+\tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{coordenadas}, \tadNombre{dimensión}}
+\
+\tadIgualdadObservacional{m}{m'}{mapa}{dimensión($m$) \igobs dimensión($m'$) $\land$ \\ paredes($m$) \igobs paredes($m'$) $\land$ \\ fantasmas($m$) \igobs fantasmas($m'$) $\land$ \\ puntoDeSalida($m$) \igobs puntoDeSalida($m'$) $\land$ \\ puntoDeLlegada($m$) \igobs puntoDeLlegada($m'$)}
+\tadAlinearFunciones{agregarFantasma}{dimension/d,coordenadas/inicio}
+
+\tadObservadores
+\tadOperacion{dimensión}{mapa}{dimensión}{}
+\tadOperacion{paredes}{mapa}{conj(coordenadas)}{}
+\tadOperacion{fantasmas}{mapa}{conj(coordenadas)}{}
+\tadOperacion{puntoDeSalida}{mapa}{coordenadas}{}
+\tadOperacion{puntoDeLlegada}{mapa}{coordenadas}{}
+
+\tadGeneradores{}
+\tadOperacion{nuevoMapa}{dimensión/d, coordenadas/inicio, coordenadas/fin} {mapa}{$\pi_1$(d) * $\pi_2$(d) $\geq$ 2 $\land$ $\neg$ (inicio = fin)
+$\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
+\tadOperacion{agregarFantasma}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
+\tadOperacion{agregarPared}{mapa/m, coordenadas/c}{mapa}{enRango?($c$, dimensión($m$))  $\land$ $\neg$estaOcupado?(c, m)}
+
+\tadOtrasOperaciones
+\tadOperacion{esRango?}{coordenadas, dimensión}{bool}{}
+\tadOperacion{estaOcupado?}{coordenadas/c, mapa/m}{bool}{enRango?($c$, dimension($m$))}
+
+\tadAxiomas[\paratodo{mapa}{m}, \paratodo{coordenadas}{i, f, c}, \paratodo{dimensión}{d}]
+\tadAlinearAxiomas{puntoDeLlegada(agregarFantasma($m$, $c$))}
+\tadAxioma{dimension(nuevoMapa($d$, $i$, $f$))}{$d$}
+\tadAxioma{dimension(agregarFantasma($m$, $c$))}{dimension($m$)}
+\tadAxioma{dimension(agregarPared($m$, $c$))}{dimension($m$)}
+\
+\tadAxioma{paredes(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{paredes(agregarFantasma($m$, $c$))}{paredes($m$)}
+\tadAxioma{paredes(agregarPared($m$, $c$))}{Ag($c$, paredes($m$))}
+\ 
+\tadAxioma{fantasmas(nuevoMapa($d$, $i$, $f$))}{$\emptyset$}
+\tadAxioma{fantasmas(agregarFantasma($m$, $c$))}{Ag($c$, paredes($m$))}
+\tadAxioma{fantasmas(agregarPared($m$, $c$))}{paredes($m$)}
+\ 
+\tadAxioma{puntoDeSalida(nuevoMapa($d$, $i$, $f$))}{$i$}
+\tadAxioma{puntoDeSalida(agregarFantasma($m$, $c$))}{puntoDeSalida($m$)}
+\tadAxioma{puntoDeSalida(agregarPared($m$, $c$))}{puntoDeSalida($m$)}
+\ 
+\tadAxioma{puntoDeLlegada(nuevoMapa($d$, $i$, $f$))}{$f$}
+\tadAxioma{puntoDeLlegada(agregarFantasma($m$, $c$))}{puntoDeLlegada($m$)}
+\tadAxioma{puntoDeLlegada(agregarPared($m$, $c$))}{puntoDeLlegada($m$)}
+\ 
+\tadAxioma{enRango?($c$, $d$)}{$\pi_1$($c$) $<$ $\pi_1$($d$) $\land$ $\pi_2$($c$) $<$ $\pi_2$($d$)}
+\ 
+\tadAxioma{estaOcupado?($c$, $m$)}{$\lnot(c \in$ (paredes($m$) $\cup$ fantasmas($m$) $\cup$ \{puntoDeSalida($m$), puntoDeLlegada($m$)\})}
+
+
+\end{tad}
+
+\pagebreak
+
+\section{Aclaraciones}
+\begin{itemize}
+
+\item Estamos utilizando un sistema de coordenadas al estilo cartesiano, donde la primera coordenada representa el eje horizontal y aumenta hacia la derecha
+    y la segunda coordenada representa el eje vertical y aumenta hacia arriba.
+\item Por conveniencia, interpretamos que los chocolates no pueden solaparse con el punto de salida (porque para comer un
+chocolate el jugador debe moverse a la coordenada en donde se encuentra el chocolate) ni con paredes. Interpretamos que sí
+pueden solaparse con fantasmas y con el punto de llegada.
+\item En la axiomatización del observador chocolates de partida, para simplificar la escritura
+utilizamos la propiedad de que $c - \{a\} = c$ cuando $a \notin c$, pues
+si la intersección de dos conjuntos es vacía, la resta no los modifica.
+\item Interpretamos que los movimientos con inmunidad no son acomulativos, sino que se recargan. Es decir, comer un chocolate
+mientras el jugador ya tiene inmunidad de otro chocolate no le suma 10 movimientos más de inmunidad, sino que le recarga los
+movimientos con inmunidad a un máximo de 10 (similar a la funcionalidad de la inmunidad en el Pac-Man original).
+\item Si bien esta especificación permite partidas inganables o imperdibles (e.g. el punto de llegada esté rodeado de paredes, o que haya
+un fantasma al lado del punto de salida), consideramos que restringir estas posibilidades sería sobreespecificar, puesto
+que el enunciado no las menciona.
+\item Interpretamos que el punto de salida y el punto de llegada no pueden estar en el mismo espacio y que estos
+no se pueden solapar con fantasmas o paredes, puesto que el enunciado dice que se asignan dos casilleros especiales para ellos.
+\item En la axiomatización de inmunidadAlMover, la función máx se asume como la del TAD Natural, pero el parámetro
+movimientosConInmunidad($p) - 1$ puede ser $-1$ cuando movimientosConInmunidad($p) = 0$. Asumimos que la función máximo se extiende con los enteros.
+\item El enunciado dice que el puntaje se debe poder calcular al final de la partida. En nuestra especificación el puntaje
+se puede calcular en cualquier punto de la partida, y en particular cuando la partida finalizó y el jugador ganó.
+
+\end{itemize}
+
+\end{document}
