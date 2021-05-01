@@ -22,23 +22,39 @@
 \section{TAD Fichín}
 
 \begin{tad}{\tadNombre{Fichín}}
-\tadGeneros{}
-\tadExporta{}
-\tadUsa{\tadNombre{}}
+\tadGeneros{fichin}
 
-\tadIgualdadObservacional{f}{f'}{fichín}{}
-\tadAlinearFunciones{}{}
+\tadExporta{fichin, generadores, observadores}
+
+\tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{partida}, \tadNombre{coordenadas}, \tadNombre{dimensión}, \tadNombre{diccionario}}
+
+\tadIgualdadObservacional{f}{f'}{fichin}{partidaEnCurso($f$) \igobs partidaEnCurso($f'$) $\land$ \\ partida($f$) \igobs partida($f'$) $\land$
+\\ ranking($f$) \igobs ranking($f'$) $\land$ \\ nombreJugador($f$) \igobs nombreJugador($f'$)}
+\tadAlinearFunciones{movimientosConInmunidad}{mapa/$m$,conj(coordenadas)/$chocolates$}
+
 \tadObservadores
+\tadOperacion{partidaEnCurso}{fichin}{bool}{}
+\tadOperacion{partida}{fichin /f}{partida}{partidaEnCurso(\textit{f})}
+\tadOperacion{ranking}{fichin}{dicc(nombre, nat)}{}
+\tadOperacion{nombreJugador}{fichin /f}{nombre}{partidaEnCurso(\textit{f})}
 
-\tadOperacion{}{}{}{}
 
 \tadGeneradores
 
-\tadOperacion{}{}{}{}
+\tadOperacion{iniciarFichin}{}{fichin}{}
+\tadOperacion{iniciarPartida}{fichin/f, partida/p, nombre}{fichin}{$\neg$partidaEnCurso($f$) $\land$ partidaRecienEmpezada($p$)}
+\tadOperacion{mover}{fichin/f, dirección/d}{fichin}{partidaEnCurso($f$) $\land_L$ esMovimientoValido(partida($f$), $d$)}
+
 
 \tadOtrasOperaciones
 
-\tadOperacion{}{}{}{}
+\tadOperacion{mejorPuntajeDelJugador}{fichin/f}{nat}{partidaEnCurso($f$) $\land$ jugadorEnRanking($f$)}
+\tadOperacion{proximoMejorPuntaje}{fichin/f}{nat}{partidaEnCurso($f$) $\land$ $\neg$vacio?(claves(ranking($f$))) $\land_L$\\ jugadorEnRanking($f$) $\land_L$ $\neg$jugadorPrimero($f$)}
+\tadOperacion{nombreDelProximo}{fichin/f}{nombre}{partidaEnCurso($f$) $\land$ $\neg$vacio?(claves(ranking($f$))) $\land_L$\\ jugadorEnRanking($f$) $\land_L$ $\neg$jugadorPrimero($f$)}
+\tadOperacion{jugadorEnRanking}{fichin/f}{bool}{partidaEnCurso($f$)}
+\tadOperacion{jugadorPrimero}{fichin/f}{bool}{partidaEnCurso($f$)}
+\tadOperacion{siguienteClaveMayor}{dicc/d, nat}{$\alpha$}{$\neg$vacio?(claves($d$)}
+\tadOperacion{mayorClave}{dicc/d}{$\alpha$}{$\neg$vacio?(claves($d$)}
 
 \tadAxiomas[\paratodo{fichín}{f}, \paratodo{partida}{p}, \paratodo{nombre}{n}, \paratodo{nat}{m}, \paratodo{dicc(nombre, nat)}{r}]
 \tadAlinearAxiomas{partidaEnCurso(iniciarPartida($f, p, n$))}
