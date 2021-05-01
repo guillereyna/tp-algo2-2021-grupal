@@ -1,0 +1,77 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[paper=a4paper, left=1.5cm, right=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{aed2-diseno, aed2-itef, aed2-tad, aed2-symb}
+\usepackage{caratula}
+
+\begin{document}
+
+\titulo{Trabajo Práctico 2: "Fichín"}
+\materia{Algoritmos y Estructuras de Datos II}
+\grupo{Grupo: tomarAgua()}
+
+% CAMBIAR INTEGRANTES
+\integrante{Reyna Maciel, Guillermo José}{393/20}{guille.j.reyna@gmail.com}
+\integrante{Casado Farall, Joaquin}{072/20}{joakinfarall@gmail.com}
+\integrante{Fernández Spandau, Luciana}{368/20}{fernandezspandau@gmail.com}
+\integrante{Chumacero, Carlos Nehemias}{492/20}{chumacero2013@gmail.com}
+
+\maketitle
+
+\section{TAD Fichín}
+
+\begin{tad}{\tadNombre{Fichín}}
+\tadGeneros{}
+\tadExporta{}
+\tadUsa{\tadNombre{}}
+
+\tadIgualdadObservacional{f}{f'}{fichín}{}
+\tadAlinearFunciones{}{}
+\tadObservadores
+
+\tadOperacion{}{}{}{}
+
+\tadGeneradores
+
+\tadOperacion{}{}{}{}
+
+\tadOtrasOperaciones
+
+\tadOperacion{}{}{}{}
+
+\tadAxiomas[\paratodo{fichín}{f}, \paratodo{partida}{p}, \paratodo{nombre}{n}, \paratodo{nat}{m}, \paratodo{dicc(nombre, nat)}{r}]
+\tadAlinearAxiomas{partidaEnCurso(iniciarPartida($f, p, n$))}
+\tadAxioma{partidaEnCurso(iniciarFichin)}{false}
+\tadAxioma{partidaEnCurso(iniciarPartida($f, p, n$))}{$\neg$terminóElJuego($p$)}
+\tadAxioma{partidaEnCurso(moverF($f, d$))}{$\neg$terminóElJuego(mover(partida($f$), $d$))}
+\
+\tadAxioma{partida(iniciarPartida($f, p, n$))}{$p$}
+\tadAxioma{partida(moverF($f, d$))}{mover(partida($f$), $d$)}
+\
+\tadAxioma{ranking(iniciarFichin)}{vacío}
+\tadAxioma{ranking(iniciarPartida($f, p, n$))}{ranking($f$)}
+\tadAxioma{ranking(moverF($f, d$))}{\IF ganó?(partida(moverF($f, d$))) $\land$
+                                        ($\neg$jugadorEnRanking($f$) $\lor$L puntaje(partida(moverF($f, d$))) $<$ mejorPuntajeDelJugador($f$))
+                                        THEN definir(nombreJugador($f$), puntaje(partida(moverF($f, d$))))
+                                        ELSE ranking($f$) FI}
+\ 
+\tadAxioma{nombreJugador(iniciarPartida($f, p, n$))}{n}
+\tadAxioma{nombreJugador(moverF($f, d$))}{nombreJugador($f$)}
+\ 
+\tadAxioma{mejorPuntajeDelJugador($f$)}{obtener(nombreJugador($f$), ranking($f$))}
+\tadAxioma{proximoMejorPuntaje($f$)}{obtener(nombreDelProximo($f$), ranking($f$))}
+\tadAxioma{nombreDelProximo($f$)}{siguienteClaveMayor(ranking($f$, mejorPuntajeDelJugador($f$)))}
+\tadAxioma{siguienteClaveMayor($r, m$)}{\IF \#(claves($r$)) = 1 $\lor$ \\ ($m$ $<$ obtener(dameUno(claves($r$)), $r$) $\land$
+                                             \\ obtener(dameUno(claves($r$)), $r$) $<$
+                                             \\ siguienteClaveMayor(borrar(dameUno(claves($r$)), $r$)), $m$))
+                                             \\ THEN dameUno(claves($r$)) ELSE siguienteClaveMayor(borrar(dameUno(claves($r$)), $r$)), $m$) FI}
+\tadAxioma{jugadorEnRanking($f$)}{def?(nombreJugador($f$), ranking($f$))}
+\tadAxioma{jugadorPrimero($f$)}{mayorClave(ranking($f$)) = nombreJugador($f$)}
+\tadAxioma{mayorClave($r$)}{\IF \#(claves($r$)) = 1 $\lor$
+                                \\ (mayorClave(sinUno($r$)) $<$ obtener(dameUno(claves($r$))))
+                                \\ THEN dameUno($r$) ELSE mayorClave(sinUno($r$)) FI}
+
+\end{tad}
+
+\end{document}
