@@ -40,8 +40,37 @@
 
 \tadOperacion{}{}{}{}
 
-\tadAxiomas[\paratodo{fichín}{f}, \paratodo{partida}{p}, \paratodo{nombre}{n}, \paratodo{nat}{m}]
-\tadAlinearAxiomas{}
+\tadAxiomas[\paratodo{fichín}{f}, \paratodo{partida}{p}, \paratodo{nombre}{n}, \paratodo{nat}{m}, \paratodo{dicc(nombre, nat)}{r}]
+\tadAlinearAxiomas{partidaEnCurso(iniciarPartida($f, p, n$))}
+\tadAxioma{partidaEnCurso(iniciarFichin)}{false}
+\tadAxioma{partidaEnCurso(iniciarPartida($f, p, n$))}{$\neg$terminóElJuego($p$)}
+\tadAxioma{partidaEnCurso(moverF($f, d$))}{$\neg$terminóElJuego(mover(partida($f$), $d$))}
+\
+\tadAxioma{partida(iniciarPartida($f, p, n$))}{$p$}
+\tadAxioma{partida(moverF($f, d$))}{mover(partida($f$), $d$)}
+\
+\tadAxioma{ranking(iniciarFichin)}{vacío}
+\tadAxioma{ranking(iniciarPartida($f, p, n$))}{ranking($f$)}
+\tadAxioma{ranking(moverF($f, d$))}{\IF ganó?(partida(moverF($f, d$))) $\land$
+                                        ($\neg$jugadorEnRanking($f$) $\lor$L puntaje(partida(moverF($f, d$))) $<$ mejorPuntajeDelJugador($f$))
+                                        THEN definir(nombreJugador($f$), puntaje(partida(moverF($f, d$))))
+                                        ELSE ranking($f$) FI}
+\ 
+\tadAxioma{nombreJugador(iniciarPartida($f, p, n$))}{n}
+\tadAxioma{nombreJugador(moverF($f, d$))}{nombreJugador($f$)}
+\ 
+\tadAxioma{mejorPuntajeDelJugador($f$)}{obtener(nombreJugador($f$), ranking($f$))}
+\tadAxioma{proximoMejorPuntaje($f$)}{obtener(nombreDelProximo($f$), ranking($f$))}
+\tadAxioma{nombreDelProximo($f$)}{siguienteClaveMayor(ranking($f$, mejorPuntajeDelJugador($f$)))}
+\tadAxioma{siguienteClaveMayor($r, m$)}{\IF \#(claves($r$)) = 1 $\lor$ \\ ($m$ $<$ obtener(dameUno(claves($r$)), $r$) $\land$
+                                             \\ obtener(dameUno(claves($r$)), $r$) $<$
+                                             \\ siguienteClaveMayor(borrar(dameUno(claves($r$)), $r$)), $m$))
+                                             \\ THEN dameUno(claves($r$)) ELSE siguienteClaveMayor(borrar(dameUno(claves($r$)), $r$)), $m$) FI}
+\tadAxioma{jugadorEnRanking($f$)}{def?(nombreJugador($f$), ranking($f$))}
+\tadAxioma{jugadorPrimero($f$)}{mayorClave(ranking($f$)) = nombreJugador($f$)}
+\tadAxioma{mayorClave($r$)}{\IF \#(claves($r$)) = 1 $\lor$
+                                \\ (mayorClave(sinUno($r$)) $<$ obtener(dameUno(claves($r$))))
+                                \\ THEN dameUno($r$) ELSE mayorClave(sinUno($r$)) FI}
 
 \end{tad}
 
