@@ -21,7 +21,77 @@
 
 
 
-\section{Ejercicios}
+\section{Fichín}
+
+\begin{tad}{\tadNombre{Fichín}}
+    \tadGeneros{fichin}
+    
+    \tadExporta{fichin, generadores, observadores, mejorPuntajeDelJugador, proximoMejorPuntaje, nombreDelProximo}
+    
+    \tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{partida}, \tadNombre{diccionario(nombre, nat)}, \tadNombre{nombre}}
+    
+    \tadIgualdadObservacional{f}{f'}{fichin}{ranking($f$) \igobs ranking($f'$) $\land$ \\ (($\neg$partidaEnCurso($f$) $\land$ $\neg$partidaEnCurso($f'$)) $\lor$
+                                              \\ ((partidaEnCurso($f$) $\land$ partidaEnCurso($f'$)) $\land_L$ \\ partida($f$) \igobs partida($f'$) $\land$ \\ 
+                                              nombreJugador($f$) \igobs nombreJugador($f'$)))}
+    \tadAlinearFunciones{mejorPuntajeDelJugador}{fichin/f, partida/p, nombre}
+    
+    \tadObservadores
+    \tadOperacion{partidaEnCurso}{fichin}{bool}{}
+    \tadOperacion{partida}{fichin /f}{partida}{partidaEnCurso(\textit{f})}
+    \tadOperacion{ranking}{fichin}{dicc(nombre, nat)}{}
+    \tadOperacion{nombreJugador}{fichin /f}{nombre}{partidaEnCurso(\textit{f})}
+    
+    
+    \tadGeneradores
+    
+    \tadOperacion{iniciarFichin}{}{fichin}{}
+    \tadOperacion{iniciarPartida}{fichin/f, partida/p, nombre}{fichin}{$\neg$partidaEnCurso($f$) $\land$ partidaRecienEmpezada($p$)}
+    \tadOperacion{mover}{fichin/f, dirección/d}{fichin}{partidaEnCurso($f$) $\land_L$ esMovimientoValido(partida($f$), $d$)}
+    
+    
+    \tadOtrasOperaciones
+    
+    \tadOperacion{mejorPuntajeDelJugador}{fichin/f}{nat}{partidaEnCurso($f$) $\land_L$ jugadorEnRanking($f$)}
+    \tadOperacion{proximoMejorPuntaje}{fichin/f}{nat}{partidaEnCurso($f$) $\land$ $\neg$vacio?(claves(ranking($f$))) $\land_L$\\ jugadorEnRanking($f$) $\land_L$ $\neg$jugadorPrimero($f$)}
+    \tadOperacion{nombreDelProximo}{fichin/f}{nombre}{partidaEnCurso($f$) $\land$ $\neg$vacio?(claves(ranking($f$))) $\land_L$\\ jugadorEnRanking($f$) $\land_L$ $\neg$jugadorPrimero($f$)}
+    \tadOperacion{jugadorEnRanking}{fichin/f}{bool}{partidaEnCurso($f$)}
+    \tadOperacion{jugadorPrimero}{fichin/f}{bool}{partidaEnCurso($f$)}
+    \tadOperacion{siguienteClaveMayor}{dicc/d, nat}{$\alpha$}{$\neg$vacio?(claves($d$)}
+    \tadOperacion{mayorClave}{dicc/d}{$\alpha$}{$\neg$vacio?(claves($d$)}
+    
+    \tadAxiomas[\paratodo{fichín}{f}, \paratodo{partida}{p}, \paratodo{nombre}{n}, \paratodo{nat}{m}, \paratodo{dicc(nombre, nat)}{r}]
+    \tadAlinearAxiomas{partidaEnCurso(iniciarPartida($f, p, n$))}
+    \tadAxioma{partidaEnCurso(iniciarFichin)}{false}
+    \tadAxioma{partidaEnCurso(iniciarPartida($f, p, n$))}{$\neg$terminóElJuego($p$)}
+    \tadAxioma{partidaEnCurso(moverF($f, d$))}{$\neg$terminóElJuego(mover(partida($f$), $d$))}
+    \
+    \tadAxioma{partida(iniciarPartida($f, p, n$))}{$p$}
+    \tadAxioma{partida(moverF($f, d$))}{mover(partida($f$), $d$)}
+    \
+    \tadAxioma{ranking(iniciarFichin)}{vacío}
+    \tadAxioma{ranking(iniciarPartida($f, p, n$))}{ranking($f$)}
+    \tadAxioma{ranking(moverF($f, d$))}{\IF ganó?(partida(moverF($f, d$))) $\land$
+                                            ($\neg$jugadorEnRanking($f$) $\lor_L$ puntaje(partida(moverF($f, d$))) $<$ mejorPuntajeDelJugador($f$))
+                                            THEN definir(nombreJugador($f$), puntaje(partida(moverF($f, d$))))
+                                            ELSE ranking($f$) FI}
+    \ 
+    \tadAxioma{nombreJugador(iniciarPartida($f, p, n$))}{n}
+    \tadAxioma{nombreJugador(moverF($f, d$))}{nombreJugador($f$)}
+    \ 
+    \tadAxioma{mejorPuntajeDelJugador($f$)}{obtener(nombreJugador($f$), ranking($f$))}
+    \tadAxioma{proximoMejorPuntaje($f$)}{obtener(nombreDelProximo($f$), ranking($f$))}
+    \tadAxioma{nombreDelProximo($f$)}{siguienteClaveMayor(ranking($f$), mejorPuntajeDelJugador($f$)))}
+    \tadAxioma{siguienteClaveMayor($r, m$)}{\IF \#(claves($r$)) = 1 $\lor$ \\ ($m$ $<$ obtener(dameUno(claves($r$)), $r$) $\land$
+                                                 \\ obtener(dameUno(claves($r$)), $r$) $<$
+                                                 \\ siguienteClaveMayor(borrar(dameUno(claves($r$)), $r$)), $m$))
+                                                 \\ THEN dameUno(claves($r$)) ELSE siguienteClaveMayor(borrar(dameUno(claves($r$)), $r$)), $m$) FI}
+    \tadAxioma{jugadorEnRanking($f$)}{def?(nombreJugador($f$), ranking($f$))}
+    \tadAxioma{jugadorPrimero($f$)}{mayorClave(ranking($f$)) = nombreJugador($f$)}
+    \tadAxioma{mayorClave($r$)}{\IF \#(claves($r$)) = 1 $\lor$
+                                    \\ (obtener(mayorClave(sinUno(claves($r$))), sinUno(claves($r$))) $<$ obtener(dameUno(claves($r$)), $r$))
+                                    \\ THEN dameUno(claves($r$)) ELSE mayorClave(sinUno(claves($r$))) FI}
+    
+    \end{tad}
 
 \tad{\tadNombre{direccion} es \tadNombre{string}}
 \
@@ -29,10 +99,11 @@
 \begin{tad}{\tadNombre{dimensión, coordenadas} \tadExtiende{\tadNombre{tupla(nat, nat)}}}
 
 \tadOtrasOperaciones
+\tadAlinearFunciones{mover}{tupla(nat, nat), tupla(nat, nat)}
 \tadOperacion{\argumento = \argumento}{tupla(nat, nat), tupla(nat, nat)}{bool}{}
-\tadOperacion{mover}{tupla(nat,nat)/$t$, direccion/$d$}{tupla(nat,nat)}{d \in \{ "arr", "abj", "der", "izq" \}}
+\tadOperacion{mover}{tupla(nat,nat)/t, direccion/d}{tupla(nat,nat)}{$d \in$ \{ $"arr", "abj", "der", "izq"$ \}}
 
-\tadAxiomas[\paratodo{tupla(nat, nat)}{a_1, a_2}]
+\tadAxiomas[\paratodo{tupla(nat, nat)}{a, a_1, a_2}]
 \tadAlinearAxiomas{mover($a$, $d$)}
 \tadAxioma{$a_1$ = $a_2$}{$\pi_1(a_1) = \pi_1(a_2) \land \pi_2(a_1) = \pi_2(a_2)$}
 \tadAxioma{mover($a$, $d$)}{{\IF\ $d$ = $"arr"$ THEN $<\pi_1(a_1)$, $\pi_1(a_2) + 1>$ ELSE {\IF\ $d$ = $"abj"$ THEN $<\pi_1(a_1)$, $\pi_1(a_2) - 1>$ ELSE  {\IF\ $d$ = $"izq" $ THEN $<\pi_1(a_1)$ - 1, $\pi_1(a_2)>$ ELSE $<\pi_1(a_1)$ + 1, $\pi_1(a_2)>$ FI} FI} FI}}
@@ -42,11 +113,13 @@
 
 %TAD Partida%
 
+\pagebreak
+
 \begin{tad}{\tadNombre{Partida}}
 
 \tadGeneros{partida}
 
-\tadExporta{partida, generadores, observadores, seAsustó?, ganó?}
+\tadExporta{partida, generadores, observadores, seAsustó?, ganó?, terminóElJuego?, esMovimientoValido}
 
 \tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{mapa}, \tadNombre{coordenadas}, \tadNombre{dimensión}}
 
@@ -73,13 +146,12 @@ puntaje($p$) \igobs puntaje($p'$)}
 \tadOperacion{terminóElJuego?}{partida}{bool}{}
 \tadOperacion{hayFantasmasCerca}{coordenadas,conj(coordenadas)}{bool}{}
 \tadOperacion{esMovimientoValido}{partida, dirección}{bool}{}
-\tadOperacion{inmunidadAlMover}{partida, coordenadas}{nat}{}
 
 \tadAxiomas[\paratodo{partida}{p}, \paratodo{mapa}{m}, \paratodo{coordenadas}{c}, \paratodo{conj(coordenadas)}{f, c}]
 \
 \tadAlinearAxiomas{movimientosConInmunidad(iniciarPartida($m, c$))}
 \tadAxioma{jugador(iniciarPartida($m$))}{puntoDeSalida($m$)}
-\tadAxioma{jugador(mover($p$, $d$))}{moverT(jugador(p), d)}
+\tadAxioma{jugador(mover($p$, $d$))}{moverT(jugador($p$), $d$)}
 \
 \tadAxioma{mapa(iniciarPartida($m$))}{$m$}
 \tadAxioma{mapa(mover($p$, $d$))}{mapa($p$)}
@@ -88,7 +160,8 @@ puntaje($p$) \igobs puntaje($p'$)}
 \tadAxioma{chocolates(mover($p$, $d$))}{chocolates($p$) $-$ \{jugador(mover($p$, $d$))\}}
 \
 \tadAxioma{movimientosConInmunidad(iniciarPartida($m, c$))}{0}
-\tadAxioma{movimientosConInmunidad(mover($p$, $d$))}{inmunidadAlMover($p$, jugador(mover($p$, $d$)))}
+\tadAxioma{movimientosConInmunidad(mover($p$, $d$))}{\IF\ jugador(mover($p$, $d$)) $\in$ chocolates($p$) THEN $10$
+                                                        ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
 \ 
 \tadAxioma{puntaje(iniciarPartida($m, c$))}{0}
 \tadAxioma{puntaje(mover($p$, $d$))}{puntaje($p$)$+1$}
@@ -103,15 +176,9 @@ puntaje($p$) \igobs puntaje($p'$)}
                             ELSE $|\pi_1$($c$)$-\pi_1$(dameUno($f$))$| + \\ |\pi_2$($c$)$-\pi_2$(dameUno($f$))$|< 3$ 
                             \\ $\lor$ hayFantasmasCerca(sinUno($f$)) FI}
 
-\tadAxioma{esMovimientoValido($p, d$)}{$d \in \{"arr", "abj", "izq", "der"\}$ $\land_L$ \\ $\neg$terminóElJuego(p) $\land$ \\ enRango?(moverT(d, jugador(p)), dimensión(mapa(p))) $\land$ $\neg$(moverT(d, jugador(p)) $\in$ paredes(mapa(p)))}
-
-\tadAxioma{inmunidadAlMover($p, c$)}{\IF\ c $\in$ chocolates($p$) THEN $10$
-                                    ELSE max($0$, movimientosConInmunidad($p$)$- 1$) FI}
+\tadAxioma{esMovimientoValido($p, d$)}{$d \in \{"arr", "abj", "izq", "der"\}$ $\land_L$ \\ $\neg$terminóElJuego($p$) $\land$ \\ enRango?(moverT($d$, jugador($p$)), dimensión(mapa($p$))) $\land$ $\neg$(moverT($d$, jugador($p$)) $\in$ paredes(mapa($p$)))}
 
 \end{tad}
-
-
-
 
 
 \begin{tad}{\tadNombre{Mapa}}
@@ -174,6 +241,14 @@ $\land$ \\ enRango?(inicio, d) $\land$ enRango?(fin, d)}
 \pagebreak
 
 \section{Aclaraciones}
+\subsection{Fichín}
+\begin{itemize}
+\item En la axiomatización de partidaEnCurso, en el caso de iniciarPartida consideramos que como no está restringido que una partida se inicie con un fantasma en rango
+        del jugador, hay casos posibles en los que partidaEnCurso de iniciarPartida no es true.
+
+\end{itemize}
+
+\subsection{Partida - Mapa}
 \begin{itemize}
 
 \item Estamos utilizando un sistema de coordenadas al estilo cartesiano, donde la primera coordenada representa el eje horizontal y aumenta hacia la derecha

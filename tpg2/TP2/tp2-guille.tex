@@ -28,9 +28,9 @@
 
 \tadUsa{\tadNombre{bool}, \tadNombre{nat}, \tadNombre{conjunto($\alpha$)}, \tadNombre{partida}, \tadNombre{coordenadas}, \tadNombre{dimensión}, \tadNombre{diccionario}}
 
-\tadIgualdadObservacional{f}{f'}{fichin}{partidaEnCurso($f$) \igobs partidaEnCurso($f'$) $\land$ \\ partida($f$) \igobs partida($f'$) $\land$
-\\ ranking($f$) \igobs ranking($f'$) $\land$ \\ nombreJugador($f$) \igobs nombreJugador($f'$)}
-\tadAlinearFunciones{movimientosConInmunidad}{mapa/$m$,conj(coordenadas)/$chocolates$}
+\tadIgualdadObservacional{f}{f'}{fichin}{partidaEnCurso($f$) \igobs partidaEnCurso($f'$) $\land$ \\ ranking($f$) \igobs ranking($f'$) $\land_L$
+\\ partida($f$) \igobs partida($f'$) $\land_L$ \\ nombreJugador($f$) \igobs nombreJugador($f'$)}
+\tadAlinearFunciones{mejorPuntajeDelJugador}{fichin/f, partida/p, nombre}
 
 \tadObservadores
 \tadOperacion{partidaEnCurso}{fichin}{bool}{}
@@ -68,7 +68,7 @@
 \tadAxioma{ranking(iniciarFichin)}{vacío}
 \tadAxioma{ranking(iniciarPartida($f, p, n$))}{ranking($f$)}
 \tadAxioma{ranking(moverF($f, d$))}{\IF ganó?(partida(moverF($f, d$))) $\land$
-                                        ($\neg$jugadorEnRanking($f$) $\lor$L puntaje(partida(moverF($f, d$))) $<$ mejorPuntajeDelJugador($f$))
+                                        ($\neg$jugadorEnRanking($f$) $\lor_L$ puntaje(partida(moverF($f, d$))) $<$ mejorPuntajeDelJugador($f$))
                                         THEN definir(nombreJugador($f$), puntaje(partida(moverF($f, d$))))
                                         ELSE ranking($f$) FI}
 \ 
