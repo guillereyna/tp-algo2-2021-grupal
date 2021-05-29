@@ -1,0 +1,120 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper, hmargin=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+
+\pagestyle{fancy} % Esto es para el header en páginas subsecuentes%
+
+\author{Juana Sarasa
+\\ LU: 123/45 DNI: XXXXXXX}
+\date{15/05/2021}
+\title{Segundo Parcial - Algoritmos y Estructuras de Datos II
+\\ Ejercicio 2 - Diseño}
+
+\lhead{Juana Sarasa} % header izquierda
+\rhead{15/05/2021}                  % header derecha
+% para que no haya header es suficiente con sacar estos dos comandos
+
+\begin{document}
+
+\maketitle
+
+
+%------------------------INTERFAZ--------------------------
+\section{}
+
+\begin{Interfaz}
+
+    \textbf{parámetros formales}\hangindent=2\parindent\\
+    \parbox{1.7cm}{\textbf{géneros}}$\alpha$\\
+    \parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{.5\textwidth-\parindent-1.7cm}{%
+      \InterfazFuncion{funcionInterfaz}{\In{a}{$\alpha$}}{bool}
+      [pre]%pres
+      {post}%post
+      [$\Theta(n)$]%complejidad
+      [descripción de función]%descripcion
+    }%
+  
+    \textbf{se explica con}: \tadNombre{TAD Representado}
+  
+    \textbf{géneros}: \TipoVariable{género de TAD representado}.
+  
+    \Titulo{Operaciones básicas de --}
+  
+    \InterfazFuncion{generador}{}{genero}%NOMBRE
+    {$res$ $\igobs$ observador}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [genera una instancia del TAD.]%DESCRIPCION
+  
+    \InterfazFuncion{Definir}{\Inout{d}{dicc($\kappa,\sigma$)}, \In{k}{$\kappa$}, \In{s}{$\sigma$}}{itDicc($\kappa, \sigma$)}
+    [pre]%PRE
+    {post}%POST
+    [$\displaystyle\Theta\left(k\right)$, donde $k = blah$]
+    [descripción.]%DESCRIPCIÓN
+    [aliasing.]%ALIASING
+  
+  \Titulo{Especificación de las operaciones auxiliares utilizadas en la interfaz}
+  
+      \tadOperacion{nombreOp($a$)}{parametro/p}{salida}{restriccion}
+      \tadAxioma{nombreOp($a$)}{axiomas}
+
+  \end{Interfaz}
+
+
+
+%-----------------------------REPRESENTACION-----------------------
+\section{}
+\begin{Representacion}
+    
+    Descripción de la estructura de representación
+  
+    \begin{Estructura}{género}[estr]%genero%estr
+      \begin{Tupla}[estr]%
+        \tupItem{t}{tipo}%
+        \tupItem{t2}{t2}%
+      \end{Tupla}
+    \end{Estructura}
+  
+    \Rep[estr][e]{\\%estr%e
+        \textbf{en palabras:} condiciones}
+  
+    ~
+  
+    \AbsFc[estr]{genero TAD}[e]{
+        cosas que tienen que pasar}
+
+\end{Representacion}
+
+%------------------------------ALGORITMOS------------------------
+\section{}
+\begin{Algoritmos}
+    
+    \begin{algorithm}[H]{\textbf{iDefinir}(\Inout{d}{dic}, \In{k}{$\kappa$}, \In{s}{$\sigma$}) $\to$ $res$ : $itDicc$}
+        \begin{algorithmic}
+            \While{condicionwhile} \Comment $\mathcal{O}(n)$
+                \If{condicionif} \Comment $\mathcal{O}(1)$
+                    \State $res = $ b \Comment $\mathcal{O}(1)$
+                \Else
+                    \State $res = $ a \Comment $\mathcal{O}(1)$
+                \EndIf
+            \EndWhile
+            \Statex \underline{Complejidad:} $\mathcal{O}(n)$
+            \Statex \underline{Justificación:} $\mathcal{O}(n)$.
+        \end{algorithmic}
+        \end{algorithm}
+
+
+\end{Algoritmos}
+
+%\section{Aclaraciones}
+%\begin{itemize}
+%    \item aclaracion
+%\end{itemize}
+
+\end{document}
