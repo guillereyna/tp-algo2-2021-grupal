@@ -169,12 +169,12 @@ Jugador \textbf{es} string
 
     \begin{algorithm}[H]{\textbf{iNuevoFichín}(\In{m}{puntero(mapa)})$\to$ $res$ : estr}
         \begin{algorithmic}
-            \State res.mapa = m
-            \State res.tablero = inicializarTablero(m) \Comment{$\mathcal{O}(c + p + f)$}
-            \State res.partida = null
-            \State res.enCurso = false
-            \State res.ranking = Vacio()
-            \State res.jugador = ''''
+            \State res.mapa <- m
+            \State res.tablero <- inicializarTablero(m) \Comment{$\mathcal{O}(c + p + f)$}
+            \State res.partida <- null
+            \State res.enCurso <- false
+            \State res.ranking <- Vacio()
+            \State res.jugador <- ''''
             \Statex \underline{Complejidad:} $\mathcal{O}(c + p + f)$, donde $c = \#chocolates$, $p = \#paredes$, $f = \#fantasmas$
         \end{algorithmic}
     \end{algorithm}
@@ -199,10 +199,10 @@ Jugador \textbf{es} string
             \State Mover(f$\to$p, d)
             \If{Ganó?(f$\to$p) $\land$ (Def?(f.jugador, f.ranking) $\land$ CantMov(f$\to$p) $<$ f.ranking[f.jugador]) \\ $\lor$ (¬ Def?(f.jugador, f.ranking))}
                 \State Definir(f.ranking, f.jugador, CantMov(f$\to$p))
-                \State f.hayAlguien = false
+                \State f.hayAlguien <- false
             \Else
                 \If{SeAsustó?(f$\to$p, d)}
-                    \State f.hayAlguien = false
+                    \State f.hayAlguien <- false
                 \EndIf
             \EndIf
             \State \underline{Complejidad:} $\theta(1)$ si no ganó, lo único que se hace es Mover(partida, dirección) y eso cuesta $\theta(1)$. Sino, hay que buscarlo en el ranking y eso cuesta $\theta(|J|)$.
@@ -222,7 +222,7 @@ Jugador \textbf{es} string
     
     \begin{algorithm}[H]{\textbf{iAlguienJugando?(\In{f}{estr})}}$\to$ $res$: bool
         \begin{algorithmic}
-            \State res = f.hayAlguien
+            \State res <- f.hayAlguien
             \State \underline{Complejidad:} $\theta(1)$
         \end{algorithmic}
     \end{algorithm}
@@ -239,7 +239,7 @@ Jugador \textbf{es} string
 
     \begin{algorithm}[H]{\textbf{iPartidaActual?(\In{f}{estr})}}$\to$ $res$: partida
         \begin{algorithmic}
-            \State res = f$\to$partida
+            \State res <- f$\to$partida
             \State \underline{Complejidad:} $\theta(1)$
         \end{algorithmic}
     \end{algorithm}
@@ -265,15 +265,15 @@ Jugador \textbf{es} string
     \begin{algorithm}[H]{\textbf{iInicializarTablero}(\In{m}{mapa}) $\to$ $res$ : array(array(tupla(bool, bool, bool)))}
         \begin{algorithmic}
         
-            \State t = arreglo[largo(m)] de arreglo[alto(m)] de tupla ⟨bool, bool, bool⟩(false)
+            \State t <- arreglo[largo(m)] de arreglo[alto(m)] de tupla ⟨bool, bool, bool⟩(false)
 		    \For{c in chocolates(m)} \Comment{$\theta(c)$}
-			    \State $\pi_2(t[\pi_0(c)][\pi_1(c)])$= true
+			    \State $\pi_2(t[\pi_0(c)][\pi_1(c)])$<- true
 		    \EndFor
 		    \For{p in paredes(m)} \Comment{$\theta(p)$}
-			    \State $\pi_0(t[\pi_0(p)][\pi_1(p)])$ = true
+			    \State $\pi_0(t[\pi_0(p)][\pi_1(p)])$ <- true
 	        \EndFor
 		    \For {f in fantasmas(m)} \Comment{$\theta(f)$}
-			    \State $\pi_1(t[\pi_0(f)][\pi_1(f)])$ = true
+			    \State $\pi_1(t[\pi_0(f)][\pi_1(f)])$ <- true
 		    \EndFor
             
         
