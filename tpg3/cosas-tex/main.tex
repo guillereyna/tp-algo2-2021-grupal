@@ -24,6 +24,14 @@
 
 \maketitle
 
+\section{Renombres}
+
+Coordenada \textbf{es} tupla(nat, nat)
+
+Tablero \textbf{es} array(array(tupla(bool, bool, bool)))
+
+Jugador \textbf{es} string
+
 \section{Módulo: Fichín}
 
 \begin{Interfaz}
@@ -97,7 +105,7 @@
     
     
     %OBJETIVO
-    \InterfazFuncion{Objetivo}{\In{f}{fichin}, \Out{t}{tupla(jugador, nat)}}{bool}%NOMBRE
+    \InterfazFuncion{Objetivo}{\In{f}{fichin}}{tupla(jugador, nat}%NOMBRE
     [alguienJugando?(f)]
     {$res$ $\igobs$ objetivo(f, t)}%POST
     [$\Theta(\# J.|J|)$]%COMPLEJIDAD
@@ -111,7 +119,7 @@
 %-----------------------------REPRESENTACION-----------------------
 \begin{Representacion}
     
-    Descripción de la estructura de representación
+    %Descripción de la estructura de representación
   
     \begin{Estructura}{fichin}[estr]%genero%estr
       \begin{Tupla}[estr]%
@@ -617,7 +625,7 @@
 %-----------------------------REPRESENTACION-----------------------
 \begin{Representacion}
     
-    La estructura interna del módulo mapa es una tupla de elementos que representan a los observadores del TAD mapa de su mismo nombre.
+    La estructura interna del módulo mapa es una tupla de elementos que representan a los observadores del TAD \tadNombre{mapa} de su mismo nombre.
   
     \begin{Estructura}{género}[estr]%genero%estr
       \begin{Tupla}[estr]%
