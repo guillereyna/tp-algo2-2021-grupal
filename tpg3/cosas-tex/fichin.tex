@@ -30,17 +30,9 @@
 
 \begin{Interfaz}
 
-    \textbf{parámetros formales}\hangindent=2\parindent\\
-    \parbox{1.7cm}{\textbf{géneros}}$\alpha$\\
-    \parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{.5\textwidth-\parindent-1.7cm}{%
-      \InterfazFuncion{funcionInterfaz}{\In{a}{$\alpha$}}{bool}
-      [pre]%pres
-      {post}%post
-      [$\Theta(n)$]%complejidad
-      [descripción de función]%descripcion
-    }%
+  \Titulo{Especificación de las operaciones auxiliares utilizadas en la interfaz}
   
-    \textbf{se explica con}: \tadNombre{Fichin}
+    \textbf{se explica con}: \tadNombre{Fichín}
   
     \textbf{géneros}: \TipoVariable{fichin}.
   
@@ -49,7 +41,7 @@
     %NUEVO FICHIN
     \InterfazFuncion{NuevoFichin}{\In{m}{mapa}}{fichin}%NOMBRE
     {$res$ $\igobs$ nuevoFichin(m)}%POST
-    [$\Theta(c + \#paredes + \#fantasmas)$]%COMPLEJIDAD
+    [$\Theta(\#chocolates + \#paredes + \#fantasmas)$]%COMPLEJIDAD
     [genera una instancia del Fichin.]%DESCRIPCION
     
     %NUEVA PARTIDA
@@ -91,14 +83,6 @@
     [$\Theta(1)$]%COMPLEJIDAD
     [Devuelve el diccionario usado en el fichin]%DESCRIPCION
     [Se devuelve una referencia inmutable.]
-    
-    
-    
-  
-  \Titulo{Especificación de las operaciones auxiliares utilizadas en la interfaz}
-  
-      \tadOperacion{nombreOp($a$)}{parametro/p}{salida}{restriccion}
-      \tadAxioma{nombreOp($a$)}{axiomas}
 
   \end{Interfaz}
 
@@ -143,14 +127,32 @@
   
     ~
   
-    \AbsFc[estr]{genero TAD}[e]{
-        cosas que tienen que pasar}
+    \AbsFc[estr]{Fichín}[e]{
+        $(\forall e: estr) Abs(e) \igobs f: fichín | (1) \land (2) \land (3) \land (4) \land (5)$ \\
+        (1) $ \equiv e.m \igobs mapa(f) $ \\
+        (2) $ \equiv e.p \igobs partida(f) $ \\
+        (3) $ \equiv e.hayAlguien \igobs alguienJugando?(f) $ \\
+        (4) $ \equiv e.jugador \igobs jugadorActual(f) $ \\
+        (5) $ \equiv e.ranking \igobs ranking(f) $}
 
 \end{Representacion}
 
 %------------------------------ALGORITMOS------------------------
 \section{}
 \begin{Algoritmos}
+
+    \begin{algorithm}[H]{\textbf{iNuevoFichín}(\In{m}{puntero(mapa)})$\to$ $res$ : estr}
+        \begin{algorithmic}
+            \State res.mapa = m
+            \State res.tablero = inicializarTablero(m) \Comment{$\mathcal{O}(c + p + f)$}
+            \State res.partida = null
+            \State res.enCurso = false
+            \State res.ranking = Vacio()
+            \State res.jugador = ''''
+            \Statex \underline{Complejidad:} $\mathcal{O}(c + p + f)$, donde $c = \#chocolates$, $p = \#paredes$, $f = \#fantasmas$
+        \end{algorithmic}
+    \end{algorithm}
+
     %$\to$ $res$ : $itDicc$
     \begin{algorithm}[H]{\textbf{iNuevaPartida}(\Inout{f}{estr}, \In{j}{$string$})}
         \begin{algorithmic}
@@ -164,9 +166,25 @@
             \Statex \underline{Justificación:} \textbf{Cuando se repueblan los chocolates se hace en $\Theta(c)$ dado a que se recorre un arreglo con las coordenadas de estas para restaurar los chocolates.
 		Esto sumado a las operaciones en $\Theta(1)$ que le siguen dan como resultado a una complejidad $\Theta(c)$}
         \end{algorithmic}
-        \end{algorithm}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iMover}(\Inout{f}{estr}, \In{d}{dirección}})
+        \begin{algorithmic}
+            \State Mover(f$\to$p, d)
+            \If{Ganó?(f$\to$p) $\land$ (Def?(f.jugador, f.ranking) $\land$ CantMov(f$\to$p) $<$ f.ranking[f.jugador]) \\ $\lor$ (¬ Def?(f.jugador, f.ranking))}
+                \State Definir(f.ranking, f.jugador, CantMov(f$\to$p))
+                \State f.hayAlguien = false
+            \Else
+                \If{SeAsustó?(f$\to$p, d)}
+                    \State f.hayAlguien = false
+                \EndIf
+            \EndIf
+            \State \underline{Complejidad:} $\theta(1)$ si no ganó, lo único que se hace es Mover(partida, dirección) y eso cuesta $\theta(1)$. Sino, hay que buscarlo en el ranking y eso cuesta $\theta(|J|)$.
+        \end{algorithmic}
         
-        \begin{algorithm}[H]{\textbf{iMapa}(\In{f}{estr}) $\to$ $res$ : $puntero(mapa)$}
+    \end{algorithm}
+        
+    \begin{algorithm}[H]{\textbf{iMapa}(\In{f}{estr}) $\to$ $res$ : $puntero(mapa)$}
         \begin{algorithmic}
         
             \State res $\leftarrow$ f.m
@@ -174,9 +192,16 @@
         
             \Statex \underline{Complejidad:} $\Theta(1)$
         \end{algorithmic}
-        \end{algorithm}
-        
-         \begin{algorithm}[H]{\textbf{iJugadorActual}(\In{f}{estr}) $\to$ $res$ : $string$}
+    \end{algorithm}
+    
+    \begin{algorithm}[H]{\textbf{iAlguienJugando?(\In{f}{estr})}}$\to$ $res$: bool
+        \begin{algorithmic}
+            \State res = f.hayAlguien
+            \State \underline{Complejidad:} $\theta(1)$
+        \end{algorithmic}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iJugadorActual}(\In{f}{estr}) $\to$ $res$ : $string$}
         \begin{algorithmic}
         
             \State res $\leftarrow$ f.jugador
@@ -184,9 +209,16 @@
         
             \Statex \underline{Complejidad:} $\Theta(1)$
         \end{algorithmic}
-        \end{algorithm}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iPartidaActual?(\In{f}{estr})}}$\to$ $res$: partida
+        \begin{algorithmic}
+            \State res = f$\to$partida
+            \State \underline{Complejidad:} $\theta(1)$
+        \end{algorithmic}
+    \end{algorithm}
         
-        \begin{algorithm}[H]{\textbf{iRanking}(\In{f}{estr}) $\to$ $res$ : $ranking$}
+    \begin{algorithm}[H]{\textbf{iRanking}(\In{f}{estr}) $\to$ $res$ : $ranking$}
         \begin{algorithmic}
         
             \State res $\leftarrow$ f.ranking
@@ -194,9 +226,46 @@
         
             \Statex \underline{Complejidad:} $\Theta(1)$
         \end{algorithmic}
-        \end{algorithm}
+    \end{algorithm}
 
+    \begin{algorithm}[H]{\textbf{Objetivo(\In{f}{estr})}}$\to$ $res$: tupla(jugador, nat)
+        \begin{algorithmic}
+            \State Recorre el Trie del ranking, se queda con el jugador cuyo puntaje es el siguiente mayor al del jugador actual (el que está jugando). Sino no hay otro jugador, se queda con el actual.
+            Devuelve en una tupla el nombre del jugador y su puntaje.
+            \State \underline{Complejidad:} $\theta(\#J \cdot |J|)$
+        \end{algorithmic}
+    \end{algorithm}
 
+    \begin{algorithm}[H]{\textbf{iInicializarTablero}(\In{m}{mapa}) $\to$ $res$ : array(array(tupla(bool, bool, bool)))}
+        \begin{algorithmic}
+        
+            \State t = arreglo[largo(m)] de arreglo[alto(m)] de tupla ⟨bool, bool, bool⟩(false)
+		    \For{c in chocolates(m)} \Comment{$\theta(c)$}
+			    \State $\pi_2(t[\pi_0(c)][\pi_1(c)])$= true
+		    \EndFor
+		    \For{p in paredes(m)} \Comment{$\theta(p)$}
+			    \State $\pi_0(t[\pi_0(p)][\pi_1(p)])$ = true
+	        \EndFor
+		    \For {f in fantasmas(m)} \Comment{$\theta(f)$}
+			    \State $\pi_1(t[\pi_0(f)][\pi_1(f)])$ = true
+		    \EndFor
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(c) + \Theta(p) + \Theta(f)$
+        \end{algorithmic}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iRepoblarChocolates}(\Inout{t}{tablero}m \In{m}{mapa})}
+        \begin{algorithmic}
+            \For{c in Chocolates(m)}
+                \State $\pi_2(t[\pi_0(c)][\pi_1(c)]) = true$
+            \EndFor
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(c)$
+        \end{algorithmic}
+    \end{algorithm}
+    
 \end{Algoritmos}
 
 %\section{Aclaraciones}
