@@ -57,11 +57,11 @@ Jugador \textbf{es} string
     [$\Theta(c)$]
     [Crea una partida para el jugador especificado, en este proceso tambien se restauran los chocolates en el mapa.]%DESCRIPCIÓN
     %ALIASING
-
+    
     %MOVER
     \InterfazFuncion{Mover}{\Inout{f}{fichin}, \In{d}{direccion}}{}
     [f = f_0 $ \land$ $\neg$alguienJugando?(f_0)]%PRE
-    {f $\igobs$ nuevaPartida(f_0, d}%POST
+    {f $\igobs$ nuevaPartida(f_0, d)}%POST
     [$\Theta(1)$ normalmente / $\Theta(|J|)$ cuando ganó o perdió.]
     [Realiza el movimiento del jugador.]%DESCRIPCIÓN
     %ALIASING
@@ -124,9 +124,9 @@ Jugador \textbf{es} string
     \begin{Estructura}{fichin}[estr]%genero%estr
       \begin{Tupla}[estr]%
         \tupItem{m}{puntero(mapa)}%
-        \tupItem{p}{puntero(partida}%
+        \tupItem{p}{puntero(partida)}%
         \tupItem{tablero}{array(array(tupla(bool, bool, bool)))}
-        \tupItem{hayAlguine}{bool}
+        \tupItem{hayAlguien}{bool}
         \tupItem{jugador}{string}
         \tupItem{ranking}{diccTrie(string, nat)}
       \end{Tupla}
@@ -136,14 +136,13 @@ Jugador \textbf{es} string
     \Rep[estr][e]{$(1)\land(2)$ \\
     \textbf{donde:}
     \tadAxioma{(1)}{e.m = (e.p \rightarrow mapa)}
-    \tadAxioma{(2)}{e.paredes $\cap$ e.fantasmas $\cap$ e.chocolates $= \emptyset$}
-    \tadAxioma{(3)}{(\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
+    \tadAxioma{(2)}{(\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
     ($\pi_0$(e.tablero[i][j]) $\Leftrightarrow$ tupla(i, j) $\in$ e.m.paredes)) $\land_L$ \\
     (\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
-    ($\pi_0$(e.tablero[i][j]) $\Leftrightarrow$ tupla(i, j) $\in$ e.m.paredes))
+    ($\pi_1$(e.tablero[i][j]) $\Leftrightarrow$ tupla(i, j) $\in$ e.m.fantasmas))
     $\land_L$ \\
     (\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
-    ($\pi_0$(e.tablero[i][j]) = $true$ $\Rightarrow$ tupla(i, j) $\in$ e.m.paredes))
+    ($\pi_2$(e.tablero[i][j]) = $true$ $\Rightarrow$ tupla(i, j) $\in$ e.m.chocolates))
     }
     \\
     \textbf{en palabras:}\\
@@ -152,7 +151,7 @@ Jugador \textbf{es} string
     
     }   
   
-    ~
+
   
     \AbsFc[estr]{Fichín}[e]{
         $(\forall e: estr) Abs(e) \igobs f: fichín | (1) \land (2) \land (3) \land (4) \land (5)$ \\
