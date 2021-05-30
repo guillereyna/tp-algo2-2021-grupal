@@ -1,0 +1,769 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper, hmargin=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+\usepackage{caratula}
+
+\begin{document}
+
+\titulo{Trabajo Práctico 3: "Pacalgo2"}
+\materia{Algoritmos y Estructuras de Datos II}
+\grupo{Grupo: tomarAgua()}
+
+% CAMBIAR INTEGRANTES
+\integrante{Reyna Maciel, Guillermo José}{393/20}{guille.j.reyna@gmail.com}
+\integrante{Casado Farall, Joaquin}{072/20}{joakinfarall@gmail.com}
+\integrante{Fernández Spandau, Luciana}{368/20}{fernandezspandau@gmail.com}
+\integrante{Chumacero, Carlos Nehemias}{492/20}{chumacero2013@gmail.com}
+
+\maketitle
+
+\section{Módulo: Fichín}
+
+\begin{Interfaz}
+
+  \textbf{Especificación de las operaciones auxiliares utilizadas en la interfaz}
+  
+    \textbf{se explica con}: \tadNombre{Fichín}
+  
+    \textbf{géneros}: \TipoVariable{fichin}.
+  
+    \textbf{Operaciones básicas de fichin}
+  
+    %NUEVO FICHIN
+    \InterfazFuncion{NuevoFichin}{\In{m}{mapa}}{fichin}%NOMBRE
+    {$res$ $\igobs$ nuevoFichin(m)}%POST
+    [$\Theta(\#chocolates + \#paredes + \#fantasmas)$]%COMPLEJIDAD
+    [genera una instancia del Fichin.]%DESCRIPCION
+    
+    %NUEVA PARTIDA
+    \InterfazFuncion{NuevaPartida}{\Inout{f}{fichin}, \In{j}{jugador}}{}
+    [f = f_0 $ \land$ $\neg$alguienJugando?(f_0)]%PRE
+    {f $\igobs$ nuevaPartida(f_0, j}%POST
+    [$\Theta(c)$]
+    [Crea una partida para el jugador especificado, en este proceso tambien se restauran los chocolates en el mapa.]%DESCRIPCIÓN
+    %ALIASING
+
+    %MOVER
+    \InterfazFuncion{Mover}{\Inout{f}{fichin}, \In{d}{direccion}}{}
+    [f = f_0 $ \land$ $\neg$alguienJugando?(f_0)]%PRE
+    {f $\igobs$ nuevaPartida(f_0, d}%POST
+    [$\Theta(1)$ normalmente / $\Theta(|J|)$ cuando ganó o perdió.]
+    [Realiza el movimiento del jugador.]%DESCRIPCIÓN
+    %ALIASING
+    
+     %MAPA
+    \InterfazFuncion{Mapa}{\In{f}{fichin}}{mapa}%NOMBRE
+    {$res$ $\igobs$ mapa(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve el mapa actual.]%DESCRIPCION
+    [Se devuelve una referencia inmutable.]
+    
+    %ALGUIEN JUGANDO?
+    \InterfazFuncion{AlguienJugando?}{\In{f}{fichin}}{bool}%NOMBRE
+    {$res$ $\igobs$ alguienJugando?(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve true si hay alguien jugando, de lo contrario devuelve false]%DESCRIPCION
+    
+    %JUGADOR ACTUAL
+    \InterfazFuncion{JugadorActual}{\In{f}{fichin}}{jugador}%NOMBRE
+    [alguienJugando?(f)]
+    {$res$ $\igobs$ jugadorActual(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve el nombre del jugador actual]%DESCRIPCION
+    [Se devuelve una referencia inmutable.]
+    
+    %PARTIDA ACTUAL
+    \InterfazFuncion{PartidaActual}{\In{f}{fichin}}{partida}%NOMBRE
+    [alguienJugando?(f)]
+    {$res$ $\igobs$ jugadorActual(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve una referencia a la partida actual]%DESCRIPCION
+    [Se devuelve una referencia inmutable.]
+    
+    
+    %RANKING
+    \InterfazFuncion{Ranking}{\In{f}{fichin}}{ranking}%NOMBRE
+    {$res$ $\igobs$ ranking(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve el diccionario usado en el fichin]%DESCRIPCION
+    [Se devuelve una referencia inmutable.]
+    
+    
+    %OBJETIVO
+    \InterfazFuncion{Objetivo}{\In{f}{fichin}, \Out{t}{tupla(jugador, nat)}}{bool}%NOMBRE
+    [alguienJugando?(f)]
+    {$res$ $\igobs$ objetivo(f, t)}%POST
+    [$\Theta(\# J.|J|)$]%COMPLEJIDAD
+    [Devuelve solo si existe una tupla con el nombre y puntaje del jugador que supera inmediatamente en el ranking al jugador actual.]%DESCRIPCION
+    
+    
+  \end{Interfaz}
+
+
+
+%-----------------------------REPRESENTACION-----------------------
+\begin{Representacion}
+    
+    Descripción de la estructura de representación
+  
+    \begin{Estructura}{fichin}[estr]%genero%estr
+      \begin{Tupla}[estr]%
+        \tupItem{m}{puntero(mapa)}%
+        \tupItem{p}{puntero(partida}%
+        \tupItem{tablero}{array(array(tupla(bool, bool, bool)))}
+        \tupItem{hayAlguine}{bool}
+        \tupItem{jugador}{string}
+        \tupItem{ranking}{diccTrie(string, nat)}
+      \end{Tupla}
+    \end{Estructura}
+  
+  
+    \Rep[estr][e]{$(1)\land(2)$ \\
+    \textbf{donde:}
+    \tadAxioma{(1)}{e.m = (e.p \rightarrow mapa)}
+    \tadAxioma{(2)}{e.paredes $\cap$ e.fantasmas $\cap$ e.chocolates $= \emptyset$}
+    \tadAxioma{(3)}{(\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
+    ($\pi_0$(e.tablero[i][j]) $\Leftrightarrow$ tupla(i, j) $\in$ e.m.paredes)) $\land_L$ \\
+    (\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
+    ($\pi_0$(e.tablero[i][j]) $\Leftrightarrow$ tupla(i, j) $\in$ e.m.paredes))
+    $\land_L$ \\
+    (\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
+    ($\pi_0$(e.tablero[i][j]) = $true$ $\Rightarrow$ tupla(i, j) $\in$ e.m.paredes))
+    }
+    \\
+    \textbf{en palabras:}\\
+        \textbf{m debe ser igual al mapa de p (partida)}\\
+        \textbf{tablero debe ser igual al mapa (menos los chocolates que dejamos en falso)}\\
+    
+    }   
+  
+    ~
+  
+    \AbsFc[estr]{Fichín}[e]{
+        $(\forall e: estr) Abs(e) \igobs f: fichín | (1) \land (2) \land (3) \land (4) \land (5)$ \\
+        (1) $ \equiv e.m \igobs mapa(f) $ \\
+        (2) $ \equiv e.p \igobs partida(f) $ \\
+        (3) $ \equiv e.hayAlguien \igobs alguienJugando?(f) $ \\
+        (4) $ \equiv e.jugador \igobs jugadorActual(f) $ \\
+        (5) $ \equiv e.ranking \igobs ranking(f) $}
+
+\end{Representacion}
+
+%------------------------------ALGORITMOS------------------------
+\begin{Algoritmos}
+
+    \begin{algorithm}[H]{\textbf{iNuevoFichín}(\In{m}{puntero(mapa)})$\to$ $res$ : estr}
+        \begin{algorithmic}
+            \State res.mapa = m
+            \State res.tablero = inicializarTablero(m) \Comment{$\mathcal{O}(c + p + f)$}
+            \State res.partida = null
+            \State res.enCurso = false
+            \State res.ranking = Vacio()
+            \State res.jugador = ''''
+            \Statex \underline{Complejidad:} $\mathcal{O}(c + p + f)$, donde $c = \#chocolates$, $p = \#paredes$, $f = \#fantasmas$
+        \end{algorithmic}
+    \end{algorithm}
+
+    %$\to$ $res$ : $itDicc$
+    \begin{algorithm}[H]{\textbf{iNuevaPartida}(\Inout{f}{estr}, \In{j}{$string$})}
+        \begin{algorithmic}
+        
+            \State RepoblarChocolates(f.tablero, f.m)
+            \State f.p $\leftarrow$ NuevaPartida(f.m, &f.tablero)
+            \State f.hayAlguien $\leftarrow$ true
+            \State f.jugador $\leftarrow$ j
+        
+            \Statex \underline{Complejidad:} $\Theta(c)$
+            \Statex \underline{Justificación:} \textbf{Cuando se repueblan los chocolates se hace en $\Theta(c)$ dado a que se recorre un arreglo con las coordenadas de estas para restaurar los chocolates.
+		Esto sumado a las operaciones en $\Theta(1)$ que le siguen dan como resultado a una complejidad $\Theta(c)$}
+        \end{algorithmic}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iMover}(\Inout{f}{estr}, \In{d}{dirección}})
+        \begin{algorithmic}
+            \State Mover(f$\to$p, d)
+            \If{Ganó?(f$\to$p) $\land$ (Def?(f.jugador, f.ranking) $\land$ CantMov(f$\to$p) $<$ f.ranking[f.jugador]) \\ $\lor$ (¬ Def?(f.jugador, f.ranking))}
+                \State Definir(f.ranking, f.jugador, CantMov(f$\to$p))
+                \State f.hayAlguien = false
+            \Else
+                \If{SeAsustó?(f$\to$p, d)}
+                    \State f.hayAlguien = false
+                \EndIf
+            \EndIf
+            \State \underline{Complejidad:} $\theta(1)$ si no ganó, lo único que se hace es Mover(partida, dirección) y eso cuesta $\theta(1)$. Sino, hay que buscarlo en el ranking y eso cuesta $\theta(|J|)$.
+        \end{algorithmic}
+        
+    \end{algorithm}
+        
+    \begin{algorithm}[H]{\textbf{iMapa}(\In{f}{estr}) $\to$ $res$ : $puntero(mapa)$}
+        \begin{algorithmic}
+        
+            \State res $\leftarrow$ f.m
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}[H]{\textbf{iAlguienJugando?(\In{f}{estr})}}$\to$ $res$: bool
+        \begin{algorithmic}
+            \State res = f.hayAlguien
+            \State \underline{Complejidad:} $\theta(1)$
+        \end{algorithmic}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iJugadorActual}(\In{f}{estr}) $\to$ $res$ : $string$}
+        \begin{algorithmic}
+        
+            \State res $\leftarrow$ f.jugador
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iPartidaActual?(\In{f}{estr})}}$\to$ $res$: partida
+        \begin{algorithmic}
+            \State res = f$\to$partida
+            \State \underline{Complejidad:} $\theta(1)$
+        \end{algorithmic}
+    \end{algorithm}
+        
+    \begin{algorithm}[H]{\textbf{iRanking}(\In{f}{estr}) $\to$ $res$ : $ranking$}
+        \begin{algorithmic}
+        
+            \State res $\leftarrow$ f.ranking
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{Objetivo(\In{f}{estr})}}$\to$ $res$: tupla(jugador, nat)
+        \begin{algorithmic}
+            \State Recorre el Trie del ranking, se queda con el jugador cuyo puntaje es el siguiente mayor al del jugador actual (el que está jugando). Sino no hay otro jugador, se queda con el actual.
+            Devuelve en una tupla el nombre del jugador y su puntaje.
+            \State \underline{Complejidad:} $\theta(\#J \cdot |J|)$
+        \end{algorithmic}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iInicializarTablero}(\In{m}{mapa}) $\to$ $res$ : array(array(tupla(bool, bool, bool)))}
+        \begin{algorithmic}
+        
+            \State t = arreglo[largo(m)] de arreglo[alto(m)] de tupla ⟨bool, bool, bool⟩(false)
+		    \For{c in chocolates(m)} \Comment{$\theta(c)$}
+			    \State $\pi_2(t[\pi_0(c)][\pi_1(c)])$= true
+		    \EndFor
+		    \For{p in paredes(m)} \Comment{$\theta(p)$}
+			    \State $\pi_0(t[\pi_0(p)][\pi_1(p)])$ = true
+	        \EndFor
+		    \For {f in fantasmas(m)} \Comment{$\theta(f)$}
+			    \State $\pi_1(t[\pi_0(f)][\pi_1(f)])$ = true
+		    \EndFor
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(c) + \Theta(p) + \Theta(f)$
+        \end{algorithmic}
+    \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iRepoblarChocolates}(\Inout{t}{tablero}m \In{m}{mapa})}
+        \begin{algorithmic}
+            \For{c in Chocolates(m)}
+                \State $\pi_2(t[\pi_0(c)][\pi_1(c)]) = true$
+            \EndFor
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(c)$
+        \end{algorithmic}
+    \end{algorithm}
+    
+\end{Algoritmos}
+
+\section{Módulo: Partida}
+
+\begin{Interfaz}
+    \InterfazFuncion{NuevaPartida}
+    {\In{m}{mapa}, \In{t}{tablero}}{partida}%
+    {$res$ $\igobs$ NuevaPartida(m)}%
+    [$\mathcal{O}(1)$]
+    [genera una nueva partida.]
+    [Tanto el mapa como el tablero son pasados por referencia y la partida]
+    
+    \InterfazFuncion{Mover}
+    {\Inout{p}{partida}, \In{d}{direccion}}{}%
+    [$p$ $\igobs$ $p_0 \land$ $\neg$( gano?($p$) $\lor$ perdio?($p$) )]%
+    {$res$ $\igobs$ Mover($p_0, d$)}
+    [$\mathcal{O}(1)$]
+    [mueve la coordenada actual del jugador en la direccion indicada en el parametro.]
+    
+    \InterfazFuncion{Mapa}
+    {\In{p}{partida}}{mapa}%
+    {$res$ $\igobs$ Mapa(p)}%
+    [$\mathcal{O}(1)$]
+    [Devuelve el mapa de la partida]
+    [Devuelve una referencia inmutable.]
+    
+    \InterfazFuncion{Jugador}
+    {\In{p}{partida}}{coordenada}%
+    {$res$ $\igobs$ Jugador(p)}
+    [$\mathcal{O}(1)$]
+    [Devuelve la coordenada actual del jugador.]
+    [Devuelve la coordenada por copia.]
+    
+    \InterfazFuncion{CantMov}
+    {\In{p}{partida}}{nat}%
+    {$res$ $\igobs$ CantMov(p)}
+    [$\mathcal{O}(1)$]
+    [Devuelve la cantidad de movimientos que ha realizado el jugador en la partida.]
+    [Devuelve la cantidad de movimientos por copia.]
+    
+    \InterfazFuncion{Inmunidad}
+    {\In{p}{partida}}{nat}%
+    {$res$ $\igobs$ Inmunidad(p)}
+    [$\mathcal{O}(1)$]
+    [Devuelve la cantidad de movimientos con inmunidad restantes.]
+    [Devuelve la cantidad de movimientos por copia]
+    
+    \InterfazFuncion{Gano?}
+    {\In{p}{partida}}{bool}%
+    {$res$ $\igobs$ Gano?(p)}
+    [$\mathcal{O}(1)$]
+    [Devuelve true sii la partida termino y el jugador logro llegar al punto de llegada.]
+    [Devuelve el booleano por copia.]
+    
+    \InterfazFuncion{Perdio?}
+    {\In{p}{partida}}{bool}%
+    {$res$ $\igobs$ Perdio?(p)}
+    [$\mathcal{O}(1)$]
+    [Devuelve true sii la partida termino y el jugador se encuentra en una posición en la cual es asustado por un fastasma.]
+    [Devuelve el booleano por copia.]
+    
+\end{Interfaz}
+
+\begin{Representacion}
+  
+    \begin{Estructura}{Partida}[estr]%genero%estr
+      \begin{Tupla}[estr]%
+        \tupItem{mapa}{puntero(mapa)}%
+        \tupItem{\\tablero}{puntero(tablero)}
+        \tupItem{\\coordenadaActual}{coordenada}
+        \tupItem{\\cantMov}{nat}%
+        \tupItem{\\movsInmunes}{nat}%
+        \tupItem{\\perdio?}{bool}%
+        \tupItem{\\gano?}{bool}%
+      \end{Tupla}
+    \end{Estructura}
+\
+    \Rep[estr][e]{$(1)\land(2)\land(3)\land(4)\land(5)\land(6)$ \\
+    \textbf{donde:}
+    \tadAxioma{(1)}{$\neg$(e.gano? $\lor$ e.perdio?) $\lor$ (e.gano? $=$ $\neg$e.perdio?)}
+    \tadAxioma{(2)}{(0 $\leq$ e.coordenadaActual.first $<$ e.mapa.largo) $\land$ 
+    (0 $\leq$ e.coordenadaActual.second $<$ e.mapa.alto)}
+    \tadAxioma{(3)}{long(e.tablero) = e.mapa.largo $\land$ long(e.tablero[0]) = e.mapa.alto $\land$
+    (\forall c: coordenada)((c $\in$ e.mapa.chocolates $\implies$ e.tablero[c.first][c.second].third) $\lor$ (c $\in$ e.mapa.fantasmas $\iff$ e.tablero[c.first][c.second].second
+    $\lor$ (c $\in$ e.mapa.paredes $\iff$ e.tablero[c.first][c.second].first) )}
+    \tadAxioma{(4)}{e.gano? $\iff$ e.coordenadaActual $\igobs$ e.mapa.llegada}
+    \tadAxioma{(5)}{e.perdio? $\iff$ (seAsusta?(e.mapa, e.tablero, e.coordenadaActual) $\land$ e.movsInmunes = 0)}
+    \tadAxioma{(6)}{$\neg$(e.tablero[e.coordenadaActual.first][e.coordenadaActual.second].first)}
+    }
+\
+    \AbsFc[estr]{Partida p}[e]{$(1)\land(2)\land(3)\land(4)\land(5)$}
+    \tadAxioma{(1)}{mapa(p) $\igobs$ e.mapa}
+    \tadAxioma{(2)}{jugador(p) $\igobs$ e.coordenadaActual}
+    \tadAxioma{(3)}{($\forall$c: coordenada)(c $\in$ chocolates(p) $\implies$ e.tablero[c.first][c.second].third)}
+    \tadAxioma{(4)}{CantMov(p) = e.cantMov}
+    \tadAxioma{(5)}{Inmunidad(p) = e.movsInmunes}
+\end{Representacion}
+\begin{Algoritmos}
+    
+    \begin{algorithm}{\textbf{iNuevaPartida}(\In{t}{mapa}, \In{t}{tablero}) $\to$ $res$ : $estr$}
+        \begin{algorithmic}
+            \State $res \gets <puntero(m), puntero(t), m.inicio, 0, 0, false, false>$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Se le asignan a la estructura interna de la estr punteros hacia el mapa y el tablero y el resto de los valores (tupla, bool y nat) son por copia.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iMover}(\Inout{p}{partida}, \In{d}{dir})}
+        \begin{algorithmic}
+            \If{!(p.gano? || p.perdio?) $\&\&$ p.esMovimientoValido(p.mapa, p.tablero, p.coordenadaActual, dir)}
+                \If{$dir = "DER"$}
+                    \State $p.coordenadaActual \gets <p.coordenadaActual.first + 1, p.coordenadaActual.second>$
+                \Else
+                    \If{$dir = "IZQ"$}
+                        \State $p.coordenadaActual \gets <p.coordenadaActual.first - 1, p.coordenadaActual.second>$
+                    \Else
+                        \If{$dir = "ARR"$}
+                            \State $p.coordenadaActual \gets <p.coordenadaActual.first, p.coordenadaActual.second + 1>$
+                        \Else
+                        \If{$dir = "ABJ"$}
+                            \State $p.coordenadaActual \gets <p.coordenadaActual.first, p.coordenadaActual.second - 1>$
+            \EndIf
+            \State $p.cantMov \gets p.cantMov + 1$
+            \If{p.movsInmunes > 0}
+                \State $p.movsInmunes \gets p.movsInmunes - 1$
+            \EndIf
+            \If{esChocolate?(p.tablero, p.coordernadaActual)}
+                \State $p.movsInmunes \gets p.movsInmunes + 10$
+                \State $p.tablero[p.coordenadaActual.first][p.coordenadaActual.second].third \gets false$
+            \EndIf
+            \If{p.movsInmunes = 0 \&\& seAsusta?(p.mapa, p.tablero, p.coordenadaActual)}
+                \State $p.perdio? \gets true$
+            \Else
+                \If{p.coordenadaActual $igobs$ p.m.llegada}
+                    \State $p.gano? \gets true$
+            \EndIf
+            
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve una referencia inmutable del mapa de la partida
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iMapa}(\In{p}{partida})$\to$ $res$ : $mapa$}
+        \begin{algorithmic}
+            \State $res \gets p.mapa$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve una referencia inmutable del mapa de la partida
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iJugador}(\In{p}{partida})$\to$ $res$ : $coordenada$}
+        \begin{algorithmic}
+            \State $res \gets p.coordenadaActual$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve por copia el la coordenada correspondiente a la que se encuentra el jugador.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iCantMov}(\In{p}{partida})$\to$ $res$ : $nat$}
+        \begin{algorithmic}
+            \State $res \gets p.cantMov$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve por copia el natural correspondiente.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iInmunidad}(\In{p}{partida})$\to$ $res$ : $nat$}
+        \begin{algorithmic}
+            \State $res \gets p.movsINmunes$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve por copia el natural correspondiente.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iGano?}(\In{p}{partida})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State $res \gets p.gano?$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve por copia el bool correspondiente.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iPerdio?}(\In{p}{partida})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State $res \gets p.perdio?$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve por copia el bool correspondiente.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesChocolate?}(\In{t}{tablero}, \In{c}{coordenada})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State $res \gets t[c.first][c.second].third$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve el bool en la posición correspondiente a si hay un chocolate en esa coordenada del mapa.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesFantasma?}(\In{t}{tablero}, \In{c}{coordenada})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State $res \gets t[c.first][c.second].second$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve el bool en la posición correspondiente a si hay un fantasma en esa coordenada del mapa.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesPared?}(\In{t}{tablero}, \In{c}{coordenada})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State $res \gets t[c.first][c.second].first$
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} Devuelve el bool en la posición correspondiente a si hay una pared en esa coordenada del mapa.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesMovimientoValido?}(\In{m}{mapa}, \In{t}{tablero}, \In{c}{coordenada}, \In{d}{direccion})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \If{$dir = "DER"$}
+                \State $res \gets esPosicionValida?(m, t, <c.first+1, c.second>)$
+            \Else
+                \If{$dir = "IZQ"$}
+                    \State $res \gets esPosicionValida?(m, t, <c.first-1, c.second>)$
+                \Else
+                    \If{$dir = "ARR"$}
+                        \State $res \gets esPosicionValida?(m, t, <c.first, c.second+1>)$
+                    \Else
+                    \If{$dir = "ABJ"$}
+                        \State $res \gets esPosicionValida?(m, t, <c.first, c.second-1>)$
+                    \Else
+                        \State $res \gets false$
+            \EndIf
+
+            
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} El algoritmo devuelve true sii la posicion en la direccion pasada es una direccion valida para moverse
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesPosicionValida?}(\In{m}{mapa}, \In{t}{tablero}, \In{c}{coordenada})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \If{$(0 \leq c.first $<$ m.largo$ \&\& $0 \leq c.second $<$ m.alto)$}
+				\State $res \gets esPared(t, c)$
+			\Else
+				\State $res \gets false$	
+			\EndIf
+            
+            \Statex \underline{Complejidad:} $\mathcal{O}(1)$
+            \Statex \underline{Justificación:} El algoritmo checkea que la coordenada pasada este en rango del mapa y de ser asi devuelve el valor bool de la posicion correspondiente a si es pared la coordenada, caso contrario devuelve false.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}[H]{\textbf{iseAsusta?}(\In{m}{mapa}, \In{t}{tablero}, \In{c}{coordenada}) $\to$ $res$ : $bool$}	
+	\begin{algorithmic}
+			\State $aCheckear \gets <<c.first+3, c.second>, <c.first-3, c.second>, <c.first+2, c.second+1>, <c.first+2, c.second-1>, <c.first-2, c.second+1>, <c.first-2, c.second-1>, <c.first+1, c.second+2>, <c.first+1, c.second-2>, <c.first-1, c.second+2>, <c.first-1, c.second-2>, <c.first, c.second+3>, <c.first, c.second-3>>$
+			\State $i \gets 0$
+			
+			 \While{$i < 12$}
+			 	\If{$0 \leq aCheckear[i].first < m.largo$ \&\& $0 \leq aCheckear[i].second < m.alto$}
+                    \If{$esFantasma(t, posACheckear)$}
+                        \State $res \gets true$
+                    \EndIf
+                    \State i \gets i+1
+            \EndIf
+
+			\EndWhile
+			
+			\State $res \gets false$
+    	
+		\medskip
+		\Statex \underline{Complejidad:} $\mathcal{O}(1)$
+		\Statex \underline{Justificación:} El algoritmo crea un vector con todas las posiciones en las que deberia haber un fantasma para que la coordenada pasada como parametro "se asuste", estas son 12, por lo que el ciclo correra 12 veces siempre
+    \end{algorithmic}
+\end{algorithm}	
+
+\end{Algoritmos}
+%------------------------INTERFAZ--------------------------
+\section{Módulo: mapa}
+
+\begin{Interfaz}
+  
+    mapa \textbf{se explica con}: \tadNombre{Mapa}
+  
+    \textbf{géneros}: \TipoVariable{mapa}.
+  
+    \textbf{Operaciones básicas de mapa}
+  
+    \InterfazFuncion{NuevoMapa}{\In{largo}{nat}, \In{alto}{nat}, \In{inicio}{coordenada}, \In{fin}{coordenada},
+        \In{paredes}{conj(coordenada)}, \In{fantasmas}{conj(coordenada)}, \In{chocolates}{conj(coordenada)}}{mapa}%NOMBRE
+    {$res$ $\igobs$ nuevoMapa($largo, alto, inicio, llegada, paredes, fantasmas, chocolates$)}%POST
+    [$\Theta(largo \times alto)$]%COMPLEJIDAD
+    [genera una instancia del TAD mapa.]%DESCRIPCION
+  
+    \InterfazFuncion{Largo}{\In{m}{mapa}}{nat}
+    {$res$ $\igobs$ largo($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve el largo del mapa.]%DESCRIPCIÓN
+
+    \InterfazFuncion{Alto}{\In{m}{mapa}}{nat}
+    {$res$ $\igobs$ alto($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve la altura del mapa.]%DESCRIPCIÓN
+
+    \InterfazFuncion{Inicio}{\In{m}{mapa}}{coordenada}
+    {$res$ $\igobs$ inicio($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve la posición de inicio del mapa.]%DESCRIPCIÓN
+
+    \InterfazFuncion{llegada}{\In{m}{mapa}}{coordenada}
+    {$res$ $\igobs$ llegada($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve la posición de fin del mapa.]%DESCRIPCIÓN
+  
+    \InterfazFuncion{Chocolates}{\In{m}{mapa}}{conj(coordenada)}
+    {$res$ $\igobs$ chocolates($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve el conjunto de posiciones de los chocolates del mapa.]%DESCRIPCIÓN
+    [$res$ es una referencia inmutable a un conjunto de coordenadas.]
+    
+    \InterfazFuncion{Paredes}{\In{m}{mapa}}{conj(coordenada)}
+    {$res$ $\igobs$ paredes($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve el conjunto de posiciones de las paredes del mapa.]%DESCRIPCIÓN
+    [$res$ es una referencia inmutable a un conjunto de coordenadas.]
+    
+    \InterfazFuncion{Fantasmas}{\In{m}{mapa}}{conj(coordenada)}
+    {$res$ $\igobs$ fantasmas($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve el conjunto de posiciones de los fantasmas del mapa.]%DESCRIPCIÓN
+    [$res$ es una referencia inmutable a un conjunto de coordenadas.]
+    
+  \end{Interfaz}
+%-----------------------------REPRESENTACION-----------------------
+\begin{Representacion}
+    
+    La estructura interna del módulo mapa es una tupla de elementos que representan a los observadores del TAD mapa de su mismo nombre.
+  
+    \begin{Estructura}{género}[estr]%genero%estr
+      \begin{Tupla}[estr]%
+        \tupItem{paredes}{conj(coordenada)}%
+        \tupItem{\\fantasmas}{conj(coordenada)}
+        \tupItem{\\chocolates}{conj(coordenada)}
+        \tupItem{\\largo}{nat}%
+        \tupItem{\\alto}{nat}%
+        \tupItem{\\inicio}{coordenada}%
+        \tupItem{\\llegada}{coordenada}%
+      \end{Tupla}
+    \end{Estructura}
+\
+    \Rep[estr][e]{$(1)\land(2)\land(3)\land(4)\land(5)$ \\
+    \textbf{donde:}
+    \tadAxioma{(1)}{enRango($e,inicio$) $\land$ enRango($e,llegada$) $\land$ $\neg(inicio = llegada)$}
+    \tadAxioma{(2)}{e.paredes $\cap$ e.fantasmas $\cap$ e.chocolates $= \emptyset$}
+    \tadAxioma{(3)}{(\paratodo{coordenada}{c})($c \in$ e.paredes $\cup$ e.fantasmas $\cup$ e.chocolates $\rightarrow$ enRango($e,c$))}
+    \tadAxioma{(4)}{$\neg({inicio, llegada}\in$ e.paredes $\cup$ e.fantasmas)}
+    \tadAxioma{(5)}{e.largo $>$ 0 $\land$ e.alto $>$ 0}
+    }   
+~
+    \tadOperacion{enRango}{estr,coordenada}{bool}{}
+    \tadAxioma{enRango($e,c$)}{$\pi_0(c) < e.largo \land \pi_1(c) < e.alto$}
+~
+  
+    \AbsFc[estr]{genero TAD}[e]{nuevoMapa(e.largo, e.alto, e.inicio, e.llegada, e.paredes, e.fantasmas, e.chocolates)}
+
+\end{Representacion}
+
+%------------------------------ALGORITMOS------------------------
+\begin{Algoritmos}
+    
+    \begin{algorithm}[H]{\textbf{iNuevoMapa}(\In{largo}{nat}, \In{alto}{nat}, \In{inicio}{coordenada}, \In{fin}{coordenada},
+        \In{paredes}{conj(coordenada)}, \In{fantasmas}{conj(coordenada)}, \In{chocolates}{conj(coordenada)}) $\to$ $res$ : $estr$}
+        \begin{algorithmic}
+            \State $res \gets <paredes, fantasmas, chocolates, largo, alto, inicio, fin>$
+            \Statex \underline{Complejidad:} $\mathcal{O}(largo \times alto)$
+            \Statex \underline{Justificación:} la complejidad va a depender del conjunto más grande entre
+			paredes, fantasmas, y chocolates, que es como máximo de tamaño largo $\times$ alto.
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iLargo}(\In{m}{estr}) $\to$ $res$ : $nat$}
+        \begin{algorithmic}
+            \State $res \gets$ e.largo \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+        \end{algorithm}
+    
+    \begin{algorithm}[H]{\textbf{iAlto}(\In{m}{estr}) $\to$ $res$ : $nat$}
+        \begin{algorithmic}
+            \State $res \gets$ e.alto \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iInicio}(\In{m}{estr}) $\to$ $res$ : $coordenada$}
+            \begin{algorithmic}
+                \State $res \gets$ e.inicio \Comment $\Theta(1)$
+                \Statex \underline{Complejidad:} $\Theta(1)$
+                \Statex \underline{Justificación:} Coordenada es tupla(nat, nat). Copiar naturales es $\Theta(1)$ y la tupla tiene
+                tamaño constante acotado.
+            \end{algorithmic}
+            \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iLlegada}(\In{m}{estr}) $\to$ $res$ : $coordenada$}
+        \begin{algorithmic}
+            \State $res \gets$ e.llegada \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+            \Statex \underline{Justificación:} Coordenada es tupla(nat, nat). Copiar naturales es $\Theta(1)$ y la tupla tiene
+            tamaño constante acotado.
+        \end{algorithmic}
+        \end{algorithm}
+
+
+    \begin{algorithm}[H]{\textbf{iParedes}(\In{m}{estr}) $\to$ $res$ : $conj(coordenada)$}
+        \begin{algorithmic}
+            \State $res \gets$ e.paredes \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+            \Statex \underline{Justificación:} $res$ es una referencia.
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iFantasmas}(\In{m}{estr}) $\to$ $res$ : $conj(coordenada)$}
+        \begin{algorithmic}
+            \State $res \gets$ e.fantasmas \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+            \Statex \underline{Justificación:} $res$ es una referencia.
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iChocolates}(\In{m}{estr}) $\to$ $res$ : $conj(coordenada)$}
+        \begin{algorithmic}
+            \State $res \gets$ e.chocolates \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+            \Statex \underline{Justificación:} $res$ es una referencia.
+        \end{algorithmic}
+        \end{algorithm}
+
+\end{Algoritmos}
+
+\section{Módulo: Diccionario Trie}
+
+\begin{Interfaz}
+
+  \textbf{se explica con}: \tadNombre{Diccionario}, \tadNombre{Iterador Bidireccional}.
+
+  \textbf{géneros}: \TipoVariable{diccTrie}, \TipoVariable{itDicc}.
+
+  \textbf{Operaciones básicas de diccTrie}
+
+  \InterfazFuncion{Vacío}{}{diccTrie}%
+  {$res$ $\igobs$ vacio}%
+  [$\Theta(1)$]
+  [genera un diccTrie vacío.]
+
+  \InterfazFuncion{Definir}{\Inout{d}{diccTrie}, \In{k}{$string$}, \In{s}{$nat$}}{}
+  [$d \igobs d_0$]
+  {$d$ $\igobs$ definir($d, k, s$)}
+  [$\Theta(l)$, donde $l$ es la longitud de la clave más larga.]
+  [define la clave $k$ con el significado $s$ en el diccionario.  Retorna un iterador al elemento recién agregado.]
+
+  \InterfazFuncion{Definido?}{\In{d}{diccTrie}, \In{k}{$string$}}{bool}
+  {$res$ $\igobs$ def?($d$, $k$)}
+  [$\Theta(l)$, donde $l$ es la longitud de la clave más larga.]
+  [devuelve \texttt{true} si y sólo $k$ está definido en el diccionario.]
+
+  \InterfazFuncion{Significado}{\In{d}{diccTrie}, \In{k}{$string$}}{$nat$}
+  [def?($d$, $k$)]
+  {alias($res$ $\igobs$ Significado($d$, $k$))}
+  [$\Theta(l)$, donde $l$ es la longitud de la clave más larga.]
+  [devuelve el significado de la clave $k$ en $d$.]
+  [$res$ es modificable si y sólo si $d$ es modificable.]
+
+  \InterfazFuncion{Borrar}{\Inout{d}{diccTrie}, \In{k}{$string$}}{}
+  [$d = d_0$ $\land$ def?($d$, $k$)]
+  {$d$ $\igobs$ borrar($d_0, k$)}
+  [$\Theta(l)$, donde $l$ es la longitud de la clave más larga.]
+  [elimina la clave $k$ y su significado de $d$.]
+
+  \InterfazFuncion{\#Claves}{\In{d}{diccTrie}}{nat}
+  {$res$ $\igobs$ \#claves($d$)}
+  [$\Theta(1)$]
+  [devuelve la cantidad de claves del diccionario.]
+
+\end{Interfaz}
+
+\end{document}
