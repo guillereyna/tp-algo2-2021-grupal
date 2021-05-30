@@ -1,0 +1,325 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[paper=a4paper, left=1.5cm, right=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{aed2-diseno, aed2-itef, aed2-tad, aed2-symb}
+\usepackage{caratula}
+% % Apunte de modulos basicos
+%
+\documentclass[a4paper,10pt]{article}
+\usepackage[paper=a4paper, hmargin=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+
+
+\hypersetup{%
+ % Para que el PDF se abra a página completa.
+ pdfstartview= {FitH \hypercalcbp{\paperheight-\topmargin-1in-\headheight}},
+ pdfauthor={Cátedra de Algoritmos y Estructuras de Datos II - DC - UBA},
+ pdfkeywords={Módulos básicos},
+ pdftitle={Módulos básicos de diseño},
+ pdfsubject={Módulos básicos de diseño}
+}
+
+\begin{document}
+
+\titulo{Trabajo Práctico 3: "Pacalgo2"}
+\materia{Algoritmos y Estructuras de Datos II}
+\grupo{Grupo: tomarAgua()}
+
+% CAMBIAR INTEGRANTES
+\integrante{Reyna Maciel, Guillermo José}{393/20}{guille.j.reyna@gmail.com}
+\integrante{Casado Farall, Joaquin}{072/20}{joakinfarall@gmail.com}
+\integrante{Fernández Spandau, Luciana}{368/20}{fernandezspandau@gmail.com}
+\integrante{Chumacero, Carlos Nehemias}{492/20}{chumacero2013@gmail.com}
+
+\maketitle
+
+
+
+\section{Ejercicios}
+
+\section{Módulo: Partida}
+
+\begin{Representacion}
+  
+    \begin{Estructura}{Partida}[estr]%genero%estr
+      \begin{Tupla}[estr]%
+        \tupItem{mapa}{puntero(mapa)}%
+        \tupItem{\\tablero}{puntero(tablero)}
+        \tupItem{\\coordenadaActual}{coordenada}
+        \tupItem{\\cantMov}{nat}%
+        \tupItem{\\movsInmunes}{nat}%
+        \tupItem{\\perdio?}{bool}%
+        \tupItem{\\gano?}{bool}%
+      \end{Tupla}
+    \end{Estructura}
+\
+    \Rep[estr][e]{$(1)\land(2)\land(3)\land(4)\land(5)\land(6)$ \\
+    \textbf{donde:}
+    \tadAxioma{(1)}{$\neg$(e.gano? $\lor$ e.perdio?) $\lor$ (e.gano? $=$ $\neg$e.perdio?)}
+    \tadAxioma{(2)}{(0 $\leq$ e.coordenadaActual.first $<$ e.mapa.largo) $\land$ 
+    (0 $\leq$ e.coordenadaActual.second $<$ e.mapa.alto)}
+    \tadAxioma{(3)}{long(e.tablero) = e.mapa.largo $\land$ long(e.tablero[0]) = e.mapa.alto $\land$
+    (\forall c: coordenada)((c $\in$ e.mapa.chocolates $\implies$ e.tablero[c.first][c.second].third) $\lor$ (c $\in$ e.mapa.fantasmas $\iff$ e.tablero[c.first][c.second].second
+    $\lor$ (c $\in$ e.mapa.paredes $\iff$ e.tablero[c.first][c.second].first) )}
+    \tadAxioma{(4)}{e.gano? $\iff$ e.coordenadaActual $\igobs$ e.mapa.llegada}
+    \tadAxioma{(5)}{e.perdio? $\iff$ (seAsusta?(e.mapa, e.tablero, e.coordenadaActual) $\land$ e.movsInmunes = 0)}
+    \tadAxioma{(6)}{$\neg$(e.tablero[e.coordenadaActual.first][e.coordenadaActual.second].first)}
+    }
+\
+    \AbsFc[estr]{Partida p}[e]{$(1)\land(2)\land(3)\land(4)\land(5)$}
+    \tadAxioma{(1)}{mapa(p) $\igobs$ e.mapa}
+    \tadAxioma{(2)}{jugador(p) $\igobs$ e.coordenadaActual}
+    \tadAxioma{(3)}{($\forall$c: coordenada)(c $\in$ chocolates(p) $\implies$ e.tablero[c.first][c.second].third)}
+    \tadAxioma{(4)}{CantMov(p) = e.cantMov}
+    \tadAxioma{(5)}{Inmunidad(p) = e.movsInmunes}
+\end{Representacion}
+
+\begin{Interfaz}
+  \InterfazFuncion{NuevaPartida}
+  {\In{m}{mapa}, \In{t}{tablero}}{partida}%
+  {$res$ $\igobs$ NuevaPartida(m)}%
+  [$O(1)$]
+  [genera una nueva partida.]
+  [Tanto el mapa como el tablero son pasados por referencia y la partida]
+  
+  \InterfazFuncion{Mover}
+  {\Inout{p}{partida}, \In{d}{direccion}}{}%
+  [p $\igobs$ p_0 \land $\neg$( gano?(p) $\lor$ perdio?(p) )]%
+  {$res$ $\igobs$ Mover(p_0, d)}
+  [$O(1)$]
+  [mueve la coordenada actual del jugador en la direccion indicada en el parametro.]
+  
+  \InterfazFuncion{Mapa}
+  {\In{p}{partida}}{mapa}%
+  {$res$ $\igobs$ Mapa(p)}%
+  [$O(1)$]
+  [Devuelve el mapa de la partida]
+  [Devuelve una referencia inmutable.]
+  
+  \InterfazFuncion{Jugador}
+  {\In{p}{partida}}{coordenada}%
+  {$res$ $\igobs$ Jugador(p)}
+  [$O(1)$]
+  [Devuelve la coordenada actual del jugador.]
+  [Devuelve la coordenada por copia.]
+  
+  \InterfazFuncion{CantMov}
+  {\In{p}{partida}}{nat}%
+  {$res$ $\igobs$ CantMov(p)}
+  [$O(1)$]
+  [Devuelve la cantidad de movimientos que ha realizado el jugador en la partida.]
+  [Devuelve la cantidad de movimientos por copia.]
+  
+  \InterfazFuncion{Inmunidad}
+  {\In{p}{partida}}{nat}%
+  {$res$ $\igobs$ Inmunidad(p)}
+  [$O(1)$]
+  [Devuelve la cantidad de movimientos con inmunidad restantes.]
+  [Devuelve la cantidad de movimientos por copia]
+  
+  \InterfazFuncion{Gano?}
+  {\In{p}{partida}}{bool}%
+  {$res$ $\igobs$ Gano?(p)}
+  [$O(1)$]
+  [Devuelve true sii la partida termino y el jugador logro llegar al punto de llegada.]
+  [Devuelve el booleano por copia.]
+  
+  \InterfazFuncion{Perdio?}
+  {\In{p}{partida}}{bool}%
+  {$res$ $\igobs$ Perdio?(p)}
+  [$O(1)$]
+  [Devuelve true sii la partida termino y el jugador se encuentra en una posición en la cual es asustado por un fastasma.]
+  [Devuelve el booleano por copia.]
+  
+\end{Interfaz}
+
+\begin{Algoritmos}
+    
+    \begin{algorithm}{\textbf{iNuevaPartida}(\In{t}{mapa}, \In{t}{tablero}) $\to$ $res$ : $estr$}
+        \begin{algorithmic}
+            \State $res \gets <puntero(m), puntero(t), m.inicio, 0, 0, false, false>$
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Se le asignan a la estructura interna de la estr punteros hacia el mapa y el tablero y el resto de los valores (tupla, bool y nat) son por copia.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iMover}(\Inout{p}{partida}, \In{d}{dir})}
+        \begin{algorithmic}
+            \If{!(p.gano? || p.perdio?) $\&\&$ p.esMovimientoValido(p.mapa, p.tablero, p.coordenadaActual, dir)}
+                \If{$dir = "DER"$}
+                    \State $p.coordenadaActual \gets <p.coordenadaActual.first + 1, p.coordenadaActual.second>$
+                \Else
+                    \If{$dir = "IZQ"$}
+                        \State $p.coordenadaActual \gets <p.coordenadaActual.first - 1, p.coordenadaActual.second>$
+                    \Else
+                        \If{$dir = "ARR"$}
+                            \State $p.coordenadaActual \gets <p.coordenadaActual.first, p.coordenadaActual.second + 1>$
+                        \Else
+                        \If{$dir = "ABJ"$}
+                            \State $p.coordenadaActual \gets <p.coordenadaActual.first, p.coordenadaActual.second - 1>$
+            \EndIf
+            \State $p.cantMov \gets p.cantMov + 1$
+            \If{p.movsInmunes > 0}
+                \State $p.movsInmunes \gets p.movsInmunes - 1$
+            \EndIf
+            \If{esChocolate?(p.tablero, p.coordernadaActual)}
+                \State $p.movsInmunes \gets p.movsInmunes + 10$
+                \State $p.tablero[p.coordenadaActual.first][p.coordenadaActual.second].third \gets false$
+            \EndIf
+            \If{p.movsInmunes = 0 \&\& seAsusta?(p.mapa, p.tablero, p.coordenadaActual)}
+                \State $p.perdio? \gets true$
+            \Else
+                \If{p.coordenadaActual $igobs$ p.m.llegada}
+                    \State $p.gano? \gets true$
+            \EndIf
+            
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve una referencia inmutable del mapa de la partida
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iMapa}(\In{p}{partida})$\to$ $res$ : $mapa$}
+        \begin{algorithmic}
+            \State return p.mapa
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve una referencia inmutable del mapa de la partida
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iJugador}(\In{p}{partida})$\to$ $res$ : $coordenada$}
+        \begin{algorithmic}
+            \State return p.coordenadaActual
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve por copia el la coordenada correspondiente a la que se encuentra el jugador.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iCantMov}(\In{p}{partida})$\to$ $res$ : $nat$}
+        \begin{algorithmic}
+            \State return p.cantMov
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve por copia el natural correspondiente.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iInmunidad}(\In{p}{partida})$\to$ $res$ : $nat$}
+        \begin{algorithmic}
+            \State return p.movsINmunes
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve por copia el natural correspondiente.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iGano?}(\In{p}{partida})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State return p.gano?
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve por copia el bool correspondiente.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iPerdio?}(\In{p}{partida})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State return p.perdio?
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve por copia el bool correspondiente.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesChocolate?}(\In{t}{tablero}, \In{c}{coordenada})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State return t[c.first][c.second].third
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve el bool en la posición correspondiente a si hay un chocolate en esa coordenada del mapa.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesFantasma?}(\In{t}{tablero}, \In{c}{coordenada})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State return t[c.first][c.second].second
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve el bool en la posición correspondiente a si hay un fantasma en esa coordenada del mapa.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesPared?}(\In{t}{tablero}, \In{c}{coordenada})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \State return t[c.first][c.second].first
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} Devuelve el bool en la posición correspondiente a si hay una pared en esa coordenada del mapa.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesMovimientoValido?}(\In{m}{mapa}, \In{t}{tablero}, \In{c}{coordenada}, \In{d}{direccion})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \If{$dir = "DER"$}
+                \State return esPosicionValida?(m, t, $<c.first+1, c.second>$)
+            \Else
+                \If{$dir = "IZQ"$}
+                    \State return esPosicionValida?(m, t, $<c.first-1, c.second>$)
+                \Else
+                    \If{$dir = "ARR"$}
+                        \State return esPosicionValida?(m, t, $<c.first, c.second+1>$)
+                    \Else
+                    \If{$dir = "ABJ"$}
+                        \State return esPosicionValida?(m, t, $<c.first, c.second-1>$)
+                    \Else
+                        \State return false
+            \EndIf
+
+            
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} El algoritmo devuelve true sii la posicion en la direccion pasada es una direccion valida para moverse
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}{\textbf{iesPosicionValida?}(\In{m}{mapa}, \In{t}{tablero}, \In{c}{coordenada})$\to$ $res$ : $bool$}
+        \begin{algorithmic}
+            \If{$(0 \leq c.first $<$ m.largo$ \&\& $0 \leq c.second $<$ m.alto)$}
+				\State return $esPared(t, c)$
+			\Else
+				\State return $false$	
+			\EndIf
+            
+            \State \underline{Complejidad:} $\mathcal{O}(1)$
+            \State \underline{Justificación:} El algoritmo checkea que la coordenada pasada este en rango del mapa y de ser asi devuelve el valor bool de la posicion correspondiente a si es pared la coordenada, caso contrario devuelve false.
+        \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}[H]{\textbf{iseAsusta?}(\In{m}{mapa}, \In{t}{tablero}, \In{c}{coordenada}) $\to$ $res$ : $bool$}	
+	\begin{algorithmic}
+			\State $aCheckear \gets <<c.first+3, c.second>, <c.first-3, c.second>, <c.first+2, c.second+1>, <c.first+2, c.second-1>, <c.first-2, c.second+1>, <c.first-2, c.second-1>, <c.first+1, c.second+2>, <c.first+1, c.second-2>, <c.first-1, c.second+2>, <c.first-1, c.second-2>, <c.first, c.second+3>, <c.first, c.second-3>>$
+			\State $i \gets 0$
+			
+			 \While{$i < 12$}
+			 	\If{$0 \leq aCheckear[i].first < m.largo$ \&\& $0 \leq aCheckear[i].second < m.alto$}
+                    \If{$esFantasma(t, posACheckear)$}
+                        \State return true
+                    \EndIf
+                    \State i \gets i+1
+            \EndIf
+
+			\EndWhile
+			
+			\State return false
+    	
+		\medskip
+		\Statex \underline{Complejidad:} $\mathcal{O}(1)$
+		\Statex \underline{Justificación:} El algoritmo crea un vector con todas las posiciones en las que deberia haber un fantasma para que la coordenada pasada como parametro "se asuste", estas son 12, por lo que el ciclo correra 12 veces siempre
+    \end{algorithmic}
+\end{algorithm}	
+
+\end{Algoritmos}
+
+\end{document}
