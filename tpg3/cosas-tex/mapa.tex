@@ -1,0 +1,195 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper, hmargin=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+\usepackage{caratula}
+
+\begin{document}
+
+\titulo{Trabajo Práctico 3: "Pacalgo2"}
+\materia{Algoritmos y Estructuras de Datos II}
+\grupo{Grupo: tomarAgua()}
+
+% CAMBIAR INTEGRANTES
+\integrante{Reyna Maciel, Guillermo José}{393/20}{guille.j.reyna@gmail.com}
+\integrante{Casado Farall, Joaquin}{072/20}{joakinfarall@gmail.com}
+\integrante{Fernández Spandau, Luciana}{368/20}{fernandezspandau@gmail.com}
+\integrante{Chumacero, Carlos Nehemias}{492/20}{chumacero2013@gmail.com}
+
+\maketitle
+
+
+%------------------------INTERFAZ--------------------------
+\section{Módulo: mapa}
+
+\begin{Interfaz}
+  
+    mapa \textbf{se explica con}: \tadNombre{Mapa}
+  
+    \textbf{géneros}: \TipoVariable{mapa}.
+  
+    \textbf{Operaciones básicas de mapa}
+  
+    \InterfazFuncion{NuevoMapa}{\In{largo}{nat}, \In{alto}{nat}, \In{inicio}{coordenada}, \In{fin}{coordenada},
+        \In{paredes}{conj(coordenada)}, \In{fantasmas}{conj(coordenada)}, \In{chocolates}{conj(coordenada)}}{mapa}%NOMBRE
+    {$res$ $\igobs$ nuevoMapa($largo, alto, inicio, llegada, paredes, fantasmas, chocolates$)}%POST
+    [$\Theta(largo \times alto)$]%COMPLEJIDAD
+    [genera una instancia del TAD mapa.]%DESCRIPCION
+  
+    \InterfazFuncion{Largo}{\In{m}{mapa}}{nat}
+    {$res$ $\igobs$ largo($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve el largo del mapa.]%DESCRIPCIÓN
+
+    \InterfazFuncion{Alto}{\In{m}{mapa}}{nat}
+    {$res$ $\igobs$ alto($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve la altura del mapa.]%DESCRIPCIÓN
+
+    \InterfazFuncion{Inicio}{\In{m}{mapa}}{coordenada}
+    {$res$ $\igobs$ inicio($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve la posición de inicio del mapa.]%DESCRIPCIÓN
+
+    \InterfazFuncion{llegada}{\In{m}{mapa}}{coordenada}
+    {$res$ $\igobs$ llegada($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve la posición de fin del mapa.]%DESCRIPCIÓN
+  
+    \InterfazFuncion{Chocolates}{\In{m}{mapa}}{conj(coordenada)}
+    {$res$ $\igobs$ chocolates($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve el conjunto de posiciones de los chocolates del mapa.]%DESCRIPCIÓN
+    [$res$ es una referencia inmutable a un conjunto de coordenadas.]
+    
+    \InterfazFuncion{Paredes}{\In{m}{mapa}}{conj(coordenada)}
+    {$res$ $\igobs$ paredes($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve el conjunto de posiciones de las paredes del mapa.]%DESCRIPCIÓN
+    [$res$ es una referencia inmutable a un conjunto de coordenadas.]
+    
+    \InterfazFuncion{Fantasmas}{\In{m}{mapa}}{conj(coordenada)}
+    {$res$ $\igobs$ fantasmas($m$)}%POST
+    [$\Theta(1)$]
+    [devuelve el conjunto de posiciones de los fantasmas del mapa.]%DESCRIPCIÓN
+    [$res$ es una referencia inmutable a un conjunto de coordenadas.]
+    
+  \end{Interfaz}
+%-----------------------------REPRESENTACION-----------------------
+\begin{Representacion}
+    
+    La estructura interna del módulo mapa es una tupla de elementos que representan a los observadores del TAD mapa de su mismo nombre.
+  
+    \begin{Estructura}{género}[estr]%genero%estr
+      \begin{Tupla}[estr]%
+        \tupItem{paredes}{conj(coordenada)}%
+        \tupItem{\\fantasmas}{conj(coordenada)}
+        \tupItem{\\chocolates}{conj(coordenada)}
+        \tupItem{\\largo}{nat}%
+        \tupItem{\\alto}{nat}%
+        \tupItem{\\inicio}{coordenada}%
+        \tupItem{\\llegada}{coordenada}%
+      \end{Tupla}
+    \end{Estructura}
+\
+    \Rep[estr][e]{$(1)\land(2)\land(3)\land(4)\land(5)$ \\
+    \textbf{donde:}
+    \tadAxioma{(1)}{enRango($e,inicio$) $\land$ enRango($e,llegada$) $\land$ $\neg(inicio = llegada)$}
+    \tadAxioma{(2)}{e.paredes $\cap$ e.fantasmas $\cap$ e.chocolates $= \emptyset$}
+    \tadAxioma{(3)}{(\paratodo{coordenada}{c})($c \in$ e.paredes $\cup$ e.fantasmas $\cup$ e.chocolates $\rightarrow$ enRango($e,c$))}
+    \tadAxioma{(4)}{$\neg({inicio, llegada}\in$ e.paredes $\cup$ e.fantasmas)}
+    \tadAxioma{(5)}{e.largo $>$ 0 $\land$ e.alto $>$ 0}
+    }   
+~
+    \tadOperacion{enRango}{estr,coordenada}{bool}{}
+    \tadAxioma{enRango($e,c$)}{$\pi_0(c) < e.largo \land \pi_1(c) < e.alto$}
+~
+  
+    \AbsFc[estr]{genero TAD}[e]{nuevoMapa(e.largo, e.alto, e.inicio, e.llegada, e.paredes, e.fantasmas, e.chocolates)}
+
+\end{Representacion}
+
+%------------------------------ALGORITMOS------------------------
+\begin{Algoritmos}
+    
+    \begin{algorithm}[H]{\textbf{iNuevoMapa}(\In{largo}{nat}, \In{alto}{nat}, \In{inicio}{coordenada}, \In{fin}{coordenada},
+        \In{paredes}{conj(coordenada)}, \In{fantasmas}{conj(coordenada)}, \In{chocolates}{conj(coordenada)}) $\to$ $res$ : $estr$}
+        \begin{algorithmic}
+            \State $res \gets <paredes, fantasmas, chocolates, largo, alto, inicio, fin>$
+            \Statex \underline{Complejidad:} $\mathcal{O}(largo \times alto)$
+            \Statex \underline{Justificación:} la complejidad va a depender del conjunto más grande entre
+			paredes, fantasmas, y chocolates, que es como máximo de tamaño largo $\times$ alto.
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iLargo}(\In{m}{estr}) $\to$ $res$ : $nat$}
+        \begin{algorithmic}
+            \State $res \gets$ e.largo \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+        \end{algorithm}
+    
+    \begin{algorithm}[H]{\textbf{iAlto}(\In{m}{estr}) $\to$ $res$ : $nat$}
+        \begin{algorithmic}
+            \State $res \gets$ e.alto \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iInicio}(\In{m}{estr}) $\to$ $res$ : $coordenada$}
+            \begin{algorithmic}
+                \State $res \gets$ e.inicio \Comment $\Theta(1)$
+                \Statex \underline{Complejidad:} $\Theta(1)$
+                \Statex \underline{Justificación:} Coordenada es tupla(nat, nat). Copiar naturales es $\Theta(1)$ y la tupla tiene
+                tamaño constante acotado.
+            \end{algorithmic}
+            \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iLlegada}(\In{m}{estr}) $\to$ $res$ : $coordenada$}
+        \begin{algorithmic}
+            \State $res \gets$ e.llegada \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+            \Statex \underline{Justificación:} Coordenada es tupla(nat, nat). Copiar naturales es $\Theta(1)$ y la tupla tiene
+            tamaño constante acotado.
+        \end{algorithmic}
+        \end{algorithm}
+
+
+    \begin{algorithm}[H]{\textbf{iParedes}(\In{m}{estr}) $\to$ $res$ : $conj(coordenada)$}
+        \begin{algorithmic}
+            \State $res \gets$ e.paredes \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+            \Statex \underline{Justificación:} $res$ es una referencia.
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iFantasmas}(\In{m}{estr}) $\to$ $res$ : $conj(coordenada)$}
+        \begin{algorithmic}
+            \State $res \gets$ e.fantasmas \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+            \Statex \underline{Justificación:} $res$ es una referencia.
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}[H]{\textbf{iChocolates}(\In{m}{estr}) $\to$ $res$ : $conj(coordenada)$}
+        \begin{algorithmic}
+            \State $res \gets$ e.chocolates \Comment $\Theta(1)$
+            \Statex \underline{Complejidad:} $\Theta(1)$
+            \Statex \underline{Justificación:} $res$ es una referencia.
+        \end{algorithmic}
+        \end{algorithm}
+
+\end{Algoritmos}
+
+%\section{Aclaraciones}
+%\begin{itemize}
+%    \item aclaracion
+%\end{itemize}
+
+\end{document}
