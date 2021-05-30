@@ -407,7 +407,7 @@
                             \State $p.coordenadaActual \gets <p.coordenadaActual.first, p.coordenadaActual.second - 1>$
             \EndIf
             \State $p.cantMov \gets p.cantMov + 1$
-            \If{p.movsInmunes > 0}
+            \If{p.movsInmunes $>$ 0}
                 \State $p.movsInmunes \gets p.movsInmunes - 1$
             \EndIf
             \If{esChocolate?(p.tablero, p.coordernadaActual)}
@@ -417,7 +417,7 @@
             \If{p.movsInmunes = 0 \&\& seAsusta?(p.mapa, p.tablero, p.coordenadaActual)}
                 \State $p.perdio? \gets true$
             \Else
-                \If{p.coordenadaActual $igobs$ p.m.llegada}
+                \If{p.coordenadaActual $\igobs$ p.m.llegada}
                     \State $p.gano? \gets true$
             \EndIf
             
