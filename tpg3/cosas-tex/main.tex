@@ -126,14 +126,14 @@ Jugador \textbf{es} string
         \tupItem{m}{puntero(mapa)}%
         \tupItem{p}{puntero(partida}%
         \tupItem{tablero}{array(array(tupla(bool, bool, bool)))}
-        \tupItem{hayAlguine}{bool}
+        \tupItem{hayAlguien}{bool}
         \tupItem{jugador}{string}
         \tupItem{ranking}{diccTrie(string, nat)}
       \end{Tupla}
     \end{Estructura}
   
   
-    \Rep[estr][e]{$(1)\land(2)$ \\
+    \Rep[estr][e]{$(1)\land(2)\land(3)$ \\
     \textbf{donde:}
     \tadAxioma{(1)}{e.m = (e.p \rightarrow mapa)}
     \tadAxioma{(2)}{e.paredes $\cap$ e.fantasmas $\cap$ e.chocolates $= \emptyset$}
