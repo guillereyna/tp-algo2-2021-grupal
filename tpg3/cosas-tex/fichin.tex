@@ -67,6 +67,11 @@
     [Devuelve el mapa actual.]%DESCRIPCION
     [Se devuelve una referencia inmutable.]
     
+    %ALGUIEN JUGANDO?
+    \InterfazFuncion{AlguienJugando?}{\In{f}{fichin}}{bool}%NOMBRE
+    {$res$ $\igobs$ alguienJugando?(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve true si hay alguien jugando, de lo contrario devuelve false]%DESCRIPCION
     
     %JUGADOR ACTUAL
     \InterfazFuncion{JugadorActual}{\In{f}{fichin}}{jugador}%NOMBRE
@@ -76,14 +81,31 @@
     [Devuelve el nombre del jugador actual]%DESCRIPCION
     [Se devuelve una referencia inmutable.]
     
+    %PARTIDA ACTUAL
+    \InterfazFuncion{PartidaActual}{\In{f}{fichin}}{partida}%NOMBRE
+    [alguienJugando?(f)]
+    {$res$ $\igobs$ jugadorActual(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve una referencia a la partida actual]%DESCRIPCION
+    [Se devuelve una referencia inmutable.]
+    
     
     %RANKING
-    \InterfazFuncion{JugadorActual}{\In{f}{fichin}}{ranking}%NOMBRE
+    \InterfazFuncion{Ranking}{\In{f}{fichin}}{ranking}%NOMBRE
     {$res$ $\igobs$ ranking(f)}%POST
     [$\Theta(1)$]%COMPLEJIDAD
     [Devuelve el diccionario usado en el fichin]%DESCRIPCION
     [Se devuelve una referencia inmutable.]
-
+    
+    
+    %OBJETIVO
+    \InterfazFuncion{Objetivo}{\In{f}{fichin}, \Out{t}{tupla(jugador, nat)}}{bool}%NOMBRE
+    [alguienJugando?(f)]
+    {$res$ $\igobs$ objetivo(f, t)}%POST
+    [$\Theta(\# J.|J|)$]%COMPLEJIDAD
+    [Devuelve solo si existe una tupla con el nombre y puntaje del jugador que supera inmediatamente en el ranking al jugador actual.]%DESCRIPCION
+    
+    
   \end{Interfaz}
 
 
