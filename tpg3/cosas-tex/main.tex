@@ -119,12 +119,16 @@ Jugador \textbf{es} string
 %-----------------------------REPRESENTACION-----------------------
 \begin{Representacion}
     
-    %Descripción de la estructura de representación
+    La estructura interna del módulo fichin es una tupla de elementos que representan a los observadores 
+    
+    del TAD fichin, además la tupla tambien cuenta con una matriz denominada tablero que es una representacion del 
+    
+    mapa.
   
     \begin{Estructura}{fichin}[estr]%genero%estr
       \begin{Tupla}[estr]%
         \tupItem{m}{puntero(mapa)}%
-        \tupItem{p}{puntero(partida}%
+        \tupItem{p}{puntero(partida)}%
         \tupItem{tablero}{array(array(tupla(bool, bool, bool)))}
         \tupItem{hayAlguien}{bool}
         \tupItem{jugador}{string}
