@@ -119,25 +119,21 @@ Jugador \textbf{es} string
 %-----------------------------REPRESENTACION-----------------------
 \begin{Representacion}
     
-    La estructura interna del módulo fichin es una tupla de elementos que representan a los observadores 
-    
-    del TAD fichin, además la tupla tambien cuenta con una matriz denominada tablero que es una representacion del 
-    
-    mapa.
+    %Descripción de la estructura de representación
   
     \begin{Estructura}{fichin}[estr]%genero%estr
       \begin{Tupla}[estr]%
         \tupItem{m}{puntero(mapa)}%
-        \tupItem{p}{puntero(partida)}%
+        \tupItem{p}{puntero(partida}%
         \tupItem{tablero}{array(array(tupla(bool, bool, bool)))}
-        \tupItem{hayAlguien}{bool}
+        \tupItem{hayAlguine}{bool}
         \tupItem{jugador}{string}
         \tupItem{ranking}{diccTrie(string, nat)}
       \end{Tupla}
     \end{Estructura}
   
   
-    \Rep[estr][e]{$(1)\land(2)\land(3)$ \\
+    \Rep[estr][e]{$(1)\land(2)$ \\
     \textbf{donde:}
     \tadAxioma{(1)}{e.m = (e.p \rightarrow mapa)}
     \tadAxioma{(2)}{e.paredes $\cap$ e.fantasmas $\cap$ e.chocolates $= \emptyset$}
@@ -173,12 +169,12 @@ Jugador \textbf{es} string
 
     \begin{algorithm}[H]{\textbf{iNuevoFichín}(\In{m}{puntero(mapa)})$\to$ $res$ : estr}
         \begin{algorithmic}
-            \State res.mapa <- m
-            \State res.tablero <- inicializarTablero(m) \Comment{$\mathcal{O}(c + p + f)$}
-            \State res.partida <- null
-            \State res.enCurso <- false
-            \State res.ranking <- Vacio()
-            \State res.jugador <- ''''
+            \State res.mapa $\to$ m
+            \State res.tablero $\to$ inicializarTablero(m) \Comment{$\mathcal{O}(c + p + f)$}
+            \State res.partida $\to$ null
+            \State res.enCurso $\to$ false
+            \State res.ranking $\to$ Vacio()
+            \State res.jugador $\to$ ''''
             \Statex \underline{Complejidad:} $\mathcal{O}(c + p + f)$, donde $c = \#chocolates$, $p = \#paredes$, $f = \#fantasmas$
         \end{algorithmic}
     \end{algorithm}
@@ -203,10 +199,10 @@ Jugador \textbf{es} string
             \State Mover(f$\to$p, d)
             \If{Ganó?(f$\to$p) $\land$ (Def?(f.jugador, f.ranking) $\land$ CantMov(f$\to$p) $<$ f.ranking[f.jugador]) \\ $\lor$ (¬ Def?(f.jugador, f.ranking))}
                 \State Definir(f.ranking, f.jugador, CantMov(f$\to$p))
-                \State f.hayAlguien <- false
+                \State f.hayAlguien $\to$ false
             \Else
                 \If{SeAsustó?(f$\to$p, d)}
-                    \State f.hayAlguien <- false
+                    \State f.hayAlguien $\to$ false
                 \EndIf
             \EndIf
             \State \underline{Complejidad:} $\theta(1)$ si no ganó, lo único que se hace es Mover(partida, dirección) y eso cuesta $\theta(1)$. Sino, hay que buscarlo en el ranking y eso cuesta $\theta(|J|)$.
@@ -226,7 +222,7 @@ Jugador \textbf{es} string
     
     \begin{algorithm}[H]{\textbf{iAlguienJugando?(\In{f}{estr})}}$\to$ $res$: bool
         \begin{algorithmic}
-            \State res <- f.hayAlguien
+            \State res $\to$ f.hayAlguien
             \State \underline{Complejidad:} $\theta(1)$
         \end{algorithmic}
     \end{algorithm}
@@ -243,7 +239,7 @@ Jugador \textbf{es} string
 
     \begin{algorithm}[H]{\textbf{iPartidaActual?(\In{f}{estr})}}$\to$ $res$: partida
         \begin{algorithmic}
-            \State res <- f$\to$partida
+            \State res $\to$ f$\to$partida
             \State \underline{Complejidad:} $\theta(1)$
         \end{algorithmic}
     \end{algorithm}
@@ -269,15 +265,15 @@ Jugador \textbf{es} string
     \begin{algorithm}[H]{\textbf{iInicializarTablero}(\In{m}{mapa}) $\to$ $res$ : array(array(tupla(bool, bool, bool)))}
         \begin{algorithmic}
         
-            \State t <- arreglo[largo(m)] de arreglo[alto(m)] de tupla ⟨bool, bool, bool⟩(false)
+            \State t $\to$ arreglo[largo(m)] de arreglo[alto(m)] de tupla ⟨bool, bool, bool⟩(false)
 		    \For{c in chocolates(m)} \Comment{$\theta(c)$}
-			    \State $\pi_2(t[\pi_0(c)][\pi_1(c)])$<- true
+			    \State $\pi_2(t[\pi_0(c)][\pi_1(c)])$$\to$ true
 		    \EndFor
 		    \For{p in paredes(m)} \Comment{$\theta(p)$}
-			    \State $\pi_0(t[\pi_0(p)][\pi_1(p)])$ <- true
+			    \State $\pi_0(t[\pi_0(p)][\pi_1(p)])$ $\to$ true
 	        \EndFor
 		    \For {f in fantasmas(m)} \Comment{$\theta(f)$}
-			    \State $\pi_1(t[\pi_0(f)][\pi_1(f)])$ <- true
+			    \State $\pi_1(t[\pi_0(f)][\pi_1(f)])$ $\to$ true
 		    \EndFor
             
         
