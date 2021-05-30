@@ -1,0 +1,207 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper, hmargin=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+\usepackage{caratula}
+
+\begin{document}
+
+\titulo{Trabajo Práctico 3: "Pacalgo2"}
+\materia{Algoritmos y Estructuras de Datos II}
+\grupo{Grupo: tomarAgua()}
+
+% CAMBIAR INTEGRANTES
+\integrante{Reyna Maciel, Guillermo José}{393/20}{guille.j.reyna@gmail.com}
+\integrante{Casado Farall, Joaquin}{072/20}{joakinfarall@gmail.com}
+\integrante{Fernández Spandau, Luciana}{368/20}{fernandezspandau@gmail.com}
+\integrante{Chumacero, Carlos Nehemias}{492/20}{chumacero2013@gmail.com}
+
+\maketitle
+
+
+%------------------------INTERFAZ--------------------------
+\section{}
+
+\begin{Interfaz}
+
+    \textbf{parámetros formales}\hangindent=2\parindent\\
+    \parbox{1.7cm}{\textbf{géneros}}$\alpha$\\
+    \parbox[t]{1.7cm}{\textbf{función}}\parbox[t]{.5\textwidth-\parindent-1.7cm}{%
+      \InterfazFuncion{funcionInterfaz}{\In{a}{$\alpha$}}{bool}
+      [pre]%pres
+      {post}%post
+      [$\Theta(n)$]%complejidad
+      [descripción de función]%descripcion
+    }%
+  
+    \textbf{se explica con}: \tadNombre{Fichin}
+  
+    \textbf{géneros}: \TipoVariable{fichin}.
+  
+    \textbf{Operaciones básicas de fichin}
+  
+    %NUEVO FICHIN
+    \InterfazFuncion{NuevoFichin}{\In{m}{mapa}}{fichin}%NOMBRE
+    {$res$ $\igobs$ nuevoFichin(m)}%POST
+    [$\Theta(c + \#paredes + \#fantasmas)$]%COMPLEJIDAD
+    [genera una instancia del Fichin.]%DESCRIPCION
+    
+    %NUEVA PARTIDA
+    \InterfazFuncion{NuevaPartida}{\Inout{f}{fichin}, \In{j}{jugador}}{}
+    [f = f_0 $ \land$ $\neg$alguienJugando?(f_0)]%PRE
+    {f $\igobs$ nuevaPartida(f_0, j}%POST
+    [$\Theta(c)$]
+    [Crea una partida para el jugador especificado, en este proceso tambien se restauran los chocolates en el mapa.]%DESCRIPCIÓN
+    %ALIASING
+
+    %MOVER
+    \InterfazFuncion{Mover}{\Inout{f}{fichin}, \In{d}{direccion}}{}
+    [f = f_0 $ \land$ $\neg$alguienJugando?(f_0)]%PRE
+    {f $\igobs$ nuevaPartida(f_0, d}%POST
+    [$\Theta(1)$ normalmente / $\Theta(|J|)$ cuando ganó o perdió.]
+    [Realiza el movimiento del jugador.]%DESCRIPCIÓN
+    %ALIASING
+    
+     %MAPA
+    \InterfazFuncion{Mapa}{\In{f}{fichin}}{mapa}%NOMBRE
+    {$res$ $\igobs$ mapa(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve el mapa actual.]%DESCRIPCION
+    [Se devuelve una referencia inmutable.]
+    
+    
+    %JUGADOR ACTUAL
+    \InterfazFuncion{JugadorActual}{\In{f}{fichin}}{jugador}%NOMBRE
+    [alguienJugando?(f)]
+    {$res$ $\igobs$ jugadorActual(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve el nombre del jugador actual]%DESCRIPCION
+    [Se devuelve una referencia inmutable.]
+    
+    
+    %RANKING
+    \InterfazFuncion{JugadorActual}{\In{f}{fichin}}{ranking}%NOMBRE
+    {$res$ $\igobs$ ranking(f)}%POST
+    [$\Theta(1)$]%COMPLEJIDAD
+    [Devuelve el diccionario usado en el fichin]%DESCRIPCION
+    [Se devuelve una referencia inmutable.]
+    
+    
+    
+  
+  \Titulo{Especificación de las operaciones auxiliares utilizadas en la interfaz}
+  
+      \tadOperacion{nombreOp($a$)}{parametro/p}{salida}{restriccion}
+      \tadAxioma{nombreOp($a$)}{axiomas}
+
+  \end{Interfaz}
+
+
+
+%-----------------------------REPRESENTACION-----------------------
+\section{}
+\begin{Representacion}
+    
+    Descripción de la estructura de representación
+  
+    \begin{Estructura}{fichin}[estr]%genero%estr
+      \begin{Tupla}[estr]%
+        \tupItem{m}{puntero(mapa)}%
+        \tupItem{p}{puntero(partida}%
+        \tupItem{tablero}{array(array(tupla(bool, bool, bool)))}
+        \tupItem{hayAlguine}{bool}
+        \tupItem{jugador}{string}
+        \tupItem{ranking}{diccTrie(string, nat)}
+      \end{Tupla}
+    \end{Estructura}
+  
+  
+    \Rep[estr][e]{$(1)\land(2)$ \\
+    \textbf{donde:}
+    \tadAxioma{(1)}{e.m = (e.p \rightarrow mapa)}
+    \tadAxioma{(2)}{e.paredes $\cap$ e.fantasmas $\cap$ e.chocolates $= \emptyset$}
+    \tadAxioma{(3)}{(\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
+    ($\pi_0$(e.tablero[i][j]) $\Leftrightarrow$ tupla(i, j) $\in$ e.m.paredes)) $\land_L$ \\
+    (\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
+    ($\pi_0$(e.tablero[i][j]) $\Leftrightarrow$ tupla(i, j) $\in$ e.m.paredes))
+    $\land_L$ \\
+    (\paratodo{nat}{i,j})(($0 \leq i < e.m.largo \land 0 \leq j < e.m.alto$) $\Rightarrow$ 
+    ($\pi_0$(e.tablero[i][j]) = $true$ $\Rightarrow$ tupla(i, j) $\in$ e.m.paredes))
+    }
+    \\
+    \textbf{en palabras:}\\
+        \textbf{m debe ser igual al mapa de p (partida)}\\
+        \textbf{tablero debe ser igual al mapa (menos los chocolates que dejamos en falso)}\\
+    
+    }   
+  
+    ~
+  
+    \AbsFc[estr]{genero TAD}[e]{
+        cosas que tienen que pasar}
+
+\end{Representacion}
+
+%------------------------------ALGORITMOS------------------------
+\section{}
+\begin{Algoritmos}
+    %$\to$ $res$ : $itDicc$
+    \begin{algorithm}[H]{\textbf{iNuevaPartida}(\Inout{f}{estr}, \In{j}{$string$})}
+        \begin{algorithmic}
+        
+            \State RepoblarChocolates(f.tablero, f.m)
+            \State f.p $\leftarrow$ NuevaPartida(f.m, &f.tablero)
+            \State f.hayAlguien $\leftarrow$ true
+            \State f.jugador $\leftarrow$ j
+        
+            \Statex \underline{Complejidad:} $\Theta(c)$
+            \Statex \underline{Justificación:} \textbf{Cuando se repueblan los chocolates se hace en $\Theta(c)$ dado a que se recorre un arreglo con las coordenadas de estas para restaurar los chocolates.
+		Esto sumado a las operaciones en $\Theta(1)$ que le siguen dan como resultado a una complejidad $\Theta(c)$}
+        \end{algorithmic}
+        \end{algorithm}
+        
+        \begin{algorithm}[H]{\textbf{iMapa}(\In{f}{estr}) $\to$ $res$ : $puntero(mapa)$}
+        \begin{algorithmic}
+        
+            \State res $\leftarrow$ f.m
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+        \end{algorithm}
+        
+         \begin{algorithm}[H]{\textbf{iJugadorActual}(\In{f}{estr}) $\to$ $res$ : $string$}
+        \begin{algorithmic}
+        
+            \State res $\leftarrow$ f.jugador
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+        \end{algorithm}
+        
+        \begin{algorithm}[H]{\textbf{iRanking}(\In{f}{estr}) $\to$ $res$ : $ranking$}
+        \begin{algorithmic}
+        
+            \State res $\leftarrow$ f.ranking
+            
+        
+            \Statex \underline{Complejidad:} $\Theta(1)$
+        \end{algorithmic}
+        \end{algorithm}
+
+
+\end{Algoritmos}
+
+%\section{Aclaraciones}
+%\begin{itemize}
+%    \item aclaracion
+%\end{itemize}
+
+\end{document}
