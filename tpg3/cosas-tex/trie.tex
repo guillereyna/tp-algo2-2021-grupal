@@ -1,0 +1,61 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper, hmargin=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr}
+\usepackage{xspace}
+\usepackage{xargs}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+\usepackage{caratula}
+
+\begin{document}
+
+\section{Módulo Diccionario Trie}
+
+\begin{Interfaz}
+
+  \textbf{se explica con}: \tadNombre{Diccionario}, \tadNombre{Iterador Bidireccional}.
+
+  \textbf{géneros}: \TipoVariable{diccTrie}, \TipoVariable{itDicc}.
+
+  \textbf{Operaciones básicas de diccTrie}
+
+  \InterfazFuncion{Vacío}{}{diccTrie}%
+  {$res$ $\igobs$ vacio}%
+  [$\Theta(1)$]
+  [genera un diccTrie vacío.]
+
+  \InterfazFuncion{Definir}{\Inout{d}{diccTrie}, \In{k}{$string$}, \In{s}{$nat$}}{}
+  [$d \igobs d_0$]
+  {$d$ $\igobs$ definir($d, k, s$)}
+  [$\Theta(l)$, donde $l$ es la longitud de la clave más larga.]
+  [define la clave $k$ con el significado $s$ en el diccionario.  Retorna un iterador al elemento recién agregado.]
+
+  \InterfazFuncion{Definido?}{\In{d}{diccTrie}, \In{k}{$string$}}{bool}
+  {$res$ $\igobs$ def?($d$, $k$)}
+  [$\Theta(l)$, donde $l$ es la longitud de la clave más larga.]
+  [devuelve \texttt{true} si y sólo $k$ está definido en el diccionario.]
+
+  \InterfazFuncion{Significado}{\In{d}{diccTrie}, \In{k}{$string$}}{$nat$}
+  [def?($d$, $k$)]
+  {alias($res$ $\igobs$ Significado($d$, $k$))}
+  [$\Theta(l)$, donde $l$ es la longitud de la clave más larga.]
+  [devuelve el significado de la clave $k$ en $d$.]
+  [$res$ es modificable si y sólo si $d$ es modificable.]
+
+  \InterfazFuncion{Borrar}{\Inout{d}{diccTrie}, \In{k}{$string$}}{}
+  [$d = d_0$ $\land$ def?($d$, $k$)]
+  {$d$ $\igobs$ borrar($d_0, k$)}
+  [$\Theta(l)$, donde $l$ es la longitud de la clave más larga.]
+  [elimina la clave $k$ y su significado de $d$.]
+
+  \InterfazFuncion{\#Claves}{\In{d}{diccTrie}}{nat}
+  {$res$ $\igobs$ \#claves($d$)}
+  [$\Theta(1)$]
+  [devuelve la cantidad de claves del diccionario.]
+
+\end{Interfaz}
+
+\end{document}
