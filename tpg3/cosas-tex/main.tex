@@ -298,56 +298,56 @@ Jugador \textbf{es} string
 
 \begin{Interfaz}
     \InterfazFuncion{NuevaPartida}
-    {\In{m}{mapa}, \In{t}{tablero}}{partida}%
+    {\In{m}{mapa}, \In{t}{tablero}}{estr}%
     {$res$ $\igobs$ NuevaPartida(m)}%
     [$\mathcal{O}(1)$]
     [genera una nueva partida.]
     [Tanto el mapa como el tablero son pasados por referencia y la partida]
     
     \InterfazFuncion{Mover}
-    {\Inout{p}{partida}, \In{d}{direccion}}{}%
+    {\Inout{p}{estr}, \In{d}{direccion}}{}%
     [$p$ $\igobs$ $p_0 \land$ $\neg$( gano?($p$) $\lor$ perdio?($p$) )]%
     {$res$ $\igobs$ Mover($p_0, d$)}
     [$\mathcal{O}(1)$]
     [mueve la coordenada actual del jugador en la direccion indicada en el parametro.]
     
     \InterfazFuncion{Mapa}
-    {\In{p}{partida}}{mapa}%
+    {\In{p}{estr}}{mapa}%
     {$res$ $\igobs$ Mapa(p)}%
     [$\mathcal{O}(1)$]
     [Devuelve el mapa de la partida]
     [Devuelve una referencia inmutable.]
     
     \InterfazFuncion{Jugador}
-    {\In{p}{partida}}{coordenada}%
+    {\In{p}{estr}}{coordenada}%
     {$res$ $\igobs$ Jugador(p)}
     [$\mathcal{O}(1)$]
     [Devuelve la coordenada actual del jugador.]
     [Devuelve la coordenada por copia.]
     
     \InterfazFuncion{CantMov}
-    {\In{p}{partida}}{nat}%
+    {\In{p}{estr}}{nat}%
     {$res$ $\igobs$ CantMov(p)}
     [$\mathcal{O}(1)$]
     [Devuelve la cantidad de movimientos que ha realizado el jugador en la partida.]
     [Devuelve la cantidad de movimientos por copia.]
     
     \InterfazFuncion{Inmunidad}
-    {\In{p}{partida}}{nat}%
+    {\In{p}{estr}}{nat}%
     {$res$ $\igobs$ Inmunidad(p)}
     [$\mathcal{O}(1)$]
     [Devuelve la cantidad de movimientos con inmunidad restantes.]
     [Devuelve la cantidad de movimientos por copia]
     
     \InterfazFuncion{Gano?}
-    {\In{p}{partida}}{bool}%
+    {\In{p}{estr}}{bool}%
     {$res$ $\igobs$ Gano?(p)}
     [$\mathcal{O}(1)$]
     [Devuelve true sii la partida termino y el jugador logro llegar al punto de llegada.]
     [Devuelve el booleano por copia.]
     
     \InterfazFuncion{Perdio?}
-    {\In{p}{partida}}{bool}%
+    {\In{p}{estr}}{bool}%
     {$res$ $\igobs$ Perdio?(p)}
     [$\mathcal{O}(1)$]
     [Devuelve true sii la partida termino y el jugador se encuentra en una posición en la cual es asustado por un fastasma.]
@@ -399,7 +399,7 @@ Jugador \textbf{es} string
         \end{algorithmic}
     \end{algorithm}
     
-    \begin{algorithm}{\textbf{iMover}(\Inout{p}{partida}, \In{d}{dir})}
+    \begin{algorithm}{\textbf{iMover}(\Inout{p}{estr}, \In{d}{dir})}
         \begin{algorithmic}
             \If{!(p.gano? || p.perdio?) $\&\&$ p.esMovimientoValido(p.mapa, p.tablero, p.coordenadaActual, dir)}
                 \If{$dir = "DER"$}
@@ -434,7 +434,7 @@ Jugador \textbf{es} string
         \end{algorithmic}
     \end{algorithm}
     
-    \begin{algorithm}{\textbf{iMapa}(\In{p}{partida})$\to$ $res$ : $mapa$}
+    \begin{algorithm}{\textbf{iMapa}(\In{p}{estr})$\to$ $res$ : $mapa$}
         \begin{algorithmic}
             \State $res \gets p.mapa$
             \Statex \underline{Complejidad:} $\mathcal{O}(1)$
@@ -442,7 +442,7 @@ Jugador \textbf{es} string
         \end{algorithmic}
     \end{algorithm}
     
-    \begin{algorithm}{\textbf{iJugador}(\In{p}{partida})$\to$ $res$ : $coordenada$}
+    \begin{algorithm}{\textbf{iJugador}(\In{p}{estr})$\to$ $res$ : $coordenada$}
         \begin{algorithmic}
             \State $res \gets p.coordenadaActual$
             \Statex \underline{Complejidad:} $\mathcal{O}(1)$
@@ -450,7 +450,7 @@ Jugador \textbf{es} string
         \end{algorithmic}
     \end{algorithm}
     
-    \begin{algorithm}{\textbf{iCantMov}(\In{p}{partida})$\to$ $res$ : $nat$}
+    \begin{algorithm}{\textbf{iCantMov}(\In{p}{estr})$\to$ $res$ : $nat$}
         \begin{algorithmic}
             \State $res \gets p.cantMov$
             \Statex \underline{Complejidad:} $\mathcal{O}(1)$
@@ -458,7 +458,7 @@ Jugador \textbf{es} string
         \end{algorithmic}
     \end{algorithm}
     
-    \begin{algorithm}{\textbf{iInmunidad}(\In{p}{partida})$\to$ $res$ : $nat$}
+    \begin{algorithm}{\textbf{iInmunidad}(\In{p}{estr})$\to$ $res$ : $nat$}
         \begin{algorithmic}
             \State $res \gets p.movsINmunes$
             \Statex \underline{Complejidad:} $\mathcal{O}(1)$
@@ -466,7 +466,7 @@ Jugador \textbf{es} string
         \end{algorithmic}
     \end{algorithm}
     
-    \begin{algorithm}{\textbf{iGano?}(\In{p}{partida})$\to$ $res$ : $bool$}
+    \begin{algorithm}{\textbf{iGano?}(\In{p}{estr})$\to$ $res$ : $bool$}
         \begin{algorithmic}
             \State $res \gets p.gano?$
             \Statex \underline{Complejidad:} $\mathcal{O}(1)$
@@ -474,7 +474,7 @@ Jugador \textbf{es} string
         \end{algorithmic}
     \end{algorithm}
     
-    \begin{algorithm}{\textbf{iPerdio?}(\In{p}{partida})$\to$ $res$ : $bool$}
+    \begin{algorithm}{\textbf{iPerdio?}(\In{p}{estr})$\to$ $res$ : $bool$}
         \begin{algorithmic}
             \State $res \gets p.perdio?$
             \Statex \underline{Complejidad:} $\mathcal{O}(1)$
