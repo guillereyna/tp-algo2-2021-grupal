@@ -5,8 +5,8 @@
 #include "Partida.h"
 #include "string_map.h"
 #include <vector>
+#include <tuple>
 
-typedef string_map<unsigned int> ranking;
 typedef string jugador;
 typedef string direccion;
 
@@ -31,25 +31,25 @@ public:
     bool alguienJugando() const;
 
     // Devuelve una referencia inmutable al jugador actual.
-    const jugador jugadorActual() const;
+    const jugador& jugadorActual() const;
 
     // Devuelve una referencia inmutable a la partida actual.
-    const Partida partidaActual() const;
+    const Partida& partidaActual() const;
 
     // Devuelve una referencia inmutable al ranking.
-    const ranking ranking() const;
+    const string_map<unsigned int>& ranking() const;
 
     // Devuelve una tupla con el nombre y puntaje del jugador que
-    // supera inmediatamente al jugador actual, si es qe existe.
+    // supera inmediatamente al jugador actual, si es que existe.
     tuple<jugador, unsigned int> objetivo() const;
 
 private:
     vector<vector<tuple<bool, bool, bool>>> _tablero;
-    Mapa* _mapa;
+    const Mapa* _mapa;
     Partida* _partida;
     bool _hayAlguien;
     jugador _jugador;
-    // ranking _ranking;
+    string_map<unsigned int> _ranking;
 };
 
 

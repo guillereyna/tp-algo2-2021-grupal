@@ -251,9 +251,9 @@ TAD Partida
 
 		movimientosConInmunidad(iniciarPartida(m, c)) ≡ 0 // interpretamos que los movimientos no son acomulativos sino que se recargan
 		movimientosConInmunidad(mover(p, d)) ≡ if jugador(mover(p, d)) ∈ chocolates(p)
-																							then 10
-																							else max(0, movimientosConInmunidad(p) - 1) // ACLARAR SOBRE NUMEROS NEGATIVOS
-																						fi
+													then 10
+													else max(0, movimientosConInmunidad(p) - 1) // ACLARAR SOBRE NUMEROS NEGATIVOS
+											   fi
 //		movimientosConInmunidad(arriba(p)) ≡ if jugador(arriba(p)) ∈ chocolates(p)
 //											  then 10
 //											  else max(0, movimientosConInmunidad(p) - 1) // ACLARAR SOBRE NUMEROS NEGATIVOS
