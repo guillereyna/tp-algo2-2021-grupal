@@ -11,8 +11,16 @@ Fichin::Fichin(const Mapa &m) {
 
 Fichin::~Fichin() {}
 
-void Fichin::nuevaPartida(const jugador& j) {};
+void Fichin::nuevaPartida(const jugador& j) {
+    repoblarChocolates(_tablero, _mapa);
+    _partida = new Partida(*_mapa, _tablero);
+    _hayAlguien = true;
+    _jugador = j;
+};
+void repoblarChocolates(vector<vector<tuple<bool, bool, bool>>> &tablero, const Mapa* m)
+{
 
+}
 void Fichin::mover(const direccion d) {
     _partida->mover(d);
     if (_partida->gano() || _partida->perdio()) {
@@ -24,7 +32,9 @@ void Fichin::mover(const direccion d) {
     }
 }
 
-const Mapa Fichin::mapa() const {}
+const Mapa Fichin::mapa() const {
+    return _mapa
+}
 
 bool Fichin::alguienJugando() const {
     return _hayAlguien;

@@ -50,6 +50,7 @@ private:
     bool _hayAlguien;
     jugador _jugador;
     string_map<unsigned int> _ranking;
+    void repoblarChocolates(vector<vector<tuple<bool, bool, bool>>>&, const Mapa*);
 };
 
 
