@@ -19,13 +19,13 @@ void Fichin::nuevaPartida(const Jugador& j) {
 };
 
 void Fichin::mover(const Direccion d) {
-    _partida->mover(d);
+    _partida->Mover(d);
     if (_partida->gano() || _partida->perdio()) {
         _hayAlguien = false;
     }
     if (_partida->gano() &&
-    (_ranking.count(_jugador) && cantMov(_partida) < _ranking.at(_jugador) || !_ranking.count(_jugador))) {
-        _ranking.insert(make_pair(_jugador, cantMov(_partida)));
+    (_ranking.count(_jugador) && _partida->cantMov() < _ranking.at(_jugador) || !_ranking.count(_jugador))) {
+        _ranking.insert(make_pair(_jugador, _partida->cantMov()));
     }
 }
 
