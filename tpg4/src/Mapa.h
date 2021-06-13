@@ -5,8 +5,10 @@
 
 class Mapa {
 public:
+
     Mapa(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<Coordenada> paredes, set<Coordenada> fantasmas,
          set<Coordenada> chocolates);
+
     const Nat largo() const;
     const Nat alto() const;
     const Coordenada& inicio() const;
