@@ -27,6 +27,30 @@ void Partida::Mover(const Direccion dir) {
     else if(_posActual == _mapa->llegada()) _gano = true;
 }
 
+const Mapa& Partida::mapa() const{
+    return *_mapa;
+}
+
+const Coordenada Partida::jugador() const{
+    return _posActual;
+}
+
+const Nat Partida::cantMov() const{
+    return _cantMovimientos;
+}
+
+const Nat Partida::inmunidad() const{
+    return _inmunidad;
+}
+
+const bool Partida::gano() const{
+    return _gano;
+}
+
+const bool Partida::perdio() const{
+    return _perdio;
+}
+
 // metodos auxiliares
 Coordenada moverCoordenada(Coordenada c, const Direccion dir){
     Coordenada res;

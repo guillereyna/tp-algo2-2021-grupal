@@ -20,6 +20,13 @@ class Partida {
         // Mueve el jugador, si es posible, hacia la dirección indicada
         void Mover(const Direccion dir);
 
+        const Mapa& mapa() const;
+        const Coordenada jugador() const;
+        const Nat cantMov() const;
+        const Nat inmunidad() const;
+        const bool gano() const;
+        const bool perdio() const;
+
     private:
         Mapa* _mapa;
         Tablero* _tablero;
@@ -36,5 +43,6 @@ class Partida {
         vector<Coordenada> posicionesACheckear(const Coordenada c);
 };
 
+bool enRango(int c0, int c1, int limite0, int limite1);
 
 #endif //TP4_PACALGO2_PARTIDA_H
