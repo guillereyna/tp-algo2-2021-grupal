@@ -1,25 +1,28 @@
 #include "Fichin.h"
 
-Fichin::Fichin(const Mapa &m) {
-    _tablero = inicializarTablero(m);
+// Preguntar!!
+Fichin::Fichin(const Mapa& m) {
+    _tablero = inicializarTablero();
     _mapa = &m;
     _partida = nullptr;
     _hayAlguien = false;
     _jugador = "";
-    _ranking = string_map<unsigned int>();
+    _ranking = string_map<Nat>();
 }
 
-Fichin::~Fichin() {}
+Fichin::~Fichin() {
+    if (_partida) delete(_partida);
+}
 
 void Fichin::nuevaPartida(const Jugador& j) {
-    repoblarChocolates(_tablero, _mapa);
+    repoblarChocolates();
     _partida = new Partida(*_mapa, _tablero);
     _hayAlguien = true;
     _jugador = j;
-};
+}
 
 void Fichin::mover(const Direccion d) {
-    _partida->Mover(d);
+    _partida->mover(d);
     if (_partida->gano() || _partida->perdio()) {
         _hayAlguien = false;
     }
@@ -29,8 +32,8 @@ void Fichin::mover(const Direccion d) {
     }
 }
 
-const Mapa* Fichin::mapa() const {
-    return _mapa;
+const Mapa& Fichin::mapa() const {
+    return *_mapa;
 }
 
 bool Fichin::alguienJugando() const {
@@ -45,37 +48,37 @@ const Partida& Fichin::partidaActual() const {
     return *_partida;
 }
 
-const string_map<unsigned int>& Fichin::ranking() const {
+const string_map<Nat>& Fichin::ranking() const {
     return _ranking;
 }
 
-tuple<Jugador, unsigned int> Fichin::objetivo() const {
+tuple<Jugador, Nat> Fichin::objetivo() const {
     ///Recorrer todo como se hace en borrar_todo() del trie e ir comparando las diferencias
     ///entre el puntaje del jugador actual y los demas, te quedas con la minima
 }
 
-void repoblarChocolates(Tablero &tablero, const Mapa* m)
+void Fichin::repoblarChocolates()
 {
     ///Rellenar chocolates
-    for(auto i : m->chocolates())
+    for(auto i : _mapa->chocolates())
     {
-        get<2>(tablero[i.first][i.second]) = true;
+        get<2>(_tablero[i.first][i.second]) = true;
     }
 }
 
-Tablero inicializarTablero(const Mapa& m){
-    Tablero t(m.largo(), vector<tuple<bool, bool, bool> >(m.alto(), make_tuple(false, false, false)));
+Tablero Fichin::inicializarTablero(){
+    Tablero t(_mapa->largo(), vector<tuple<bool, bool, bool> >(_mapa->alto(), make_tuple(false, false, false)));
 
-    for(auto i : m.paredes())
+    for(auto i : _mapa->paredes())
     {
         get<0>(t[i.first][i.second]) = true;
     }
 
-    for(auto i : m.fantasmas())
+    for(auto i : _mapa->fantasmas())
     {
         get<1>(t[i.first][i.second]) = true;
     }
-    for(auto i : m.chocolates())
+    for(auto i : _mapa->chocolates())
     {
         get<2>(t[i.first][i.second]) = true;
     }

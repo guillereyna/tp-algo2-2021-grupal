@@ -1,6 +1,7 @@
 #ifndef FICHIN_H
 #define FICHIN_H
 
+#include "Tipos.h"
 #include "Mapa.h"
 #include "Partida.h"
 #include "string_map.h"
@@ -22,7 +23,7 @@ public:
     void mover(const Direccion);
 
     // Devuelve una referencia inmutable al mapa.
-    const Mapa* mapa() const;//arregle esto para que devuelva una un puntero
+    const Mapa& mapa() const;
 
     // Devuelve true si hay una partida en curso.
     bool alguienJugando() const;
@@ -34,11 +35,11 @@ public:
     const Partida& partidaActual() const;
 
     // Devuelve una referencia inmutable al ranking.
-    const string_map<unsigned int>& ranking() const;
+    const string_map<Nat>& ranking() const;
 
     // Devuelve una tupla con el nombre y puntaje del jugador que
     // supera inmediatamente al jugador actual, si es que existe.
-    tuple<Jugador, unsigned int> objetivo() const;
+    tuple<Jugador, Nat> objetivo() const;
 
 private:
     Tablero _tablero;
@@ -46,9 +47,9 @@ private:
     Partida* _partida;
     bool _hayAlguien;
     Jugador _jugador;
-    string_map<unsigned int> _ranking;
-    void repoblarChocolates(Tablero&, const Mapa*);
-    Tablero inicializarTablero(const Mapa&);
+    string_map<Nat> _ranking;
+    void repoblarChocolates();
+    Tablero inicializarTablero();
 };
 
 

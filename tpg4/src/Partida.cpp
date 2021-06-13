@@ -13,7 +13,7 @@ Partida::~Partida(){
 }
 
 // mover
-void Partida::Mover(const Direccion dir) {
+void Partida::mover(const Direccion dir) {
     if(_gano || _perdio || !esMovimientoValido(_posActual, dir)) return;
                                                 //^ aca agregue el primer parametro
 
