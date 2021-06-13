@@ -1,15 +1,13 @@
 #ifndef TP4_PACALGO2_PARTIDA_H
 #define TP4_PACALGO2_PARTIDA_H
 
-using namespace std;
-
 #include "Mapa.h"
 #include <vector>
 #include <tuple>
 
-typedef string direccion;
+using namespace std;
+
 typedef vector<vector<tuple<bool,bool,bool>>> Tablero;
-typedef pair<int, int> coordenada;
 
 class Partida {
     public:
@@ -20,22 +18,22 @@ class Partida {
         ~Partida();
 
         // Mueve el jugador, si es posible, hacia la dirección indicada
-        void Mover(const direccion dir);
+        void Mover(const Direccion dir);
 
     private:
         Mapa* _mapa;
         Tablero* _tablero;
-        coordenada _posActual;
+        Coordenada _posActual;
         int _cantMovimientos;
         int _inmunidad;
         bool _perdio;
         bool _gano;
         // metodos auxiliares/privados
-        coordenada moverCoordenada(coordenada c, const direccion dir);
-        bool esMovimientoValido(const coordenada c, const direccion d);
-        bool esPosicionValida(const coordenada c);
-        bool seAsusta(const coordenada c);
-        vector<coordenada> posicionesACheckear(const coordenada c);
+        Coordenada moverCoordenada(Coordenada c, const Direccion dir);
+        bool esMovimientoValido(const Coordenada c, const Direccion d);
+        bool esPosicionValida(const Coordenada c);
+        bool seAsusta(const Coordenada c);
+        vector<Coordenada> posicionesACheckear(const Coordenada c);
 };
 
 

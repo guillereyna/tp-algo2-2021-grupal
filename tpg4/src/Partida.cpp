@@ -12,8 +12,8 @@ Partida::~Partida(){
 }
 
 // mover
-void Partida::Mover(const direccion dir) {
-    if(_gano || _perdio || !esMovimientoValido(dir)) return;
+void Partida::Mover(const Direccion dir) {
+    if(_gano || _perdio || !esMovimientoValido(_posActual, dir)) return;
 
     _posActual = moverCoordenada(_posActual, dir);
     ++_cantMovimientos;
@@ -28,25 +28,25 @@ void Partida::Mover(const direccion dir) {
 }
 
 // metodos auxiliares
-coordenada moverCoordenada(coordenada c, const direccion dir){
-    coordenada res;
+Coordenada moverCoordenada(Coordenada c, const Direccion dir){
+    Coordenada res;
 
-    if (dir == "DER") res = make_pair(c.first + 1, c.second);
+    if (dir == DERECHA) res = make_pair(c.first + 1, c.second);
 
-    if (dir == "IZQ") res = make_pair(c.first - 1, c.second);
+    if (dir == IZQUIERDA) res = make_pair(c.first - 1, c.second);
 
-    if (dir == "ARR") res = make_pair(c.first, c.second - 1);
+    if (dir == ARRIBA) res = make_pair(c.first, c.second - 1);
 
-    if (dir == "ABJ") res = make_pair(c.first, c.second + 1);
+    if (dir == ABAJO) res = make_pair(c.first, c.second + 1);
 
     return res;
 };
 
-bool Partida::esMovimientoValido(coordenada  c, const direccion dir) {
+bool Partida::esMovimientoValido(Coordenada  c, const Direccion dir) {
     return esPosicionValida(moverCoordenada(c, dir));
 }
 
-bool Partida::esPosicionValida(const coordenada c) {
+bool Partida::esPosicionValida(const Coordenada c) {
     bool res = false;
 
     if (enRango(c.first, c.second, _mapa->largo(), _mapa->alto())){
@@ -56,9 +56,9 @@ bool Partida::esPosicionValida(const coordenada c) {
     return res;
 }
 
-bool Partida::seAsusta(const coordenada c) {
+bool Partida::seAsusta(const Coordenada c) {
     bool res = false;
-    vector<coordenada> posACheckear = posicionesACheckear(c);
+    vector<Coordenada> posACheckear = posicionesACheckear(c);
 
     for (int i = 0; i < posACheckear.size() && !res; ++i) {
         if( enRango(posACheckear[i].first, posACheckear[i].second, _mapa->largo, _mapa->alto) /*&&
@@ -71,14 +71,14 @@ bool Partida::seAsusta(const coordenada c) {
     return res;
 }
 
-vector<coordenada> posicionesACheckear(const coordenada c){
-    vector<coordenada> res;
+vector<Coordenada> posicionesACheckear(const Coordenada c){
+    vector<Coordenada> res;
     int i = 3;
     int j = 0;
-    coordenada c0;
-    coordenada c1;
-    coordenada c2;
-    coordenada c3;
+    Coordenada c0;
+    Coordenada c1;
+    Coordenada c2;
+    Coordenada c3;
 
     while (i >= 0 && j <= 3){                            // i=3,j=0 i=2,j=1 i=1,j=2 i=0,j=3 ¡BORRAR!
         c0 = make_pair(c.first + i, c.second + j); // (+3,+0) (+2,+1) (+1,+2) (+0,+3)
