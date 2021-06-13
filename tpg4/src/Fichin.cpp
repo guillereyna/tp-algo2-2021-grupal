@@ -11,14 +11,14 @@ Fichin::Fichin(const Mapa &m) {
 
 Fichin::~Fichin() {}
 
-void Fichin::nuevaPartida(const jugador& j) {
+void Fichin::nuevaPartida(const Jugador& j) {
     repoblarChocolates(_tablero, _mapa);
     _partida = new Partida(*_mapa, _tablero);
     _hayAlguien = true;
     _jugador = j;
 };
 
-void Fichin::mover(const direccion d) {
+void Fichin::mover(const Direccion d) {
     _partida->mover(d);
     if (_partida->gano() || _partida->perdio()) {
         _hayAlguien = false;
@@ -37,7 +37,7 @@ bool Fichin::alguienJugando() const {
     return _hayAlguien;
 }
 
-const jugador& Fichin::jugadorActual() const {
+const Jugador& Fichin::jugadorActual() const {
     return _jugador;
 }
 
@@ -49,7 +49,7 @@ const string_map<unsigned int>& Fichin::ranking() const {
     return _ranking;
 }
 
-tuple<jugador, unsigned int> Fichin::objetivo() const {
+tuple<Jugador, unsigned int> Fichin::objetivo() const {
     ///Recorrer todo como se hace en borrar_todo() del trie e ir comparando las diferencias
     ///entre el puntaje del jugador actual y los demas, te quedas con la minima
 }

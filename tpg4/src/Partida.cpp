@@ -22,7 +22,7 @@ void Partida::Mover(const Direccion dir) {
     if (esChocolate(_posActual)){ //todo: implementar esChocolate
         _inmunidad = _inmunidad + 10;
         // NO ME DEJA ASIGNAR UNA TUPLA A UNA POSICION DEL TABLERO O ACTUALIZAR UN VALOR DE LA TUPLA EN LA POSICION
-        // _tablero[_posActual.first][_posActual.second] = make_tuple(false, false, false);
+        (*_tablero)[_posActual.first][_posActual.second] = make_tuple(false, false, false);
         // guille: me parece que es porque no inicializamos el tablero ? (falta definirlo)
     }
     if (_inmunidad == 0 && seAsusta(_posActual)) _perdio = true;

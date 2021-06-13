@@ -7,10 +7,6 @@
 #include <vector>
 #include <tuple>
 
-typedef string jugador;
-typedef string direccion;
-typedef vector<vector<tuple<bool,bool,bool>>> Tablero;
-
 class Fichin {
 public:
     // Constructor.
@@ -20,10 +16,10 @@ public:
     ~Fichin();
 
     // Inicia una nueva partida para el jugador.
-    void nuevaPartida(const jugador&);
+    void nuevaPartida(const Jugador&);
 
     // Mueve al jugador en determinada dirección.
-    void mover(const direccion);
+    void mover(const Direccion);
 
     // Devuelve una referencia inmutable al mapa.
     const Mapa* mapa() const;//arregle esto para que devuelva una un puntero
@@ -32,7 +28,7 @@ public:
     bool alguienJugando() const;
 
     // Devuelve una referencia inmutable al jugador actual.
-    const jugador& jugadorActual() const;
+    const Jugador& jugadorActual() const;
 
     // Devuelve una referencia inmutable a la partida actual.
     const Partida& partidaActual() const;
@@ -42,14 +38,14 @@ public:
 
     // Devuelve una tupla con el nombre y puntaje del jugador que
     // supera inmediatamente al jugador actual, si es que existe.
-    tuple<jugador, unsigned int> objetivo() const;
+    tuple<Jugador, unsigned int> objetivo() const;
 
 private:
     Tablero _tablero;
     const Mapa* _mapa;
     Partida* _partida;
     bool _hayAlguien;
-    jugador _jugador;
+    Jugador _jugador;
     string_map<unsigned int> _ranking;
     void repoblarChocolates(Tablero&, const Mapa*);
     Tablero inicializarTablero(const Mapa&);
