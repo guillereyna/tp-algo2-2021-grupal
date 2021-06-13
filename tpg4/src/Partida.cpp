@@ -1,7 +1,7 @@
 #include "Partida.h"
 
 // constructor
-Partida::Partida(const Mapa m, const Tablero t): _cantMovimientos(0), _inmunidad(0), _gano(false), _perdio(false) {
+Partida::Partida(const Mapa m, const Tablero t): _posActual(m.inicio()), _cantMovimientos(0), _inmunidad(0), _gano(false), _perdio(false) {
     _mapa = new Mapa(m);
     _tablero = new Tablero(t);
 }
