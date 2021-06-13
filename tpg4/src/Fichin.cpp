@@ -6,7 +6,7 @@ Fichin::Fichin(const Mapa &m) {
     _partida = nullptr;
     _hayAlguien = false;
     _jugador = "";
-    _ranking = string_map();
+    _ranking = string_map<unsigned int>();
 }
 
 Fichin::~Fichin() {}
@@ -45,10 +45,13 @@ const Partida& Fichin::partidaActual() const {
     return *_partida;
 }
 
-const string_map<unsigned int>& Fichin::ranking() const {}
+const string_map<unsigned int>& Fichin::ranking() const {
+    return _ranking;
+}
 
 tuple<jugador, unsigned int> Fichin::objetivo() const {
-
+    ///Recorrer todo como se hace en borrar_todo() del trie e ir comparando las diferencias
+    ///entre el puntaje del jugador actual y los demas, te quedas con la minima
 }
 
 void repoblarChocolates(Tablero &tablero, const Mapa* m)
