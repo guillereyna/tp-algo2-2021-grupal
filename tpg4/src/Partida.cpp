@@ -128,13 +128,13 @@ bool enRango(int c0, int c1, int limite0, int limite1){
 }
 
 bool Partida::esPared(Coordenada c){
-    return get<0>((*_tablero)[_posActual.first][_posActual.second]);
+    return get<0>((*_tablero)[c.first][c.second]);
 }
 
 bool Partida::esFantasma(Coordenada c){
-    return get<1>((*_tablero)[_posActual.first][_posActual.second]);
+    return get<1>((*_tablero)[c.first][c.second]);
 }
 bool Partida::esChocolate(Coordenada c){
-    return get<2>((*_tablero)[_posActual.first][_posActual.second]);
+    return get<2>((*_tablero)[c.first][c.second]);
 }
 
