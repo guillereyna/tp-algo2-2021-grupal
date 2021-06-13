@@ -22,6 +22,7 @@ void Partida::Mover(const Direccion dir) {
         _inmunidad = _inmunidad + 10;
         // NO ME DEJA ASIGNAR UNA TUPLA A UNA POSICION DEL TABLERO O ACTUALIZAR UN VALOR DE LA TUPLA EN LA POSICION
         // _tablero[_posActual.first][_posActual.second] = make_tuple(false, false, false);
+        // guille: me parece que es porque no inicializamos el tablero ? (falta definirlo)
     }
     if (_inmunidad == 0 && seAsusta(_posActual)) _perdio = true;
     else if(_posActual == _mapa->llegada()) _gano = true;
@@ -125,3 +126,4 @@ vector<Coordenada> posicionesACheckear(const Coordenada c){
 bool enRango(int c0, int c1, int limite0, int limite1){
     return 0<=c0 && c0<limite0 && 0<=c1 && c1<limite1;
 }
+
