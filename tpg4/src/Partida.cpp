@@ -8,7 +8,8 @@ Partida::Partida(const Mapa m, const Tablero t): _cantMovimientos(0), _inmunidad
 
 // destructor
 Partida::~Partida(){
-    // Completar alfinal
+    delete(_mapa);
+    delete(_tablero);
 }
 
 // mover
@@ -19,9 +20,8 @@ void Partida::Mover(const Direccion dir) {
     _posActual = moverCoordenada(_posActual, dir);
     ++_cantMovimientos;
     if (_inmunidad > 0) --_inmunidad;
-    if (esChocolate(_posActual)){ //todo: implementar esChocolate
+    if (esChocolate(_posActual)){
         _inmunidad = _inmunidad + 10;
-        // NO ME DEJA ASIGNAR UNA TUPLA A UNA POSICION DEL TABLERO O ACTUALIZAR UN VALOR DE LA TUPLA EN LA POSICION
         get<2>((*_tablero)[_posActual.first][_posActual.second]) = false;
     }
     if (_inmunidad == 0 && seAsusta(_posActual)) _perdio = true;
@@ -75,7 +75,7 @@ bool Partida::esPosicionValida(const Coordenada c) {
     bool res = false;
 
     if (enRango(c.first, c.second, _mapa->largo(), _mapa->alto())){
-        res = esPared(c); //todo: implementar esPared
+        res = !esPared(c);
     }
 
     return res;
@@ -86,7 +86,8 @@ bool Partida::seAsusta(const Coordenada c) {
     vector<Coordenada> posACheckear = posicionesACheckear(c);
 
     for (int i = 0; i < posACheckear.size() && !res; ++i) {
-        if( enRango(posACheckear[i].first, posACheckear[i].second, _mapa->largo(), _mapa->alto()) && esFantasma(posACheckear[i])){
+        if( enRango(posACheckear[i].first, posACheckear[i].second, _mapa->largo(), _mapa->alto())
+          && esFantasma(posACheckear[i])){
             res = true;
         }
         ++i;
