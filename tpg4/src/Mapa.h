@@ -11,8 +11,8 @@ public:
 
     const Nat largo() const;
     const Nat alto() const;
-    const Coordenada& inicio() const;
-    const Coordenada& llegada() const;
+    const Coordenada inicio() const;
+    const Coordenada llegada() const;
     const set<Coordenada>& chocolates() const;
     const set<Coordenada>& paredes() const;
     const set<Coordenada>& fantasmas() const;

@@ -13,11 +13,11 @@ const Nat Mapa::alto() const {
     return _alto;
 }
 
-const Coordenada& Mapa::inicio() const{
+const Coordenada Mapa::inicio() const{
     return _inicio;
 }
 
-const Coordenada& Mapa::llegada() const{
+const Coordenada Mapa::llegada() const{
     return _llegada;
 }
 
