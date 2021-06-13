@@ -18,7 +18,7 @@ void Partida::Mover(const Direccion dir) {
     _posActual = moverCoordenada(_posActual, dir);
     ++_cantMovimientos;
     if (_inmunidad > 0) --_inmunidad;
-    if (esChocolate(_posActual)){
+    if (esChocolate(_posActual)){ //todo: implementar esChocolate
         _inmunidad = _inmunidad + 10;
         // NO ME DEJA ASIGNAR UNA TUPLA A UNA POSICION DEL TABLERO O ACTUALIZAR UN VALOR DE LA TUPLA EN LA POSICION
         // _tablero[_posActual.first][_posActual.second] = make_tuple(false, false, false);
@@ -74,7 +74,7 @@ bool Partida::esPosicionValida(const Coordenada c) {
     bool res = false;
 
     if (enRango(c.first, c.second, _mapa->largo(), _mapa->alto())){
-        res = esPared(c);
+        res = esPared(c); //todo: implementar esPared
     }
 
     return res;
