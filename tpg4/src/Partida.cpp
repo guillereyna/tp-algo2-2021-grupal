@@ -14,6 +14,7 @@ Partida::~Partida(){
 // mover
 void Partida::Mover(const Direccion dir) {
     if(_gano || _perdio || !esMovimientoValido(_posActual, dir)) return;
+                                                //^ aca agregue el primer parametro
 
     _posActual = moverCoordenada(_posActual, dir);
     ++_cantMovimientos;
