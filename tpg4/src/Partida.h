@@ -18,7 +18,7 @@ class Partida {
         ~Partida();
 
         // Mueve el jugador, si es posible, hacia la dirección indicada
-        void Mover(const Direccion dir);
+        void mover(const Direccion dir);
 
         const Mapa& mapa() const;
         const Coordenada jugador() const;
