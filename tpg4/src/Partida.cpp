@@ -53,7 +53,7 @@ const bool Partida::perdio() const{
 }
 
 // metodos auxiliares
-Coordenada moverCoordenada(Coordenada c, const Direccion dir){
+Coordenada Partida::moverCoordenada(Coordenada c, const Direccion dir){
     Coordenada res;
 
     if (dir == DERECHA) res = make_pair(c.first + 1, c.second);
@@ -96,7 +96,7 @@ bool Partida::seAsusta(const Coordenada c) {
     return res;
 }
 
-vector<Coordenada> posicionesACheckear(const Coordenada c){
+vector<Coordenada> Partida::posicionesACheckear(const Coordenada c){
     vector<Coordenada> res;
     int i = 3;
     int j = 0;
