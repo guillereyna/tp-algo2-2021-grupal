@@ -9,6 +9,7 @@
 
 typedef string jugador;
 typedef string direccion;
+typedef vector<vector<tuple<bool,bool,bool>>> Tablero;
 
 class Fichin {
 public:
@@ -25,7 +26,7 @@ public:
     void mover(const direccion);
 
     // Devuelve una referencia inmutable al mapa.
-    const Mapa mapa() const;
+    const Mapa* mapa() const;//arregle esto para que devuelva una un puntero
 
     // Devuelve true si hay una partida en curso.
     bool alguienJugando() const;
@@ -44,13 +45,14 @@ public:
     tuple<jugador, unsigned int> objetivo() const;
 
 private:
-    vector<vector<tuple<bool, bool, bool>>> _tablero;
+    Tablero _tablero;
     const Mapa* _mapa;
     Partida* _partida;
     bool _hayAlguien;
     jugador _jugador;
     string_map<unsigned int> _ranking;
-    void repoblarChocolates(vector<vector<tuple<bool, bool, bool>>>&, const Mapa*);
+    void repoblarChocolates(Tablero&, const Mapa*);
+    Tablero inicializarTablero(const Mapa&);
 };
 
 

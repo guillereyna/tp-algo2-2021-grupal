@@ -17,10 +17,7 @@ void Fichin::nuevaPartida(const jugador& j) {
     _hayAlguien = true;
     _jugador = j;
 };
-void repoblarChocolates(vector<vector<tuple<bool, bool, bool>>> &tablero, const Mapa* m)
-{
 
-}
 void Fichin::mover(const direccion d) {
     _partida->mover(d);
     if (_partida->gano() || _partida->perdio()) {
@@ -32,15 +29,17 @@ void Fichin::mover(const direccion d) {
     }
 }
 
-const Mapa Fichin::mapa() const {
-    return _mapa
+const Mapa* Fichin::mapa() const {
+    return _mapa;
 }
 
 bool Fichin::alguienJugando() const {
     return _hayAlguien;
 }
 
-const jugador& Fichin::jugadorActual() const {}
+const jugador& Fichin::jugadorActual() const {
+    return _jugador;
+}
 
 const Partida& Fichin::partidaActual() const {
     return *_partida;
@@ -49,5 +48,33 @@ const Partida& Fichin::partidaActual() const {
 const string_map<unsigned int>& Fichin::ranking() const {}
 
 tuple<jugador, unsigned int> Fichin::objetivo() const {
+
+}
+
+void repoblarChocolates(Tablero &tablero, const Mapa* m)
+{
+    ///Rellenar chocolates
+    for(auto i : m->chocolates())
+    {
+        get<2>(tablero[i.first][i.second]) = true;
+    }
+}
+
+Tablero inicializarTablero(const Mapa& m){
+    Tablero t(m.largo(), vector<tuple<bool, bool, bool> >(m.alto(), make_tuple(false, false, false)));
+
+    for(auto i : m.paredes())
+    {
+        get<0>(t[i.first][i.second]) = true;
+    }
+
+    for(auto i : m.fantasmas())
+    {
+        get<1>(t[i.first][i.second]) = true;
+    }
+    for(auto i : m.chocolates())
+    {
+        get<2>(t[i.first][i.second]) = true;
+    }
 
 }
