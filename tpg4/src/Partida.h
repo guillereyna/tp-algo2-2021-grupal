@@ -41,6 +41,9 @@ class Partida {
         bool esPosicionValida(const Coordenada c);
         bool seAsusta(const Coordenada c);
         vector<Coordenada> posicionesACheckear(const Coordenada c);
+        bool esPared(Coordenada c);
+        bool esFantasma(Coordenada c);
+        bool esChocolate(Coordenada c);
 };
 
 bool enRango(int c0, int c1, int limite0, int limite1);

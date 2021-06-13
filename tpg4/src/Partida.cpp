@@ -22,8 +22,7 @@ void Partida::Mover(const Direccion dir) {
     if (esChocolate(_posActual)){ //todo: implementar esChocolate
         _inmunidad = _inmunidad + 10;
         // NO ME DEJA ASIGNAR UNA TUPLA A UNA POSICION DEL TABLERO O ACTUALIZAR UN VALOR DE LA TUPLA EN LA POSICION
-        (*_tablero)[_posActual.first][_posActual.second] = make_tuple(false, false, false);
-        // guille: me parece que es porque no inicializamos el tablero ? (falta definirlo)
+        get<2>((*_tablero)[_posActual.first][_posActual.second]) = false;
     }
     if (_inmunidad == 0 && seAsusta(_posActual)) _perdio = true;
     else if(_posActual == _mapa->llegada()) _gano = true;
@@ -87,8 +86,7 @@ bool Partida::seAsusta(const Coordenada c) {
     vector<Coordenada> posACheckear = posicionesACheckear(c);
 
     for (int i = 0; i < posACheckear.size() && !res; ++i) {
-        if( enRango(posACheckear[i].first, posACheckear[i].second, _mapa->largo, _mapa->alto) /*&&
-             _tablero[posACheckear[i].first][posACheckear[i].second].third*/){
+        if( enRango(posACheckear[i].first, posACheckear[i].second, _mapa->largo(), _mapa->alto()) && esFantasma(posACheckear[i])){
             res = true;
         }
         ++i;
@@ -126,5 +124,16 @@ vector<Coordenada> posicionesACheckear(const Coordenada c){
 
 bool enRango(int c0, int c1, int limite0, int limite1){
     return 0<=c0 && c0<limite0 && 0<=c1 && c1<limite1;
+}
+
+bool Partida::esPared(Coordenada c){
+    return get<0>((*_tablero)[_posActual.first][_posActual.second]);
+}
+
+bool Partida::esFantasma(Coordenada c){
+    return get<1>((*_tablero)[_posActual.first][_posActual.second]);
+}
+bool Partida::esChocolate(Coordenada c){
+    return get<2>((*_tablero)[_posActual.first][_posActual.second]);
 }
 
