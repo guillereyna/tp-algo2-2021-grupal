@@ -2,6 +2,7 @@
 #define AED2_FICHIN_H
 
 #include "Tipos.h"
+#include "Fichin.h"
 
 class aed2_Fichin {
 public:
@@ -47,7 +48,8 @@ public:
     set<Coordenada> chocolatesActuales() const;
 
 private:
-    // Completar
+    Fichin _fichin;
+    Mapa _mapa;
 };
 
 #endif // AED2_FICHIN_H

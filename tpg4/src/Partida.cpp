@@ -138,3 +138,14 @@ bool Partida::esChocolate(Coordenada c){
     return get<2>((*_tablero)[c.first][c.second]);
 }
 
+set<Coordenada> Partida::chocolatesActuales() const { //es horrible esta funcion ¯\_(ツ)_/¯
+    set<Coordenada> res;
+    for (int i = 0; i < (*_tablero).size(); ++i) {
+        for (int j = 0; j < ((*_tablero)[0].size()); ++j) {
+            if (get<2>((*_tablero)[i][j])) {
+                res.insert(make_pair(i,j));
+            }
+        }
+    }
+    return res;
+}
