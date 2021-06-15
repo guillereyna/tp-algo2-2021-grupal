@@ -2,8 +2,8 @@
 
 // constructor
 Partida::Partida(const Mapa m, const Tablero t): _posActual(m.inicio()), _cantMovimientos(0), _inmunidad(0), _gano(false), _perdio(false) {
-    _mapa = new Mapa(m);
-    _tablero = new Tablero(t);
+    _mapa = new Mapa(m);        // guille: estas me hacen ruido (si estamos copiando las instancias
+    _tablero = new Tablero(t);  // se nos va la complejidad de nuevapartida)
 }
 
 // destructor
@@ -140,11 +140,9 @@ bool Partida::esChocolate(Coordenada c){
 
 set<Coordenada> Partida::chocolatesActuales() const { //es horrible esta funcion ¯\_(ツ)_/¯
     set<Coordenada> res;
-    for (int i = 0; i < (*_tablero).size(); ++i) {
-        for (int j = 0; j < ((*_tablero)[0].size()); ++j) {
-            if (get<2>((*_tablero)[i][j])) {
-                res.insert(make_pair(i,j));
-            }
+    for (auto choco : (*_mapa).chocolates()){
+        if (get<2>((*_tablero)[choco.first][choco.second])){
+            res.insert(Coordenada(choco.first, choco.second));
         }
     }
     return res;
