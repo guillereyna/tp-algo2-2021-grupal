@@ -23,19 +23,19 @@ ResultadoMovimiento aed2_Fichin::mover(Direccion d){
 }
 
 bool aed2_Fichin::alguienJugando() const {
-    _fichin.alguienJugando();
+    return _fichin.alguienJugando();
 }
 
 Jugador aed2_Fichin::jugadorActual() const {
-    _fichin.jugadorActual();
+    return _fichin.jugadorActual();
 }
 
 map<Jugador, Puntaje> aed2_Fichin::ranking() const{
-    //todo preguntar a lu sobre esto
+    return _fichin.ranking();
 }
 
 pair<Jugador, Puntaje> aed2_Fichin::objetivo() const{
-    //todo y sobre esto tambien
+    return _fichin.objetivo();
 }
 
 Coordenada aed2_Fichin::jugador() const {
@@ -43,7 +43,7 @@ Coordenada aed2_Fichin::jugador() const {
 }
 
 Nat aed2_Fichin::cantidadMovimientos() const {
-    _fichin.partidaActual().cantMov();
+    return _fichin.partidaActual().cantMov();
 }
 
 Nat aed2_Fichin::inmunidad() const {

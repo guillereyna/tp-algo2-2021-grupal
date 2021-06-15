@@ -30,7 +30,7 @@ void Fichin::mover(const Direccion d) {
     if (_partida->gano() &&
     (_ranking.count(_jugador) && _partida->cantMov() < _ranking.at(_jugador) || !_ranking.count(_jugador))) {
         _ranking.insert(make_pair(_jugador, _partida->cantMov()));
-        _rankingAux.insert(make_pair(_jugador, &(_ranking.at(_jugador))));
+        _rankingAux.insert(make_pair(_jugador, _ranking.at(_jugador)));
     }
 }
 
@@ -50,23 +50,23 @@ const Partida& Fichin::partidaActual() const {
     return *_partida;
 }
 
-const string_map<Nat>& Fichin::ranking() const {
-    return _ranking;
+const map<Jugador, Puntaje>& Fichin::ranking() const {
+    return _rankingAux;
 }
 
-tuple<Jugador, Nat> Fichin::objetivo() const {
+pair<Jugador, Nat> Fichin::objetivo() const {
     Jugador oponente = this->_jugador;
     Nat pasos = 0;
-    for (pair<Jugador, Nat*> p : _rankingAux) {
-        if (*p.second < this->_partida->cantMov() && *p.second >= pasos) {
+    for (pair<Jugador, Puntaje> p : _rankingAux) {
+        if (p.second < this->_partida->cantMov() && p.second >= pasos) {
             oponente = p.first;
-            pasos = *p.second;
+            pasos = p.second;
         }
     }
     if (oponente == this->_jugador) {
         pasos = this->_partida->cantMov();
     }
-    return make_tuple(oponente, pasos);
+    return make_pair(oponente, pasos);
 }
 
 void Fichin::repoblarChocolates()
@@ -94,5 +94,5 @@ Tablero Fichin::inicializarTablero(){
     {
         get<2>(t[i.first][i.second]) = true;
     }
-
+    return t;
 }
