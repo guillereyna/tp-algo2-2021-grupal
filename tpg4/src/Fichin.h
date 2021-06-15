@@ -48,6 +48,7 @@ private:
     bool _hayAlguien;
     Jugador _jugador;
     string_map<Nat> _ranking;
+    map<Jugador, Nat*> _rankingAux;
     void repoblarChocolates();
     Tablero inicializarTablero();
 };

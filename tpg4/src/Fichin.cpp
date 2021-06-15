@@ -8,6 +8,7 @@ Fichin::Fichin(const Mapa& m) {
     _hayAlguien = false;
     _jugador = "";
     _ranking = string_map<Nat>();
+    _rankingAux = {};
 }
 
 Fichin::~Fichin() {
@@ -29,6 +30,7 @@ void Fichin::mover(const Direccion d) {
     if (_partida->gano() &&
     (_ranking.count(_jugador) && _partida->cantMov() < _ranking.at(_jugador) || !_ranking.count(_jugador))) {
         _ranking.insert(make_pair(_jugador, _partida->cantMov()));
+        _rankingAux.insert(make_pair(_jugador, &(_ranking.at(_jugador))));
     }
 }
 
@@ -53,8 +55,18 @@ const string_map<Nat>& Fichin::ranking() const {
 }
 
 tuple<Jugador, Nat> Fichin::objetivo() const {
-    ///Recorrer todo como se hace en borrar_todo() del trie e ir comparando las diferencias
-    ///entre el puntaje del jugador actual y los demas, te quedas con la minima
+    Jugador oponente = this->_jugador;
+    Nat pasos = 0;
+    for (pair<Jugador, Nat*> p : _rankingAux) {
+        if (*p.second < this->_partida->cantMov() && *p.second >= pasos) {
+            oponente = p.first;
+            pasos = *p.second;
+        }
+    }
+    if (oponente == this->_jugador) {
+        pasos = this->_partida->cantMov();
+    }
+    return make_tuple(oponente, pasos);
 }
 
 void Fichin::repoblarChocolates()
