@@ -69,7 +69,7 @@ bool Partida::esMovimientoValido(Coordenada  c, const Direccion dir) {
     return esPosicionValida(moverCoordenada(c, dir));
 }
 
-bool Partida::esPosicionValida(const Coordenada c) {
+bool Partida::esPosicionValida(const Coordenada c) const {
     bool res = false;
 
     if (enRango(c.first, c.second, _mapa->largo(), _mapa->alto())){
@@ -79,7 +79,7 @@ bool Partida::esPosicionValida(const Coordenada c) {
     return res;
 }
 
-bool Partida::seAsusta(const Coordenada c) {
+bool Partida::seAsusta(const Coordenada c) const {
     bool res = false;
     vector<Coordenada> posACheckear = posicionesACheckear(c);
 
@@ -94,7 +94,7 @@ bool Partida::seAsusta(const Coordenada c) {
     return res;
 }
 
-vector<Coordenada> Partida::posicionesACheckear(const Coordenada c){
+vector<Coordenada> Partida::posicionesACheckear(const Coordenada c) const {
     vector<Coordenada> res;
     int i = 3;
     int j = 0;
@@ -125,18 +125,18 @@ bool enRango(int c0, int c1, int limite0, int limite1){
     return 0<=c0 && c0<limite0 && 0<=c1 && c1<limite1;
 }
 
-bool Partida::esPared(Coordenada c){
+bool Partida::esPared(Coordenada c) const {
     return get<0>((*_tablero)[c.first][c.second]);
 }
 
-bool Partida::esFantasma(Coordenada c){
+bool Partida::esFantasma(Coordenada c) const {
     return get<1>((*_tablero)[c.first][c.second]);
 }
-bool Partida::esChocolate(Coordenada c){
+bool Partida::esChocolate(Coordenada c) const {
     return get<2>((*_tablero)[c.first][c.second]);
 }
 
-set<Coordenada> Partida::chocolatesActuales() { //es horrible esta funcion ¯\_(ツ)_/¯
+set<Coordenada> Partida::chocolatesActuales() const { //es horrible esta funcion ¯\_(ツ)_/¯
     set<Coordenada> res;
     for (auto pos : (*_mapa).chocolates()){
         if (esChocolate(pos)){ //get<2>((*_tablero)[choco.first][choco.second])

@@ -27,7 +27,7 @@ class Partida {
         const bool gano() const;
         const bool perdio() const;
 
-        set<Coordenada> chocolatesActuales();
+        set<Coordenada> chocolatesActuales() const;
 
     private:
         Mapa* _mapa;
@@ -40,12 +40,12 @@ class Partida {
         // metodos auxiliares/privados
         Coordenada moverCoordenada(Coordenada c, const Direccion dir);
         bool esMovimientoValido(const Coordenada c, const Direccion d);
-        bool esPosicionValida(const Coordenada c);
-        bool seAsusta(const Coordenada c);
-        vector<Coordenada> posicionesACheckear(const Coordenada c);
-        bool esPared(Coordenada c);
-        bool esFantasma(Coordenada c);
-        bool esChocolate(Coordenada c);
+        bool esPosicionValida(const Coordenada c) const;
+        bool seAsusta(const Coordenada c) const;
+        vector<Coordenada> posicionesACheckear(const Coordenada c) const;
+        bool esPared(Coordenada c) const;
+        bool esFantasma(Coordenada c) const;
+        bool esChocolate(Coordenada c) const;
 };
 
 bool enRango(int c0, int c1, int limite0, int limite1);

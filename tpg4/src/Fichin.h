@@ -35,11 +35,11 @@ public:
     const Partida& partidaActual() const;
 
     // Devuelve una referencia inmutable al ranking.
-    const string_map<Nat>& ranking() const;
+    const map<Jugador, Puntaje>& ranking() const;
 
     // Devuelve una tupla con el nombre y puntaje del jugador que
     // supera inmediatamente al jugador actual, si es que existe.
-    tuple<Jugador, Nat> objetivo() const;
+    pair<Jugador, Nat> objetivo() const;
 
 private:
     Tablero _tablero;
@@ -47,7 +47,8 @@ private:
     Partida* _partida;
     bool _hayAlguien;
     Jugador _jugador;
-    string_map<Nat> _ranking;
+    string_map<Puntaje> _ranking;
+    map<Jugador, Puntaje> _rankingAux;
     void repoblarChocolates();
     Tablero inicializarTablero();
 };
