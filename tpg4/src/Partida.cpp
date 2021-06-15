@@ -138,10 +138,10 @@ bool Partida::esChocolate(Coordenada c){
     return get<2>((*_tablero)[c.first][c.second]);
 }
 
-set<Coordenada> Partida::chocolatesActuales() const { //es horrible esta funcion ¯\_(ツ)_/¯
+set<Coordenada> Partida::chocolatesActuales() { //es horrible esta funcion ¯\_(ツ)_/¯
     set<Coordenada> res;
     for (auto choco : (*_mapa).chocolates()){
-        if (get<2>((*_tablero)[choco.first][choco.second])){
+        if (esChocolate(choco)){ //get<2>((*_tablero)[choco.first][choco.second])
             res.insert(Coordenada(choco.first, choco.second));
         }
     }

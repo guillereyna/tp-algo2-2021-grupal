@@ -27,7 +27,7 @@ class Partida {
         const bool gano() const;
         const bool perdio() const;
 
-        set<Coordenada> chocolatesActuales() const;
+        set<Coordenada> chocolatesActuales();
 
     private:
         Mapa* _mapa;
