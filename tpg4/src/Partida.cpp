@@ -1,15 +1,13 @@
 #include "Partida.h"
 
 // constructor
-Partida::Partida(const Mapa m, const Tablero t): _posActual(m.inicio()), _cantMovimientos(0), _inmunidad(0), _gano(false), _perdio(false) {
-    _mapa = new Mapa(m);        // guille: estas me hacen ruido (si estamos copiando las instancias
-    _tablero = new Tablero(t);  // se nos va la complejidad de nuevapartida)
+Partida::Partida(const Mapa& m, const Tablero& t): _posActual(m.inicio()), _cantMovimientos(0), _inmunidad(0), _gano(false), _perdio(false) {
+    *_mapa = Mapa(m);        // guille: estas me hacen ruido (si estamos copiando las instancias
+    *_tablero = Tablero(t);  // se nos va la complejidad de nuevapartida)
 }
 
 // destructor
 Partida::~Partida(){
-    delete(_mapa);
-    delete(_tablero);
 }
 
 // mover

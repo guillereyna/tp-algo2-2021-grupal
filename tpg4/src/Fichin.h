@@ -11,7 +11,7 @@
 class Fichin {
 public:
     // Constructor.
-    Fichin(const Mapa&);
+    Fichin(const Mapa&); //agregar constructor que genere un mapa
 
     // Destructor.
     ~Fichin();

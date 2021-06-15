@@ -12,7 +12,7 @@ typedef vector<vector<tuple<bool,bool,bool>>> Tablero;
 class Partida {
     public:
         // constructor
-        Partida(const Mapa m, Tablero t);
+        Partida(const Mapa& m, const Tablero& t);
 
         // destructor
         ~Partida();
