@@ -140,9 +140,9 @@ bool Partida::esChocolate(Coordenada c){
 
 set<Coordenada> Partida::chocolatesActuales() { //es horrible esta funcion ¯\_(ツ)_/¯
     set<Coordenada> res;
-    for (auto choco : (*_mapa).chocolates()){
-        if (esChocolate(choco)){ //get<2>((*_tablero)[choco.first][choco.second])
-            res.insert(choco);
+    for (auto pos : (*_mapa).chocolates()){
+        if (esChocolate(pos)){ //get<2>((*_tablero)[choco.first][choco.second])
+            res.insert(pos);
         }
     }
     return res;
