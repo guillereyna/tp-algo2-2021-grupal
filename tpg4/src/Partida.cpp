@@ -142,7 +142,7 @@ set<Coordenada> Partida::chocolatesActuales() { //es horrible esta funcion ¯\_(
     set<Coordenada> res;
     for (auto choco : (*_mapa).chocolates()){
         if (esChocolate(choco)){ //get<2>((*_tablero)[choco.first][choco.second])
-            res.insert(Coordenada(choco.first, choco.second));
+            res.insert(choco);
         }
     }
     return res;
