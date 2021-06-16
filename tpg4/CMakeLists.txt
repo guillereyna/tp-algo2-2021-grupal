@@ -36,12 +36,21 @@ if (WITH_GUI)
 endif (WITH_GUI)
 
 add_executable(correrTests ${SOURCE_FILES} tests/fichin-tests.cpp)
+add_executable(fichin ${SOURCE_FILES} tests/unitTest-fichin.cpp)
+add_executable(partida ${SOURCE_FILES} tests/unitTest-partida.cpp)
+add_executable(mapa ${SOURCE_FILES} tests/unitTest-mapa.cpp)
 
 # Necesitamos asociar los archivos del framework de testing
 target_link_libraries(correrTests gtest gtest_main)
+target_link_libraries(fichin gtest gtest_main)
+target_link_libraries(partida gtest gtest_main)
+target_link_libraries(mapa gtest gtest_main)
 
 # Test suites a ejecutar
 add_test(correrTests fichin_test)
+add_test(fichin fichin)
+add_test(partida partida)
+add_test(mapa mapa)
 
 # Target para correr Valgrind
 add_custom_target(correrValgrind
