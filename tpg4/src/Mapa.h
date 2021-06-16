@@ -9,6 +9,8 @@ public:
     Mapa(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<Coordenada> paredes, set<Coordenada> fantasmas,
          set<Coordenada> chocolates);
 
+    Mapa& operator=(Mapa m);
+
     const Nat largo() const;
     const Nat alto() const;
     const Coordenada inicio() const;

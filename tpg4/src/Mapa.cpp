@@ -5,6 +5,17 @@ Mapa::Mapa(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada,
                _largo(largo), _alto(alto), _inicio(inicio), _llegada(llegada),
                _paredes(paredes), _fantasmas(fantasmas), _chocolates(chocolates){}
 
+Mapa& Mapa::operator=(Mapa mapa) {
+    _largo = mapa._largo;
+    _alto = mapa._alto;
+    _chocolates = mapa._chocolates;
+    _paredes = mapa._paredes;
+    _fantasmas = mapa._fantasmas;
+    _inicio = mapa._inicio;
+    _llegada = mapa._llegada;
+    return *this;
+}
+
 const Nat Mapa::largo() const {
     return _largo;
 }

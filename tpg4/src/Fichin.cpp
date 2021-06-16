@@ -2,13 +2,13 @@
 
 // Preguntar!!
 Fichin::Fichin(const Mapa& m) {
-    _tablero = inicializarTablero();
     _mapa = &m;
     _partida = nullptr;
     _hayAlguien = false;
     _jugador = "";
     _ranking = string_map<Nat>();
     _rankingAux = {};
+    _tablero = inicializarTablero();
 }
 
 Fichin::~Fichin() {
@@ -17,6 +17,7 @@ Fichin::~Fichin() {
 
 void Fichin::nuevaPartida(const Jugador& j) {
     repoblarChocolates();
+    if (_partida) delete(_partida);
     _partida = new Partida(*_mapa, _tablero);
     _hayAlguien = true;
     _jugador = j;
