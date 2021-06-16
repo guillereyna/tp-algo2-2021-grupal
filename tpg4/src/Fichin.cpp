@@ -1,15 +1,15 @@
 #include "Fichin.h"
 
 // Preguntar!!
-Fichin::Fichin(const Mapa& m) {
-    _mapa = &m;
-    _partida = nullptr;
-    _hayAlguien = false;
-    _jugador = "";
-    _ranking = string_map<Nat>();
-    _rankingAux = {};
-    _tablero = inicializarTablero();
-}
+Fichin::Fichin(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<Coordenada> paredes, set<Coordenada> fantasmas,
+               set<Coordenada> chocolates) :
+    _mapa(largo, alto, inicio, llegada, paredes, fantasmas, chocolates),
+    _partida(nullptr),
+    _hayAlguien(false),
+    _jugador(""),
+    _ranking(string_map<Nat>()),
+    _rankingAux({}),
+    _tablero(inicializarTablero()){}
 
 Fichin::~Fichin() {
     if (_partida) delete(_partida);
@@ -18,7 +18,7 @@ Fichin::~Fichin() {
 void Fichin::nuevaPartida(const Jugador& j) {
     repoblarChocolates();
     if (_partida) delete(_partida);
-    _partida = new Partida(*_mapa, _tablero);
+    _partida = new Partida(_mapa, _tablero);
     _hayAlguien = true;
     _jugador = j;
 }
@@ -36,7 +36,7 @@ void Fichin::mover(const Direccion d) {
 }
 
 const Mapa& Fichin::mapa() const {
-    return *_mapa;
+    return _mapa;
 }
 
 bool Fichin::alguienJugando() const {
@@ -73,25 +73,25 @@ pair<Jugador, Nat> Fichin::objetivo() const {
 void Fichin::repoblarChocolates()
 {
     ///Rellenar chocolates
-    for(auto i : _mapa->chocolates())
+    for(auto i : _mapa.chocolates())
     {
         get<2>(_tablero[i.first][i.second]) = true;
     }
 }
 
 Tablero Fichin::inicializarTablero(){
-    Tablero t(_mapa->largo(), vector<tuple<bool, bool, bool> >(_mapa->alto(), make_tuple(false, false, false)));
+    Tablero t(_mapa.largo(), vector<tuple<bool, bool, bool> >(_mapa.alto(), make_tuple(false, false, false)));
 
-    for(auto i : _mapa->paredes())
+    for(auto i : _mapa.paredes())
     {
         get<0>(t[i.first][i.second]) = true;
     }
 
-    for(auto i : _mapa->fantasmas())
+    for(auto i : _mapa.fantasmas())
     {
         get<1>(t[i.first][i.second]) = true;
     }
-    for(auto i : _mapa->chocolates())
+    for(auto i : _mapa.chocolates())
     {
         get<2>(t[i.first][i.second]) = true;
     }

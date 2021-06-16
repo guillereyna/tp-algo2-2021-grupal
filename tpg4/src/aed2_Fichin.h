@@ -49,7 +49,6 @@ public:
 
 private:
     Fichin _fichin;
-    Mapa _mapa;
 };
 
 #endif // AED2_FICHIN_H

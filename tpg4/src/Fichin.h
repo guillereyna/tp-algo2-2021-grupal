@@ -11,7 +11,8 @@
 class Fichin {
 public:
     // Constructor.
-    Fichin(const Mapa&); //agregar constructor que genere un mapa
+    Fichin(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<Coordenada> paredes, set<Coordenada> fantasmas,
+           set<Coordenada> chocolates); //aclarar cambios del diseño
 
     // Destructor.
     ~Fichin();
@@ -43,7 +44,7 @@ public:
 
 private:
     Tablero _tablero;
-    const Mapa* _mapa;
+    const Mapa _mapa;
     Partida* _partida;
     bool _hayAlguien;
     Jugador _jugador;

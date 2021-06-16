@@ -2,8 +2,7 @@
 
 aed2_Fichin::aed2_Fichin(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<Coordenada> paredes,
 set<Coordenada> fantasmas, set<Coordenada> chocolates) :
-    _mapa(Mapa(largo, alto, inicio, llegada, paredes, fantasmas, chocolates)),
-    _fichin(Fichin(_mapa)){}
+    _fichin(largo, alto, inicio, llegada, paredes, fantasmas, chocolates){}
 
 void aed2_Fichin::nuevaPartida(Jugador j){
     _fichin.nuevaPartida(j);
@@ -51,31 +50,31 @@ Nat aed2_Fichin::inmunidad() const {
 }
 
 Nat aed2_Fichin::largo() const {
-    return _mapa.largo();
+    return _fichin.mapa().largo();
 }
 
 Nat aed2_Fichin::alto() const {
-    return _mapa.alto();
+    return _fichin.mapa().alto();
 }
 
 Coordenada aed2_Fichin::inicio() const {
-    return _mapa.inicio();
+    return _fichin.mapa().inicio();
 }
 
 Coordenada aed2_Fichin::llegada() const {
-    return _mapa.llegada();
+    return _fichin.mapa().llegada();
 }
 
 set<Coordenada> aed2_Fichin::paredes() const {
-    return _mapa.paredes();
+    return _fichin.mapa().paredes();
 }
 
 set<Coordenada> aed2_Fichin::fantasmas() const {
-    return _mapa.fantasmas();
+    return _fichin.mapa().fantasmas();
 }
 
 set<Coordenada> aed2_Fichin::chocolatesIniciales() const {
-    return _mapa.chocolates();
+    return _fichin.mapa().chocolates();
 }
 
 set<Coordenada> aed2_Fichin::chocolatesActuales() const {
