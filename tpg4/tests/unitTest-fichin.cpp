@@ -153,13 +153,13 @@ TEST(fichin, nuevoRecord) {
 
     ///Partida Luli, 28 pasos
     fichin.nuevaPartida(jugador);
-    realizarMovimientos(fichin, "DDDDDDDBIIIIIIIBBBBBBDDDDDDD");
+    realizarMovimientos(fichin, "DDDDDDDAIIIIIIIAAAAAADDDDDDD");
     EXPECT_FALSE(fichin.alguienJugando());
     EXPECT_EQ(fichin.ranking().at(jugador), 28);
 
     ///Partida Luli, 14 pasos
     fichin.nuevaPartida(jugador);
-    realizarMovimientos(fichin, "DDDDDDDBBBBBBB");
+    realizarMovimientos(fichin, "DDDDDDDAAAAAAA");
     EXPECT_FALSE(fichin.alguienJugando());
     EXPECT_EQ(fichin.ranking().at(jugador), 14);
 
@@ -179,20 +179,20 @@ TEST(fichin, oponenteCorrecto) {
 
     ///Partida Luli, 14 pasos
     fichin.nuevaPartida(jugador);
-    realizarMovimientos(fichin, "DDDDDDDBBBBBBB");
+    realizarMovimientos(fichin, "DDDDDDDAAAAAAA");
     EXPECT_FALSE(fichin.alguienJugando());
     EXPECT_FALSE(fichin.ranking().empty());
 
     ///Partida Chumi, 28 pasos
     fichin.nuevaPartida(jugador2);
-    realizarMovimientos(fichin, "DDDDDDDBIIIIIIIBBBBBBDDDDDDD");
+    realizarMovimientos(fichin, "DDDDDDDAIIIIIIIAAAAAADDDDDDD");
     EXPECT_FALSE(fichin.alguienJugando());
 
     ///Preguntar si Luli es el objetivo
     fichin.nuevaPartida(jugador2);
     EXPECT_TRUE(fichin.alguienJugando());
     EXPECT_EQ("Luli", fichin.objetivo().first);
-    realizarMovimientos(fichin, "DDDDDDDBIIIIIIIBBBBBBDDDDDDD");//Terminó la partida
+    realizarMovimientos(fichin, "DDDDDDDAIIIIIIIAAAAAADDDDDDD");//Terminó la partida
 
 }
 
@@ -208,31 +208,31 @@ TEST(fichin, nuevoOponente) {
 
     ///Partida Luli, 14 pasos
     fichin.nuevaPartida(jugador);
-    realizarMovimientos(fichin, "DDDDDDDBBBBBBB");
+    realizarMovimientos(fichin, "DDDDDDDAAAAAAA");
     EXPECT_FALSE(fichin.alguienJugando());
     EXPECT_FALSE(fichin.ranking().empty());
 
     ///Partida Chumi, 28 pasos
     fichin.nuevaPartida(jugador2);
-    realizarMovimientos(fichin, "DDDDDDDBIIIIIIIBBBBBBDDDDDDD");
+    realizarMovimientos(fichin, "DDDDDDDAIIIIIIIAAAAAADDDDDDD");
     EXPECT_FALSE(fichin.alguienJugando());
 
     ///Preguntar si Luli es el objetivo
     fichin.nuevaPartida(jugador2);
     EXPECT_TRUE(fichin.alguienJugando());
     EXPECT_EQ("Luli", fichin.objetivo().first);
-    realizarMovimientos(fichin, "DDDDDDDBIIIIIIIBBBBBBDDDDDDD");//Terminó la partida
+    realizarMovimientos(fichin, "DDDDDDDAIIIIIIIAAAAAADDDDDDD");//Terminó la partida
 
     ///Partida Fulano, 16 pasos
     fichin.nuevaPartida(jugador3);
-    realizarMovimientos(fichin, "DDDDDDDBIBDBBBBB");
+    realizarMovimientos(fichin, "DDDDDDDAAAAAAA");
     EXPECT_FALSE(fichin.alguienJugando());
 
     ///Preguntar si Fulano es el objetivo
     fichin.nuevaPartida(jugador2);
     EXPECT_TRUE(fichin.alguienJugando());
     EXPECT_EQ("Fulano", fichin.objetivo().first);
-    realizarMovimientos(fichin, "DDDDDDDBIIIIIIIBBBBBBDDDDDDD");//Terminó la partida
+    realizarMovimientos(fichin, "DDDDDDDAIIIIIIIAAAAAADDDDDDD");//Terminó la partida
 }
 
 ///Por ahora no se me ocurre nada, sorry
