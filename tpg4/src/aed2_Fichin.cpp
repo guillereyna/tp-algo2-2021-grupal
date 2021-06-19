@@ -2,7 +2,9 @@
 
 aed2_Fichin::aed2_Fichin(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<Coordenada> paredes,
 set<Coordenada> fantasmas, set<Coordenada> chocolates) :
-    _fichin(largo, alto, inicio, llegada, paredes, fantasmas, chocolates){}
+    _fichin(largo, alto, traducirCoordenada(inicio), traducirCoordenada(llegada),
+            traducirConjunto(paredes), traducirConjunto(fantasmas),
+            traducirConjunto(chocolates)){}
 
 void aed2_Fichin::nuevaPartida(Jugador j){
     _fichin.nuevaPartida(j);
@@ -38,7 +40,7 @@ pair<Jugador, Puntaje> aed2_Fichin::objetivo() const{
 }
 
 Coordenada aed2_Fichin::jugador() const {
-    return _fichin.partidaActual().jugador(); //quizas deberia preguntar si hay alguien jugando
+    return devolverCoordenada(_fichin.partidaActual().jugador()); //quizas deberia preguntar si hay alguien jugando
 }
 
 Nat aed2_Fichin::cantidadMovimientos() const {
@@ -58,25 +60,49 @@ Nat aed2_Fichin::alto() const {
 }
 
 Coordenada aed2_Fichin::inicio() const {
-    return _fichin.mapa().inicio();
+    return devolverCoordenada(_fichin.mapa().inicio());
 }
 
 Coordenada aed2_Fichin::llegada() const {
-    return _fichin.mapa().llegada();
+    return devolverCoordenada(_fichin.mapa().llegada());
 }
 
 set<Coordenada> aed2_Fichin::paredes() const {
-    return _fichin.mapa().paredes();
+    return devolverConjunto(_fichin.mapa().paredes());
 }
 
 set<Coordenada> aed2_Fichin::fantasmas() const {
-    return _fichin.mapa().fantasmas();
+    return devolverConjunto(_fichin.mapa().fantasmas());
 }
 
 set<Coordenada> aed2_Fichin::chocolatesIniciales() const {
-    return _fichin.mapa().chocolates();
+    return devolverConjunto(_fichin.mapa().chocolates());
 }
 
 set<Coordenada> aed2_Fichin::chocolatesActuales() const {
-    return _fichin.partidaActual().chocolatesActuales();
+    return devolverConjunto(_fichin.partidaActual().chocolatesActuales());
+}
+
+const Coordenada traducirCoordenada(Coordenada c){
+    return Coordenada(c.first-1,c.second-1);
+}
+
+const Coordenada devolverCoordenada(Coordenada c){
+    return Coordenada(c.first+1,c.second+1);
+}
+
+const set<Coordenada> traducirConjunto(set<Coordenada> conj){
+    set<Coordenada> res;
+    for (auto elem : conj){
+        res.insert(traducirCoordenada(elem));
+    }
+    return res;
+}
+
+const set<Coordenada> devolverConjunto(set<Coordenada> conj){
+    set<Coordenada> res;
+    for (auto elem : conj){
+        res.insert(devolverCoordenada(elem));
+    }
+    return res;
 }

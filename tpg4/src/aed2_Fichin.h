@@ -4,6 +4,11 @@
 #include "Tipos.h"
 #include "Fichin.h"
 
+const Coordenada traducirCoordenada(Coordenada c);
+const set<Coordenada> traducirConjunto(set<Coordenada> conj);
+const Coordenada devolverCoordenada(Coordenada c);
+const set<Coordenada> devolverConjunto(set<Coordenada> conj);
+
 class aed2_Fichin {
 public:
     aed2_Fichin(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<Coordenada> paredes,
