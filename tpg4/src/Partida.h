@@ -12,7 +12,7 @@ typedef vector<vector<tuple<bool,bool,bool>>> Tablero;
 class Partida {
     public:
         // constructor
-        Partida(const Mapa& m, const Tablero& t);
+        Partida(const Mapa& m, Tablero& t);
 
         // destructor
         ~Partida();
@@ -30,8 +30,8 @@ class Partida {
         set<Coordenada> chocolatesActuales() const;
 
     private:
-        Mapa* _mapa;
-        Tablero* _tablero;
+        const Mapa& _mapa;
+        Tablero& _tablero;
         Coordenada _posActual;
         int _cantMovimientos;
         int _inmunidad;

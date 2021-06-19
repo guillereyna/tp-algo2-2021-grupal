@@ -19,7 +19,7 @@ public:
     const set<Coordenada>& paredes() const;
     const set<Coordenada>& fantasmas() const;
 
-    const bool operator==(Mapa& o) const;
+    const bool operator==(const Mapa& o) const;
 
 private:
     Nat _largo, _alto;

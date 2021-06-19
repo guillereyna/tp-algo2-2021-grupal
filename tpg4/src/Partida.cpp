@@ -1,10 +1,8 @@
 #include "Partida.h"
 
 // constructor
-Partida::Partida(const Mapa& m, const Tablero& t): _posActual(m.inicio()), _cantMovimientos(0), _inmunidad(0), _gano(false), _perdio(false) {
-    *_mapa = m;        // guille: estas me hacen ruido (si estamos copiando las instancias
-    *_tablero = Tablero(t);  // se nos va la complejidad de nuevapartida)
-}
+Partida::Partida(const Mapa& m, Tablero& t): _posActual(m.inicio()), _cantMovimientos(0), _inmunidad(0), _gano(false), _perdio(false),
+    _mapa(m), _tablero(t) {}
 
 // destructor
 Partida::~Partida(){
@@ -20,14 +18,14 @@ void Partida::mover(const Direccion dir) {
     if (_inmunidad > 0) --_inmunidad;
     if (esChocolate(_posActual)){
         _inmunidad = _inmunidad + 10;
-        get<2>((*_tablero)[_posActual.first][_posActual.second]) = false;
+        get<2>((_tablero)[_posActual.first][_posActual.second]) = false;
     }
     if (_inmunidad == 0 && seAsusta(_posActual)) _perdio = true;
-    else if(_posActual == _mapa->llegada()) _gano = true;
+    else if(_posActual == _mapa.llegada()) _gano = true;
 }
 
 const Mapa& Partida::mapa() const{
-    return *_mapa;
+    return _mapa;
 }
 
 const Coordenada Partida::jugador() const{
@@ -58,9 +56,9 @@ Coordenada Partida::moverCoordenada(Coordenada c, const Direccion dir){
 
     if (dir == IZQUIERDA) res = make_pair(c.first - 1, c.second);
 
-    if (dir == ARRIBA) res = make_pair(c.first, c.second - 1);
+    if (dir == ARRIBA) res = make_pair(c.first, c.second + 1);
 
-    if (dir == ABAJO) res = make_pair(c.first, c.second + 1);
+    if (dir == ABAJO) res = make_pair(c.first, c.second - 1);
 
     return res;
 };
@@ -72,7 +70,7 @@ bool Partida::esMovimientoValido(Coordenada  c, const Direccion dir) {
 bool Partida::esPosicionValida(const Coordenada c) const {
     bool res = false;
 
-    if (enRango(c.first, c.second, _mapa->largo(), _mapa->alto())){
+    if (enRango(c.first, c.second, _mapa.largo(), _mapa.alto())){
         res = !esPared(c);
     }
 
@@ -84,7 +82,7 @@ bool Partida::seAsusta(const Coordenada c) const {
     vector<Coordenada> posACheckear = posicionesACheckear(c);
 
     for (int i = 0; i < posACheckear.size() && !res; ++i) {
-        if( enRango(posACheckear[i].first, posACheckear[i].second, _mapa->largo(), _mapa->alto())
+        if( enRango(posACheckear[i].first, posACheckear[i].second, _mapa.largo(), _mapa.alto())
           && esFantasma(posACheckear[i])){
             res = true;
         }
@@ -126,19 +124,19 @@ bool enRango(int c0, int c1, int limite0, int limite1){
 }
 
 bool Partida::esPared(Coordenada c) const {
-    return get<0>((*_tablero)[c.first][c.second]);
+    return get<0>((_tablero)[c.first][c.second]);
 }
 
 bool Partida::esFantasma(Coordenada c) const {
-    return get<1>((*_tablero)[c.first][c.second]);
+    return get<1>((_tablero)[c.first][c.second]);
 }
 bool Partida::esChocolate(Coordenada c) const {
-    return get<2>((*_tablero)[c.first][c.second]);
+    return get<2>((_tablero)[c.first][c.second]);
 }
 
 set<Coordenada> Partida::chocolatesActuales() const { //es horrible esta funcion ¯\_(ツ)_/¯
     set<Coordenada> res;
-    for (auto pos : (*_mapa).chocolates()){
+    for (auto pos : (_mapa).chocolates()){
         if (esChocolate(pos)){ //get<2>((*_tablero)[choco.first][choco.second])
             res.insert(pos);
         }

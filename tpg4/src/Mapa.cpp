@@ -44,7 +44,7 @@ const set<Coordenada>& Mapa::paredes() const{
     return _paredes;
 }
 
-const bool Mapa::operator==(Mapa &o) const {
+const bool Mapa::operator==(const Mapa &o) const {
     return largo() == o.largo() &&
     alto() == o.alto() &&
     chocolates() == o.chocolates() &&
