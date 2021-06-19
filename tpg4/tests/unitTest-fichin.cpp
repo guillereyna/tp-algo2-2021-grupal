@@ -15,7 +15,7 @@ void realizarMovimientos(Fichin &f, const string &movs) {
     }
 }
 
-TEST(fichinTest, crearFichin) {
+TEST(fichin, crearFichin) {
     Coordenada inicio = {0, 0};
     Coordenada llegada = {7, 7};
     set<Coordenada> paredes = {};
@@ -28,7 +28,7 @@ TEST(fichinTest, crearFichin) {
     EXPECT_TRUE(fichin.ranking().empty());
 }
 
-TEST(fichinTest, nuevaPartida) {
+TEST(fichin, nuevaPartida) {
     Coordenada inicio = {0, 0};
     Coordenada llegada = {7, 7};
     set<Coordenada> paredes = {};
@@ -44,7 +44,7 @@ TEST(fichinTest, nuevaPartida) {
     EXPECT_TRUE(fichin.ranking().empty());
 }
 
-TEST(fichinTest, moverJugador) {
+TEST(fichin, moverJugador) {
     Coordenada inicio = {0, 0};
     Coordenada llegada = {7, 7};
     set<Coordenada> paredes = {};
@@ -64,7 +64,7 @@ TEST(fichinTest, moverJugador) {
     EXPECT_TRUE(fichin.ranking().empty());
 }
 
-TEST(fichinTest, ganarPartida) {
+TEST(fichin, ganarPartida) {
     Coordenada inicio = {0, 0};
     Coordenada llegada = {7, 7};
     set<Coordenada> paredes = {};
