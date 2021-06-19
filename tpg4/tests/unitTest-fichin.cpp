@@ -76,7 +76,7 @@ TEST(fichin, ganarPartida) {
     fichin.nuevaPartida(jugador);
     for (int i=0; i < 7; i++) {
         fichin.mover(DERECHA);
-        fichin.mover(ABAJO);
+        fichin.mover(ARRIBA);
     }    
 
     EXPECT_FALSE(fichin.alguienJugando());
@@ -96,7 +96,7 @@ TEST(fichin, perderPartida) {
     fichin.nuevaPartida(jugador);
 
     for (int i=0; i < 7; i++) {
-        fichin.mover(DERECHA);
+        fichin.mover(ARRIBA);
     }
 
     EXPECT_FALSE(fichin.alguienJugando());
@@ -115,7 +115,7 @@ TEST(fichin, inmunidad) {
     fichin.nuevaPartida(jugador);
 
     for (int i=0; i < 7; i++) {
-        fichin.mover(DERECHA);
+        fichin.mover(ARRIBA);
     }
 
     EXPECT_TRUE(fichin.alguienJugando());
@@ -134,7 +134,7 @@ TEST(fichin, chocarConPared) {
 
     for (int i=0; i < 7; i++) {
         fichin.mover(DERECHA);
-        fichin.mover(ABAJO);
+        fichin.mover(ARRIBA);
     }
 
     EXPECT_TRUE(fichin.alguienJugando());
