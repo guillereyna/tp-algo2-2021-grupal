@@ -57,8 +57,38 @@ const map<Jugador, Puntaje>& Fichin::ranking() const {
 }
 
 pair<Jugador, Nat> Fichin::objetivo() const {
+
+    ///Damos por hecho que el jugador ya está en el ranking, por lo tanto obtendremos sus pasos de referencia
+    Jugador jActual = this->_jugador;
+    Puntaje pActual = _rankingAux.at(jActual);
+    ///Busco el maximo puntaje
+    Jugador jMaximo = jActual;
+    Puntaje pMaximo = pActual;
+    for (pair<Jugador, Puntaje> p : _rankingAux) {
+        if (p.second < pMaximo) {
+            jMaximo = p.first;
+            pMaximo = p.second;
+        }
+    }
+    if(jMaximo == jActual)
+        return make_pair(jActual, pActual);
+    else
+    {
+        int diferencia = pActual - pMaximo;
+        Jugador oponente = jMaximo;
+        Puntaje pOponente = pMaximo;
+        for (pair<Jugador, Puntaje> p : _rankingAux) {
+            if ((pActual - p.second) < diferencia && (pActual - p.second) > 0) {
+                oponente = p.first;
+                pOponente = p.second;
+            }
+        }
+        return make_pair(oponente, pOponente);
+    }
+    /*
     Jugador oponente = this->_jugador;
     Nat pasos = 0;
+    ///Damos por hecho que el jugador ya está en el ranking, por lo tanto obtendremos sus pasos de referencia
     for (pair<Jugador, Puntaje> p : _rankingAux) {
         if (p.second < this->_partida->cantMov() && p.second >= pasos) {
             oponente = p.first;
@@ -69,6 +99,7 @@ pair<Jugador, Nat> Fichin::objetivo() const {
         pasos = this->_partida->cantMov();
     }
     return make_pair(oponente, pasos);
+     */
 }
 
 void Fichin::repoblarChocolates()

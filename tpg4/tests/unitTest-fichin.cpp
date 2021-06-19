@@ -196,6 +196,40 @@ TEST(fichin, oponenteCorrecto) {
 
 }
 
+TEST(fichin, oponenteCorrecto2) {
+    Coordenada inicio = {0, 0};
+    Coordenada llegada = {7, 7};
+    set<Coordenada> paredes = {};
+    set<Coordenada> fantasmas = {};
+    set<Coordenada> chocolates = {};
+    Jugador jugador = "Luli", jugador2 = "Chumi", jugador3 = "Fulano";
+
+    Fichin fichin = Fichin(8, 8, inicio, llegada, paredes, fantasmas, chocolates);
+
+    ///Partida Luli, 14 pasos
+    fichin.nuevaPartida(jugador);
+    realizarMovimientos(fichin, "DDDDDDDAAAAAAA");
+    EXPECT_FALSE(fichin.alguienJugando());
+    EXPECT_FALSE(fichin.ranking().empty());
+
+    ///Partida Chumi, 28 pasos
+    fichin.nuevaPartida(jugador2);
+    realizarMovimientos(fichin, "DDDDDDDAIIIIIIIAAAAAADDDDDDD");
+    EXPECT_FALSE(fichin.alguienJugando());
+
+    ///Partida Fulano, 16 pasos
+    fichin.nuevaPartida(jugador3);
+    realizarMovimientos(fichin, "DDDDDDDABAAAAAAA");
+    EXPECT_FALSE(fichin.alguienJugando());
+
+
+    ///Preguntar el objetivo de Fulano
+    fichin.nuevaPartida(jugador3);
+    EXPECT_TRUE(fichin.alguienJugando());
+    EXPECT_EQ("Luli", fichin.objetivo().first);
+    realizarMovimientos(fichin, "DDDDDDDAAAAAAA");
+}
+
 TEST(fichin, nuevoOponente) {
     Coordenada inicio = {0, 0};
     Coordenada llegada = {7, 7};
@@ -225,7 +259,7 @@ TEST(fichin, nuevoOponente) {
 
     ///Partida Fulano, 16 pasos
     fichin.nuevaPartida(jugador3);
-    realizarMovimientos(fichin, "DDDDDDDAAAAAAA");
+    realizarMovimientos(fichin, "DDDDDDDABAAAAAAA");
     EXPECT_FALSE(fichin.alguienJugando());
 
     ///Preguntar si Fulano es el objetivo
