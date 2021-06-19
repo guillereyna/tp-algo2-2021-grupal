@@ -1,9 +1,0 @@
-/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/cmake-build-debug/CMakeFiles/mapa.dir
-/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/cmake-build-debug/CMakeFiles/correrValgrind.dir
-/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/cmake-build-debug/CMakeFiles/partida.dir
-/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/cmake-build-debug/CMakeFiles/gtest.dir
-/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/cmake-build-debug/CMakeFiles/correrTests.dir
-/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/cmake-build-debug/CMakeFiles/gtest_main.dir
-/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/cmake-build-debug/CMakeFiles/fichin.dir
