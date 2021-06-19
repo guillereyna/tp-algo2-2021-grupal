@@ -30,9 +30,9 @@ void Fichin::mover(const Direccion d) {
         _hayAlguien = false;
     }
     if (_partida->gano() &&
-    (_ranking.count(_jugador) && _partida->cantMov() < _ranking.at(_jugador) || !_ranking.count(_jugador))) {
+    ((_ranking.count(_jugador) && _partida->cantMov() < _ranking.at(_jugador)) || !_ranking.count(_jugador))) {
         _ranking.insert(make_pair(_jugador, _partida->cantMov()));
-        _rankingAux.insert(make_pair(_jugador, _ranking.at(_jugador)));
+        _rankingAux[_jugador] = _partida->cantMov();
     }
 }
 
@@ -76,7 +76,7 @@ void Fichin::repoblarChocolates()
     ///Rellenar chocolates
     for(auto i : _mapa.chocolates())
     {
-        get<2>(_tablero[i.first][i.second]) = true;
+        get<2>(_tablero[i.first-1][i.second-1]) = true;
     }
 }
 
