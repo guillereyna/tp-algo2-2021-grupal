@@ -6,6 +6,8 @@
 class Mapa {
 public:
 
+    Mapa();
+
     Mapa(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<Coordenada> paredes, set<Coordenada> fantasmas,
          set<Coordenada> chocolates);
 

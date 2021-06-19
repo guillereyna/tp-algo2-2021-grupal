@@ -1,5 +1,8 @@
 #include "Mapa.h"
 
+Mapa::Mapa(): _largo(0), _alto(0), _inicio(Coordenada(0,0)), _llegada(Coordenada(0,0)),
+              _fantasmas({}), _paredes({}), _chocolates({}){}
+
 Mapa::Mapa(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada,
            set<Coordenada> paredes, set<Coordenada> fantasmas, set<Coordenada> chocolates):
                _largo(largo), _alto(alto), _inicio(inicio), _llegada(llegada),

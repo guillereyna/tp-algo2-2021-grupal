@@ -8,8 +8,9 @@ Fichin::Fichin(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<C
     _hayAlguien(false),
     _jugador(""),
     _ranking(string_map<Nat>()),
-    _rankingAux({}),
-    _tablero(inicializarTablero()){}
+    _rankingAux({}){
+    _tablero = inicializarTablero();
+}
 
 Fichin::~Fichin() {
     if (_partida) delete(_partida);
