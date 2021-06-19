@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/src/Mapa.h
+Tipos.h
+/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/src/Tipos.h
+set
+-
+
+/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/src/Partida.cpp
+Partida.h
+/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/src/Partida.h
+
+/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/src/Partida.h
+Mapa.h
+/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/src/Mapa.h
+vector
+-
+tuple
+-
+
+/home/luli/Escritorio/Exactas/Algoritmos y Estructuras de Datos II/Labo/TPs/algo2-2021c1-grupal/tpg4/src/Tipos.h
+cstdlib
+-
+cassert
+-
+iostream
+-
+set
+-
+tuple
+-
+string
+-
+map
+-
+list
+-
+vector
+-
+

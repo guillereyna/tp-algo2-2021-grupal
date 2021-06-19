@@ -1,0 +1,169 @@
+// Por ahora, la idea de la representación del mapa es:
+// - Una matriz de tuplas<bool, bool, bool>
+	// <paredes, fantasmas, chocolates>
+	// se poblan todos cuando se genera el mapa, y se repoblan los chocolates cada vez que se inicia una partida
+// - Vector de chocolates
+// - Vector de Paredes
+// - Vector de fantasmas
+// naturales - largo, alto
+// coordenadas - inicio, fin.
+
+// Partida:
+// Cantidad de movimientos (nat)
+// Chocolates a resolver...
+// Movimientos con inmunidad (nat).
+// Posición actual del jugador (coordenada).
+// Puntero al mapa.
+
+// Fichín:
+// Puntero al mapa.
+// alguienJugado????
+// Puntero a partida (qué onda con null?).
+// ranking (dicc-trie).
+// Jugador (string).
+
+// coordenada es una tupla de enteros.
+
+Coordenada ES tupla(nat, nat)
+tablero ES array(array(tupla(bool, bool, bool)))
+
+Representación:
+	mapa se representa con estr donde 
+		estr es tupla ⟨	// tablero: array(array(tupla(bool, bool, bool))),
+						paredes: conj(coordenada),
+						fantasmas: conj(coordenada),
+						chocolates: conj(coordenada),
+						largo: nat,
+						alto: nat,
+						inicio: coordenada,
+						fin: coordenada ⟩
+
+Solución Informal:
+	La estructura interna de mapa tiene una correspondencia 1 a 1 con los observadores 
+	del TAD mapa.
+---
+Invariante de Representación:
+	Rep:	estr	->	boolean
+	(∀e: estr) Rep(e)	≡ true ⇐⇒ (1)∧(2)∧(3)∧(4)∧(5)
+		donde: 
+		(1) ≡ enRango(e,inicio) ∧ enRango(e,fin) ∧ ¬(inicio = fin)
+		(2)	≡	e.paredes ∩ e.fantasmas ∩ e.chocolates = Ø
+		(3)	≡ (∀c: coordenada)(c ∈ e.paredes ∪ e.fantasmas ∪ e.chocolates ⇒ 
+		 enRango(e,c))
+		(4) ≡ ¬({inicio, fin} ∈ e.paredes ∪ e.fantasmas)
+		(5) ≡ e.largo > 0 ∧ e.alto > 0
+		
+		enRango: estr × coordenada -> bool
+		enRango(e,c) ≡ π₀(c) < e.largo ∧ π₁(c) < e.alto
+---
+Función de abstracción:
+	Abs:	estr	->	mapa	{Rep(e)}
+	(∀e: estr) Abs(e) =obs td: mapa | (1)∧(2)∧(3)
+		donde: 
+		(1)	≡	largo(td) = e.largo ∧ alto(td) = e.alto
+		(2)	≡	inicio(td) =obs e.inicio ∧ fin(td) =obs e.fin 
+		(3) ≡ paredes(td) =obs e.paredes ∧ fantasmas(td) =obs e.fantasmas ∧ chocolates(td) =obs e.chocolates
+---
+Interfaz:
+	Se explica con:	Mapa
+	Géneros:		mapa
+	
+	Operaciones básicas:
+		NuevoMapa(in largo: nat, in alto: nat, in inicio: coordenada,
+			in llegada: coordenada, in paredes: conj(coordenada),
+			in fantasmas: conj(coordenada), in chocolates: conj(coordenada)) -> res: mapa
+		Pre ≡ {true}
+		Post ≡ {res =obs nuevoMapa(largo, alto, inicio, llegada, paredes, fantasmas, chocolates)}
+		//					(∀i, j: nat)(0 ≤ i < alto ∧ 0 ≤ j < largo ⇒
+		//						res.tablero[i][j].first = true ↔ paredes.pertenece?(<i,j>) ∧
+		//						res.tablero[i][j].second = true ↔ fantasmas.pertenece?(<i,j>) ∧
+		//						res.tablero[i][j].third = true ↔ chocolates.pertenece?(<i,j>))					
+		// Preguntar si conjunto es representable con vector.
+		Complejidad: Θ(largo × alto)
+		Descripción: Crea un mapa con las características definidas por parámetros.
+		---
+		// Aliasing: Todas estas son referencias inmutables a variables internas.
+		Largo(in m: mapa) -> res: nat
+    Pre ≡ {true}
+    Post ≡ {res =obs largo(m)}
+    Complejidad: Θ(1)
+    Descripción: Devuelve el largo del mapa
+    ---
+    Alto(in m: mapa) -> res: nat
+    Pre ≡ {true}
+    Post ≡ {res =obs alto(m)}
+    Complejidad: Θ(1)
+    Descripción: Devuelve la dimensión altura del mapa.
+    ---
+    Inicio(in m: mapa) -> res: coordenada
+    Pre ≡ {true}
+    Post ≡ {res =obs inicio(m)}
+    Complejidad: Θ(1)
+    Descripción: Devuelve las coordenadas del inicio del mapa.
+    ---
+    Llegada(in m: mapa) -> res: coordenada
+    Pre ≡ {true}
+    Post ≡ {res =obs llegada(m)}
+    Complejidad: Θ(1)
+    Descripción: Devuelve las coordenadas del final del mapa.
+		---
+		Chocolates(in m: mapa) -> res: conj(coordenadas)
+		Pre ≡ {true}
+		Post ≡ {res =obs chocolates(m)}
+		Complejidad: Θ(1)
+		Descripción: Devuelve las coordenadas de los chocolates iniciales.
+		Aliasing: res es una referencia inmutable.
+		---
+		Paredes(in m: mapa) -> res: conj(coordenadas)
+		Pre ≡ {true}
+		Post ≡ {res =obs paredes(m)}
+		Complejidad: Θ(1)
+		Descripción: Devuelve las coordenadas de las paredes.
+		Aliasing: res es una referencia inmutable.
+		---
+		Fantasmas(in m: mapa) -> res: conj(coordenadas)
+		Pre ≡ {true}
+		Post ≡ {res =obs paredes(m)}
+		Complejidad: Θ(1)
+		Descripción: Devuelve las coordenadas de los fantasmas.
+		Aliasing: res es una referencia inmutable.
+		---
+	Algoritmos del módulo:
+		iNuevoMapa(in largo: nat, in alto: nat, in inicio: coordenada,
+			in llegada: coordenada, in paredes: conj(coordenada),
+			in fantasmas: conj(coordenada), in chocolates: conj(coordenada)) -> res: estr
+			res <- <paredes, fantasmas, chocolates, largo, alto, inicio, fin>
+		Complejidad: Θ(largo × alto)
+		Justificación: la complejidad va a depender del conjunto más grande entre
+			paredes, fantasmas, y chocolates, que es como máximo de tamaño largo × alto.
+		---
+		iLargo(in m: estr) -> res: nat 
+			res <- m.largo 
+		Complejidad: Θ(1)
+		---
+		iAlto(in m: estr) -> res: nat 
+			res <- m.alto  
+		Complejidad: Θ(1)
+		---
+		iInicio(in m: estr) -> res: coordenada
+			res <- m.inicio
+		Complejidad: Θ(1)
+		---
+		iFin(in m: estr) -> res: coordenada
+			res <- m.fin
+		Complejidad: Θ(1)
+		---
+		iParedes(in m: estr) -> res: conj(coordenada)
+			res <- m.paredes 
+		Complejidad: Θ(1)
+		Justificación: res es una referencia.
+		---
+		iFantasmas(in m: estr) -> res: conj(coordenada)
+			res <- m.fantasmas 
+		Complejidad: Θ(1)
+		Justificación: res es una referencia.
+		---
+		iChocolates(in m: estr) -> res: conj(coordenada)
+			res <- m.chocolates 
+		Complejidad: Θ(1)
+		Justificación: res es una referencia.

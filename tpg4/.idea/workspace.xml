@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="TP4_Pacalgo2" targetName="mapa" />
+      <config projectName="TP4_Pacalgo2" targetName="gtest_main" />
+      <config projectName="TP4_Pacalgo2" targetName="correrTests" />
+      <config projectName="TP4_Pacalgo2" targetName="partida" />
+      <config projectName="TP4_Pacalgo2" targetName="fichin" />
+      <config projectName="TP4_Pacalgo2" targetName="gtest" />
+      <config projectName="TP4_Pacalgo2" targetName="correrValgrind" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" ENABLED="true" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f1ea0ead-1143-438a-99ba-060c0b497f58" name="Default Changelist" comment="Arreglé el problema con insertar en el diccionario" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1tlpYhTopEjUzYv3rLX74s6MbOH" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="cidr.known.project.marker" value="true" />
+    <property name="cmake.loaded.for.project" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/CMakeLists.txt" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  </component>
+  <component name="RunManager" selected="Google Test.fichin">
+    <configuration name="All Tests" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TP4_Pacalgo2" TARGET_NAME="correrTests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="TP4_Pacalgo2" RUN_TARGET_NAME="correrTests" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="fichin" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TP4_Pacalgo2" TARGET_NAME="fichin" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="TP4_Pacalgo2" RUN_TARGET_NAME="fichin" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="mapa" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TP4_Pacalgo2" TARGET_NAME="mapa" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="TP4_Pacalgo2" RUN_TARGET_NAME="mapa" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="partida" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TP4_Pacalgo2" TARGET_NAME="partida" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="TP4_Pacalgo2" RUN_TARGET_NAME="partida" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="correrValgrind" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TP4_Pacalgo2" TARGET_NAME="correrValgrind" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gtest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TP4_Pacalgo2" TARGET_NAME="gtest" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gtest_main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TP4_Pacalgo2" TARGET_NAME="gtest_main" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.correrValgrind" />
+      <item itemvalue="CMake Application.gtest" />
+      <item itemvalue="CMake Application.gtest_main" />
+      <item itemvalue="Google Test.mapa" />
+      <item itemvalue="Google Test.partida" />
+      <item itemvalue="Google Test.fichin" />
+      <item itemvalue="Google Test.All Tests" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f1ea0ead-1143-438a-99ba-060c0b497f58" name="Default Changelist" comment="" />
+      <created>1623353579532</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1623353579532</updated>
+      <workItem from="1623353586586" duration="5074000" />
+      <workItem from="1623509666208" duration="792000" />
+      <workItem from="1623546632505" duration="74000" />
+      <workItem from="1623618279494" duration="4347000" />
+      <workItem from="1623718414082" duration="1653000" />
+      <workItem from="1623781846815" duration="2921000" />
+      <workItem from="1623871238787" duration="1803000" />
+      <workItem from="1624031980848" duration="6088000" />
+      <workItem from="1624130560671" duration="62000" />
+      <workItem from="1624130626775" duration="10000" />
+      <workItem from="1624130666537" duration="4304000" />
+      <workItem from="1624135927521" duration="1518000" />
+      <workItem from="1624137487525" duration="1043000" />
+    </task>
+    <task id="LOCAL-00001" summary="Fichín: constructor, mover, alguienJugando, partidaActual.">
+      <created>1623381523724</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1623381523724</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fichín: constructor, mover, alguienJugando, partidaActual.&#10;arreglo partida">
+      <created>1623622570139</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1623622570140</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Función objetivo">
+      <created>1623783583685</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1623783583685</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Arreglé algunas cosas que tiraban warning, funciones que tenían que retornar algo, etc.">
+      <created>1623784552287</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1623784552287</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Test para fichín:&#10;* crearFichin&#10;* nuevaPartida&#10;* moverJugador&#10;* ganarPartida&#10;* perderPartida&#10;* inmunidad&#10;* chocarConPared">
+      <created>1624034912450</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1624034912450</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Arreglé coordenadas">
+      <created>1624134963198</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1624134963198</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Arreglé el problema con insertar en el diccionario">
+      <created>1624138532979</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1624138532979</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fichín: constructor, mover, alguienJugando, partidaActual." />
+    <MESSAGE value="Fichín: constructor, mover, alguienJugando, partidaActual.&#10;arreglo partida" />
+    <MESSAGE value="Función objetivo" />
+    <MESSAGE value="Arreglé algunas cosas que tiraban warning, funciones que tenían que retornar algo, etc." />
+    <MESSAGE value="Test para fichín:&#10;* crearFichin&#10;* nuevaPartida&#10;* moverJugador&#10;* ganarPartida&#10;* perderPartida&#10;* inmunidad&#10;* chocarConPared" />
+    <MESSAGE value="Arreglé coordenadas" />
+    <MESSAGE value="Arreglé el problema con insertar en el diccionario" />
+    <option name="LAST_COMMIT_MESSAGE" value="Arreglé el problema con insertar en el diccionario" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/Fichin.h</url>
+          <line>39</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/tests/fichin-tests.cpp</url>
+          <line>196</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/tests/unitTest-fichin.cpp</url>
+          <line>144</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

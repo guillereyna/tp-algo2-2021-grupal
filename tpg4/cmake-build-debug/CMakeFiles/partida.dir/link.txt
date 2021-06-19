@@ -1,0 +1,1 @@
+/usr/bin/c++  -pthread -std=gnu++11 -ggdb3 -g -g CMakeFiles/partida.dir/src/Fichin.cpp.o CMakeFiles/partida.dir/src/Mapa.cpp.o CMakeFiles/partida.dir/src/Partida.cpp.o CMakeFiles/partida.dir/src/aed2_Fichin.cpp.o CMakeFiles/partida.dir/tests/unitTest-partida.cpp.o -o partida  libgtest.a libgtest_main.a 

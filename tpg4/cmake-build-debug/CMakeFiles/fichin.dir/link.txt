@@ -1,0 +1,1 @@
+/usr/bin/c++  -pthread -std=gnu++11 -ggdb3 -g -g CMakeFiles/fichin.dir/src/Fichin.cpp.o CMakeFiles/fichin.dir/src/Mapa.cpp.o CMakeFiles/fichin.dir/src/Partida.cpp.o CMakeFiles/fichin.dir/src/aed2_Fichin.cpp.o CMakeFiles/fichin.dir/tests/unitTest-fichin.cpp.o -o fichin  libgtest.a libgtest_main.a 
