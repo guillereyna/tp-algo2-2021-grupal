@@ -35,7 +35,7 @@ Tablero tablero = inicializarTablero(mapa);
    - - | - - - - - - -
    - - | - c - - - - -
    - c - - - - - - x -
-   - - - - - - c - - - (f, c) / (c, f)
+   - - - - - - c - - -
    - - - - - - - - - -
    - - - - - - | - - c
    x - - c - - | - - -
@@ -66,10 +66,10 @@ TEST(Partida, mover_partida) {
     EXPECT_EQ(p.jugador().first, 0);
     EXPECT_EQ(p.cantMov(), 0);
 
-    p.mover(ABAJO);
+    p.mover(ARRIBA);
 
-    EXPECT_EQ(p.jugador().second, 0);
-    EXPECT_EQ(p.jugador().first, 1);
+    EXPECT_EQ(p.jugador().second, 1);
+    EXPECT_EQ(p.jugador().first, 0);
     EXPECT_EQ(p.cantMov(), 1);
 }
 
@@ -82,14 +82,14 @@ TEST(Partida, mover_hacia_pared) {
 
     p.mover(DERECHA);
 
-    EXPECT_EQ(p.jugador().second, 1);
-    EXPECT_EQ(p.jugador().first, 0);
+    EXPECT_EQ(p.jugador().second, 0);
+    EXPECT_EQ(p.jugador().first, 1);
     EXPECT_EQ(p.cantMov(), 1);
 
     p.mover(DERECHA);
 
-    EXPECT_EQ(p.jugador().second, 1);
-    EXPECT_EQ(p.jugador().first, 0);
+    EXPECT_EQ(p.jugador().second, 0);
+    EXPECT_EQ(p.jugador().first, 1);
     EXPECT_EQ(p.cantMov(), 1);
 }
 
@@ -100,7 +100,7 @@ TEST(Partida, mover_fuera_del_mapa) {
     EXPECT_EQ(p.jugador().first, 0);
     EXPECT_EQ(p.cantMov(), 0);
 
-    p.mover(ARRIBA);
+    p.mover(ABAJO);
 
     EXPECT_EQ(p.jugador().second, 0);
     EXPECT_EQ(p.jugador().first, 0);
@@ -116,9 +116,9 @@ TEST(Partida, mover_fuera_del_mapa) {
 TEST(Partida, comer_chocolate) {
     Partida p(mapa, tablero);
 
-    p.mover(ABAJO);
-    p.mover(ABAJO);
-    p.mover(ABAJO);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
     p.mover(DERECHA);
 
     EXPECT_EQ(p.jugador().second, 3);
@@ -142,12 +142,13 @@ TEST(Partida, comer_chocolate) {
     EXPECT_EQ(p.inmunidad(), 0);
 }
 
+Tablero tablero2 = inicializarTablero(mapa);
 TEST(Partida, comer_chocolate_y_luego_otro) {
-    Partida p(mapa, tablero);
+    Partida p(mapa, tablero2);
 
-    p.mover(ABAJO);
-    p.mover(ABAJO);
-    p.mover(ABAJO);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
     p.mover(DERECHA);
 
     EXPECT_EQ(p.jugador().second, 3);
@@ -160,7 +161,7 @@ TEST(Partida, comer_chocolate_y_luego_otro) {
     p.mover(DERECHA);
     p.mover(DERECHA);
     p.mover(DERECHA);
-    p.mover(ARRIBA);
+    p.mover(ABAJO);
 
     EXPECT_EQ(p.jugador().second, 2);
     EXPECT_EQ(p.jugador().first, 4);
@@ -170,36 +171,38 @@ TEST(Partida, comer_chocolate_y_luego_otro) {
     EXPECT_EQ(p.chocolatesActuales().count(p.jugador()), 0);
 }
 
+Tablero tablero3 = inicializarTablero(mapa);
 TEST(Partida, asustarse) {
-    Partida p(mapa, tablero);
+    Partida p(mapa, tablero3);
 
     EXPECT_EQ(p.jugador().second, 0);
     EXPECT_EQ(p.jugador().first, 0);
     EXPECT_EQ(p.cantMov(), 0);
 
-    p.mover(ABAJO);
-    p.mover(ABAJO);
-    p.mover(ABAJO);
-    p.mover(ABAJO);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
 
-    EXPECT_EQ(p.jugador().second, 3);
+    EXPECT_EQ(p.jugador().second, 4);
     EXPECT_EQ(p.jugador().first, 0);
     EXPECT_EQ(p.cantMov(), 4);
     EXPECT_FALSE(p.gano());
     EXPECT_TRUE(p.perdio());
 
-    p.mover(ABAJO);
-    EXPECT_EQ(p.jugador().second, 3);
+    p.mover(ARRIBA);
+    EXPECT_EQ(p.jugador().second, 4);
     EXPECT_EQ(p.jugador().first, 0);
     EXPECT_EQ(p.cantMov(), 4);
 }
 
+Tablero tablero4 = inicializarTablero(mapa);
 TEST(Partida, acercarse_a_fantasma_con_inmunidad) {
-    Partida p(mapa, tablero);
+    Partida p(mapa, tablero4);
 
-    p.mover(ABAJO);
-    p.mover(ABAJO);
-    p.mover(ABAJO);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
     p.mover(DERECHA);
 
     EXPECT_EQ(p.jugador().second, 3);
@@ -210,43 +213,44 @@ TEST(Partida, acercarse_a_fantasma_con_inmunidad) {
     EXPECT_EQ(p.chocolatesActuales().count(p.jugador()), 0);
 
     p.mover(IZQUIERDA);
-    p.mover(ABAJO);
+    p.mover(ARRIBA);
 
-    EXPECT_EQ(p.jugador().second, 3);
+    EXPECT_EQ(p.jugador().second, 4);
     EXPECT_EQ(p.jugador().first, 0);
-    EXPECT_EQ(p.cantMov(), 4);
+    EXPECT_EQ(p.cantMov(), 6);
     EXPECT_EQ(p.inmunidad(), 8);
     EXPECT_FALSE(p.gano());
     EXPECT_FALSE(p.perdio());
 }
 
+Tablero tablero5 = inicializarTablero(mapa);
 TEST(Partida, gano_xD) {
-    Partida p(mapa, tablero);
+    Partida p(mapa, tablero5);
 
-    p.mover(ABAJO);
-    p.mover(ABAJO);
-    p.mover(ABAJO);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
     p.mover(DERECHA);
-    p.mover(ABAJO);
-    p.mover(DERECHA);
-    p.mover(DERECHA);
+    p.mover(ARRIBA);
     p.mover(DERECHA);
     p.mover(DERECHA);
     p.mover(DERECHA);
     p.mover(DERECHA);
-    p.mover(ABAJO);
-    p.mover(ABAJO);
-    p.mover(ABAJO);
     p.mover(DERECHA);
     p.mover(DERECHA);
-    p.mover(ABAJO);
-    p.mover(ABAJO);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
+    p.mover(DERECHA);
+    p.mover(DERECHA);
+    p.mover(ARRIBA);
+    p.mover(ARRIBA);
 
     EXPECT_EQ(p.jugador().second, 9);
     EXPECT_EQ(p.jugador().first, 9);
     EXPECT_TRUE(p.gano());
     EXPECT_FALSE(p.perdio());
     EXPECT_EQ(p.cantMov(), 18);
-    EXPECT_EQ(p.inmunidad(), 7);
+    EXPECT_EQ(p.inmunidad(), 6);
     EXPECT_EQ(p.chocolatesActuales().size(), chocolates.size()-2);
 }

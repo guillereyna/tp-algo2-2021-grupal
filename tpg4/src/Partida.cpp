@@ -18,7 +18,7 @@ void Partida::mover(const Direccion dir) {
     if (_inmunidad > 0) --_inmunidad;
     if (esChocolate(_posActual)){
         _inmunidad = _inmunidad + 10;
-        get<2>((_tablero)[_posActual.first][_posActual.second]) = false;
+        get<2>(_tablero[_posActual.first][_posActual.second]) = false;
     }
     if (_inmunidad == 0 && seAsusta(_posActual)) _perdio = true;
     else if(_posActual == _mapa.llegada()) _gano = true;
@@ -124,14 +124,14 @@ bool enRango(int c0, int c1, int limite0, int limite1){
 }
 
 bool Partida::esPared(Coordenada c) const {
-    return get<0>((_tablero)[c.first][c.second]);
+    return get<0>(_tablero[c.first][c.second]);
 }
 
 bool Partida::esFantasma(Coordenada c) const {
-    return get<1>((_tablero)[c.first][c.second]);
+    return get<1>(_tablero[c.first][c.second]);
 }
 bool Partida::esChocolate(Coordenada c) const {
-    return get<2>((_tablero)[c.first][c.second]);
+    return get<2>(_tablero[c.first][c.second]);
 }
 
 set<Coordenada> Partida::chocolatesActuales() const { //es horrible esta funcion ¯\_(ツ)_/¯
