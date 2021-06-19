@@ -43,3 +43,13 @@ const set<Coordenada>& Mapa::fantasmas() const{
 const set<Coordenada>& Mapa::paredes() const{
     return _paredes;
 }
+
+const bool Mapa::operator==(Mapa &o) const {
+    return largo() == o.largo() &&
+    alto() == o.alto() &&
+    chocolates() == o.chocolates() &&
+    paredes() == o.paredes() &&
+    fantasmas() == o.fantasmas() &&
+    inicio() == o.inicio() &&
+    llegada() == o.llegada();
+}

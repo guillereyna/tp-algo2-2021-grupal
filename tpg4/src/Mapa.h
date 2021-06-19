@@ -19,6 +19,8 @@ public:
     const set<Coordenada>& paredes() const;
     const set<Coordenada>& fantasmas() const;
 
+    const bool operator==(Mapa& o) const;
+
 private:
     Nat _largo, _alto;
     Coordenada _inicio, _llegada;
