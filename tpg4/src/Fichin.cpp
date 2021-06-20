@@ -107,7 +107,7 @@ void Fichin::repoblarChocolates()
     ///Rellenar chocolates
     for(auto i : _mapa.chocolates())
     {
-        get<2>(_tablero[i.first-1][i.second-1]) = true;
+        get<2>(_tablero[i.first][i.second]) = true;///Muere aca
     }
 }
 
