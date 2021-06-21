@@ -92,7 +92,6 @@ bool Partida::seAsusta(const Coordenada c) const {
           && esFantasma(posACheckear[i])){
             res = true;
         }
-        ++i;
     }
 
     return res;
@@ -100,28 +99,13 @@ bool Partida::seAsusta(const Coordenada c) const {
 
 vector<Coordenada> Partida::posicionesACheckear(const Coordenada c) const {
     vector<Coordenada> res;
-    int i = 3;
-    int j = 0;
-    Coordenada c0;
-    Coordenada c1;
-    Coordenada c2;
-    Coordenada c3;
 
-    while (i >= 0 && j <= 3){                            // i=3,j=0 i=2,j=1 i=1,j=2 i=0,j=3 ¡BORRAR!
-        c0 = make_pair(c.first + i, c.second + j); // (+3,+0) (+2,+1) (+1,+2) (+0,+3)
-        c1 = make_pair(c.first + i, c.second - j); // (+3,-0) (+2,-1) (+1,-2) (+0,-3)
-        c2 = make_pair(c.first - i, c.second + j); // (-3,+0) (-2,+1) (-1,+2) (-0,+3)
-        c3 = make_pair(c.first - i, c.second - j); // (-3,-0) (-2,-1) (-1,-2) (-0,-3)
-
-        res.push_back(c0);
-        if (i > 0 && j > 0) res.push_back(c1);
-        if (i > 0 && j > 0) res.push_back(c2);
-        res.push_back(c3);
-
-        --i;
-        ++j;
+    for (int i = 0; i <= 3; i++){
+        for (int j = -(3-i); j <= (3-i); j++){
+           res.push_back(Coordenada(c.first + i, c.second + j));
+           if (i != 0) res.push_back(Coordenada(c.first - i,c.second + j));
+        }
     }
-
     return res;
 }
 
