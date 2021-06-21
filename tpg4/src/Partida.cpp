@@ -23,7 +23,7 @@ void Partida::mover(const Direccion dir) {
     ++_cantMovimientos;
     if (_inmunidad > 0) --_inmunidad;
     if (esChocolate(_posActual)){
-        _inmunidad = _inmunidad + 10;
+        _inmunidad = 10;
         get<2>(_tablero[_posActual.first][_posActual.second]) = false;
     }
     if (_inmunidad == 0 && seAsusta(_posActual)) _perdio = true;
