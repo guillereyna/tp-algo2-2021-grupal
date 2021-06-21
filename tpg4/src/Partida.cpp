@@ -2,7 +2,13 @@
 
 // constructor
 Partida::Partida(const Mapa& m, Tablero& t): _posActual(m.inicio()), _cantMovimientos(0), _inmunidad(0), _gano(false), _perdio(false),
-    _mapa(m), _tablero(t) {}
+    _mapa(m), _tablero(t) {
+    if (esChocolate(_posActual)){
+        _inmunidad = _inmunidad + 10;
+        get<2>(_tablero[_posActual.first][_posActual.second]) = false;
+    }
+    if (_inmunidad == 0 && seAsusta(_posActual)) _perdio = true;
+}
 
 // destructor
 Partida::~Partida(){
