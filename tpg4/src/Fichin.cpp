@@ -49,7 +49,7 @@ const Partida& Fichin::partidaActual() const {
     return *_partida;
 }
 
-const map<Jugador, Puntaje>& Fichin::ranking() const {
+const map<Jugador, Puntaje> Fichin::ranking() const {
     map<Jugador, Puntaje> res;
     for (auto clave : _ranking.claves()){
         res.insert(make_pair(clave, _ranking.at(clave)));

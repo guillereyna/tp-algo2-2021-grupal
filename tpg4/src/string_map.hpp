@@ -1,3 +1,6 @@
+
+#include "string_map.h"
+
 template <typename T>
 string_map<T>::string_map(){
     raiz = nullptr;
@@ -36,6 +39,7 @@ void string_map<T>::insert(const pair<string, T>& p) {
     if (count(p.first) == 0) _size++;
     if (this->raiz == nullptr) raiz = new Nodo();
     (this->raiz)->_insert(p, 0);
+    _claves.push_back(p.first);
 }
 
 template <typename T>
@@ -71,6 +75,11 @@ int string_map<T>::size() const{
 template <typename T>
 bool string_map<T>::empty() const{
     return raiz == nullptr;
+}
+
+template<typename T>
+const vector<string> string_map<T>::claves() const {
+    return _claves;
 }
 
 /* * * * * * * * * * * * * *

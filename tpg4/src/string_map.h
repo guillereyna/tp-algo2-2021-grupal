@@ -78,6 +78,8 @@ public:
     **/
     T &operator[](const string &key);
 
+    const vector<string> claves() const;
+
 private:
 
     struct Nodo {
@@ -98,6 +100,7 @@ private:
     };
     Nodo* raiz;
     int _size;
+    vector<string> _claves;
 };
 
 #include "string_map.hpp"
