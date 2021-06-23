@@ -37,7 +37,7 @@ class Partida {
         int _inmunidad;
         bool _perdio;
         bool _gano;
-        // metodos auxiliares/privados
+        // métodos auxiliares/privados
         Coordenada moverCoordenada(Coordenada c, const Direccion dir);
         bool esMovimientoValido(const Coordenada c, const Direccion d);
         bool esPosicionValida(const Coordenada c) const;
@@ -46,8 +46,7 @@ class Partida {
         bool esPared(Coordenada c) const;
         bool esFantasma(Coordenada c) const;
         bool esChocolate(Coordenada c) const;
+        bool enRango(Coordenada c) const;
 };
-
-bool enRango(int c0, int c1, int limite0, int limite1);
 
 #endif //TP4_PACALGO2_PARTIDA_H

@@ -23,7 +23,6 @@ public:
     // Mueve al jugador en determinada dirección.
     void mover(const Direccion);
 
-    // todo: DEBERÍA SER PRIVADO?
     // Devuelve una referencia inmutable al mapa.
     const Mapa& mapa() const;
 
@@ -33,7 +32,6 @@ public:
     // Devuelve una referencia inmutable al jugador actual.
     const Jugador& jugadorActual() const;
 
-    // todo: DEBERÍA SER PRIVADO?
     // Devuelve una referencia inmutable a la partida actual.
     const Partida& partidaActual() const;
 

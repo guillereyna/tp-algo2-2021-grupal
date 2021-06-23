@@ -6,12 +6,8 @@
 class Mapa {
 public:
 
-    Mapa();
-
     Mapa(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<Coordenada> paredes, set<Coordenada> fantasmas,
          set<Coordenada> chocolates);
-
-    Mapa& operator=(Mapa m);
 
     const Nat largo() const;
     const Nat alto() const;
@@ -20,8 +16,6 @@ public:
     const set<Coordenada>& chocolates() const;
     const set<Coordenada>& paredes() const;
     const set<Coordenada>& fantasmas() const;
-
-    const bool operator==(const Mapa& o) const;
 
 private:
     Nat _largo, _alto;

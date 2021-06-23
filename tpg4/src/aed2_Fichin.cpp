@@ -40,7 +40,7 @@ pair<Jugador, Puntaje> aed2_Fichin::objetivo() const{
 }
 
 Coordenada aed2_Fichin::jugador() const {
-    return devolverCoordenada(_fichin.partidaActual().jugador()); //quizas deberia preguntar si hay alguien jugando
+    return devolverCoordenada(_fichin.partidaActual().jugador());
 }
 
 Nat aed2_Fichin::cantidadMovimientos() const {

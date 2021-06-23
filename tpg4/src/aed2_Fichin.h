@@ -4,8 +4,11 @@
 #include "Tipos.h"
 #include "Fichin.h"
 
+// Convierten las coordenadas que usa la cátedra (indexadas desde 1) a coordenadas
+// que usa nuestra implementación (indexadas desde 0)
 const Coordenada traducirCoordenada(Coordenada c);
 const set<Coordenada> traducirConjunto(set<Coordenada> conj);
+// y viceversa
 const Coordenada devolverCoordenada(Coordenada c);
 const set<Coordenada> devolverConjunto(set<Coordenada> conj);
 
