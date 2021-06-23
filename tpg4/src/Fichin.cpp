@@ -62,14 +62,14 @@ pair<Jugador, Nat> Fichin::objetivo() const {
     //Damos por hecho que el jugador ya está en el ranking
     //Por ende guardamos al jugador en estas variables
     Jugador jActual = _jugador;
-    Puntaje pActual = _rankingAux.at(jActual);
+    Puntaje pActual = _ranking.at(jActual);
     //Busco el jugador con el maximo puntaje
     Jugador jMaximo = jActual;
     Puntaje pMaximo = pActual;
-    for (pair<Jugador, Puntaje> p : _rankingAux) {
-        if (p.second < pMaximo) {
-            jMaximo = p.first;
-            pMaximo = p.second;
+    for (auto p : _ranking.claves()) {
+        if (_ranking.at(p) < pMaximo) {
+            jMaximo = p;
+            pMaximo = _ranking.at(p);
         }
     }
 
@@ -83,10 +83,10 @@ pair<Jugador, Nat> Fichin::objetivo() const {
         Jugador oponente = jMaximo;
         Puntaje pOponente = pMaximo;
         //Iteramos el map buscando una diferencia que sea menor y no negativa para luego guardarla como oponente
-        for (pair<Jugador, Puntaje> p : _rankingAux) {
-            if ((pActual - p.second) < diferencia && (pActual - p.second) > 0) {
-                oponente = p.first;
-                pOponente = p.second;
+        for (auto p : _ranking.claves()) {
+            if ((pActual - _ranking.at(p)) < diferencia && (pActual - _ranking.at(p)) > 0) {
+                oponente = p;
+                pOponente = _ranking.at(p);
             }
         }
         return make_pair(oponente, pOponente);//Se devuelve el oponente encontrado
