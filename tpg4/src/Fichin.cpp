@@ -6,8 +6,7 @@ Fichin::Fichin(Nat largo, Nat alto, Coordenada inicio, Coordenada llegada, set<C
     _partida(nullptr),
     _hayAlguien(false),
     _jugador(""),
-    _ranking(string_map<Nat>()),
-    _rankingAux({}){
+    _ranking(string_map<Nat>()){
     _tablero = inicializarTablero();
 }
 
@@ -31,7 +30,6 @@ void Fichin::mover(const Direccion d) {
     if (_partida->gano() &&  //si el jugador gano y esta en el ranking y supero su record, O si gano y no esta en el ranking
     ((_ranking.count(_jugador) && _partida->cantMov() < _ranking.at(_jugador)) || !_ranking.count(_jugador))) {
         _ranking.insert(make_pair(_jugador, _partida->cantMov()));
-        _rankingAux[_jugador] = _partida->cantMov();
     }
 }
 
@@ -52,7 +50,11 @@ const Partida& Fichin::partidaActual() const {
 }
 
 const map<Jugador, Puntaje>& Fichin::ranking() const {
-    return _rankingAux;
+    map<Jugador, Puntaje> res;
+    for (auto clave : _ranking.claves()){
+        res.insert(make_pair(clave, _ranking.at(clave)));
+    }
+    return res;
 }
 
 pair<Jugador, Nat> Fichin::objetivo() const {
