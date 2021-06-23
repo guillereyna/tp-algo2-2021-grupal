@@ -48,7 +48,6 @@ TEST(Partida, nueva_partida) {
 
     EXPECT_FALSE(p.gano());
     EXPECT_FALSE(p.perdio());
-    EXPECT_EQ(p.mapa(), mapa);
     EXPECT_EQ(p.cantMov(), 0);
     EXPECT_EQ(p.inmunidad(), 0);
     EXPECT_EQ(p.jugador().second, 0);
@@ -166,7 +165,7 @@ TEST(Partida, comer_chocolate_y_luego_otro) {
     EXPECT_EQ(p.jugador().second, 2);
     EXPECT_EQ(p.jugador().first, 4);
     EXPECT_EQ(p.cantMov(), 8);
-    EXPECT_EQ(p.inmunidad(), 16);
+    EXPECT_EQ(p.inmunidad(), 10);
     EXPECT_EQ(p.chocolatesActuales().size(), chocolates.size()-2);
     EXPECT_EQ(p.chocolatesActuales().count(p.jugador()), 0);
 }
@@ -251,6 +250,6 @@ TEST(Partida, gano_xD) {
     EXPECT_TRUE(p.gano());
     EXPECT_FALSE(p.perdio());
     EXPECT_EQ(p.cantMov(), 18);
-    EXPECT_EQ(p.inmunidad(), 6);
+    EXPECT_EQ(p.inmunidad(), 2);
     EXPECT_EQ(p.chocolatesActuales().size(), chocolates.size()-2);
 }
