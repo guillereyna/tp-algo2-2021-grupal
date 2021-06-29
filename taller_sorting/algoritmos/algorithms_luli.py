@@ -1,5 +1,6 @@
 from list_algorithms import presentar
 import random
+import math
 
 grupo= 'tomarAgua'
 
@@ -30,7 +31,7 @@ def selection_sort(a):
     [swap_min(a, i) for i in range(len(a))]
     return a
 
-# 0.00 algo falló
+# 0.00 algo falló??
 @presentar
 def quicksort(a):
     if len(a) < 2: return a
@@ -39,11 +40,30 @@ def quicksort(a):
     R = quicksort([e for e in a if e > pivot])
     return L + [pivot] + R
 
-#@presentar
+def downheap(a, n, i):
+    for _ in range(math.ceil(math.log2(n+1))-1):
+        p = i
+        izq = 2 * i + 1
+        der = izq + 1
+        if izq < n and a[i] < a[izq]:
+            p = izq
+        if der < n and a[p] < a[der]:
+            p = der
+        if p >= n or p == i: return
+        a[i], a[p] = a[p], a[i]
+        i = p
+
+# 6.89
+@presentar
 def heapsort(a):
+    n = len(a)
+    [downheap(a, n, i) for i in range(n // 2 - 1, -1, -1)]
+    for i in range(n-1, 0, -1):
+        a[i], a[0] = a[0], a[i]
+        downheap(a, i, 0)
     return a
 
-# 1.23
+# 1.25
 @presentar
 def mergesort(lista):
     if len(lista) < 2:
